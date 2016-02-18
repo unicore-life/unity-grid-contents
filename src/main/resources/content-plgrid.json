@@ -1,0 +1,17 @@
+{
+  "content": [
+    {
+      "path": "/_internal/inspectors",
+      "identities": [
+        "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
+        "CN=unicore-portal.grid.icm.edu.pl,OU=Domain Control Validated"
+      ]
+    },
+    {
+      "path": "/vo.plgrid.pl/unicore/ICM/servers",
+      "identities": [
+        "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
+      ]
+    }
+  ]
+}

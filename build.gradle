@@ -1,0 +1,20 @@
+group 'pl.edu.icm.unity'
+version '0.1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenCentral()
+    maven { url 'http://unicore-dev.zam.kfa-juelich.de/maven' }
+    maven { url 'http://maven.vaadin.com/vaadin-addons' }
+}
+
+dependencies {
+    compile 'pl.edu.icm.unity:unity-server-engine:1.8.0'
+    compile 'pl.edu.icm.unity:unity-server-unicore:1.8.0'
+
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+}
