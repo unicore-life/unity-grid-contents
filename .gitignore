@@ -1,4 +1,9 @@
 *.class
+
+# IDE and Build Tools
+.gradle/
+.idea/
+build/
 *.iml
 
 # Mobile Tools for Java (J2ME)
