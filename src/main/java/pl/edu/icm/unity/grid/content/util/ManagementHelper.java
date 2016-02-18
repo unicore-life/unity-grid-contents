@@ -15,7 +15,6 @@ import pl.edu.icm.unity.types.basic.Group;
 import pl.edu.icm.unity.types.basic.GroupContents;
 
 import java.util.Collection;
-import java.util.Map;
 
 import static java.lang.String.format;
 
