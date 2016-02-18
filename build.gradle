@@ -1,14 +1,29 @@
-group 'pl.edu.icm.unity'
-version '0.1.0-SNAPSHOT'
+buildscript {
+    repositories { mavenCentral() }
+}
 
-apply plugin: 'java'
-apply plugin: 'groovy'
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'pl.allegro.tech.build.axion-release' version '1.3.4'
+}
+
+scmVersion {
+    tag {
+        prefix = 'my-project-name'
+    }
+}
+
+group 'pl.edu.icm.unity'
+project.version = scmVersion.version
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
-    compile 'pl.edu.icm.unity:unity-server-engine:1.8.0',
-            'pl.edu.icm.unity:unity-server-unicore:1.8.0'
+    def unityVersion = '1.8.0'
+
+    compile "pl.edu.icm.unity:unity-server-engine:${unityVersion}",
+            "pl.edu.icm.unity:unity-server-unicore:${unityVersion}"
 
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
 }
