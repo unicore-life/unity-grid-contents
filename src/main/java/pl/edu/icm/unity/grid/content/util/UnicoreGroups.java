@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.edu.icm.unity.exceptions.EngineException;
+import pl.edu.icm.unity.grid.content.ContentConstants;
 import pl.edu.icm.unity.server.utils.Log;
 import pl.edu.icm.unity.stdext.attr.EnumAttribute;
 import pl.edu.icm.unity.stdext.attr.StringAttribute;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_QUEUE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
@@ -117,5 +119,5 @@ public class UnicoreGroups {
         );
     }
 
-    private static Logger log = Log.getLogger(Log.U_SERVER, UnicoreGroups.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnicoreGroups.class);
 }

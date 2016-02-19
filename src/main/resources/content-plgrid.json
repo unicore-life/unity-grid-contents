@@ -3,14 +3,48 @@
     {
       "path": "/_internal/inspectors",
       "identities": [
+        "CN=uni-ce.grid.cyf-kr.edu.pl,O=Cyfronet,O=GRID,C=PL",
         "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
+        "CN=unicorex/unicore-ui.reef.man.poznan.pl,O=PSNC,O=GRID,C=PL",
+        "CN=unicorex/unicore.grid.task.gda.pl,O=TASK,O=GRID,C=PL",
+        "CN=unicorex/lalande.wcss.pl,O=WCSS,O=GRID,C=PL",
         "CN=unicore-portal.grid.icm.edu.pl,OU=Domain Control Validated"
+      ]
+    },
+    {
+      "path": "/vo.plgrid.pl/unicore/CYFRONET/servers",
+      "identities": [
+        "CN=uni-ce.grid.cyf-kr.edu.pl,O=Cyfronet,O=GRID,C=PL"
       ]
     },
     {
       "path": "/vo.plgrid.pl/unicore/ICM/servers",
       "identities": [
         "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
+      ]
+    },
+    {
+      "path": "/vo.plgrid.pl/unicore/PSNC/servers",
+      "identities": [
+        "CN=unicorex/unicore-ui.reef.man.poznan.pl,O=PSNC,O=GRID,C=PL"
+      ]
+    },
+    {
+      "path": "/vo.plgrid.pl/unicore/TASK/servers",
+      "identities": [
+        "CN=unicorex/unicore.grid.task.gda.pl,O=TASK,O=GRID,C=PL"
+      ]
+    },
+    {
+      "path": "/vo.plgrid.pl/unicore/WCSS/servers",
+      "identities": [
+        "CN=unicorex/lalande.wcss.pl,O=WCSS,O=GRID,C=PL"
+      ]
+    },
+    {
+      "path": "/vo.plgrid.pl/unicore/servers",
+      "identities": [
+        "CN=unicorex/lalande.wcss.pl,O=WCSS,O=GRID,C=PL"
       ]
     }
   ]

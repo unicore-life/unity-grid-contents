@@ -17,6 +17,7 @@ import pl.edu.icm.unity.types.basic.GroupContents;
 import java.util.Collection;
 
 import static java.lang.String.format;
+import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 
 @Component
 class ManagementHelper {
@@ -69,5 +70,5 @@ class ManagementHelper {
         groupsManagement.updateGroup(group.toString(), group);
     }
 
-    private static Logger log = Log.getLogger(Log.U_SERVER, ManagementHelper.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, ManagementHelper.class);
 }

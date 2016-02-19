@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
+import pl.edu.icm.unity.grid.content.ContentConstants;
 import pl.edu.icm.unity.server.api.AttributesManagement;
 import pl.edu.icm.unity.server.api.GroupsManagement;
 import pl.edu.icm.unity.server.utils.Log;
@@ -21,6 +22,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ADD_DEFAULT_GROUPS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_GROUP;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_QUEUE;
@@ -133,5 +135,5 @@ public class UnicoreContents {
         }
     }
 
-    private static Logger log = Log.getLogger(Log.U_SERVER, UnicoreContents.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnicoreContents.class);
 }

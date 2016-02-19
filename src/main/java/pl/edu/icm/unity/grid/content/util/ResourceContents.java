@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.exceptions.IllegalGroupValueException;
 import pl.edu.icm.unity.exceptions.IllegalIdentityValueException;
+import pl.edu.icm.unity.grid.content.ContentConstants;
 import pl.edu.icm.unity.grid.content.model.ContentEntries;
 import pl.edu.icm.unity.grid.content.model.ContentGroup;
 import pl.edu.icm.unity.server.api.GroupsManagement;
@@ -23,6 +24,8 @@ import pl.edu.icm.unity.types.basic.IdentityTaV;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 
 @Component
 public class ResourceContents {
@@ -104,5 +107,5 @@ public class ResourceContents {
         }
     }
 
-    private static Logger log = Log.getLogger(Log.U_SERVER, ResourceContents.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, ResourceContents.class);
 }
