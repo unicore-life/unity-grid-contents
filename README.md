@@ -1,5 +1,7 @@
 # unity-grid-contents
 
+[![Build Status](https://travis-ci.org/unicore-life/unity-grid-contents.svg?branch=master)](https://travis-ci.org/unicore-life/unity-grid-contents)
+
 ## Building Plugin
 
 To build plugin, just run:
