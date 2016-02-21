@@ -28,7 +28,7 @@ public class PolishGridContentInitializer extends FileContentInitializer {
 
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
-        initializeContentFromResource("content-plgrid.json");
+        initializeContentFromResource("classpath:content-plgrid.json");
     }
 
     @Override

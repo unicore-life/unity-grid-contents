@@ -28,7 +28,7 @@ public class TestbedGridContentInitializer extends FileContentInitializer {
 
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
-        initializeContentFromResource("content-testbed.json");
+        initializeContentFromResource("classpath:content-testbed.json");
     }
 
     @Override

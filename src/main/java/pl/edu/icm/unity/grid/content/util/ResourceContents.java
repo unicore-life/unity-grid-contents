@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.exceptions.IllegalGroupValueException;
@@ -20,7 +21,7 @@ import pl.edu.icm.unity.types.basic.IdentityParam;
 import pl.edu.icm.unity.types.basic.IdentityTaV;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
@@ -29,22 +30,34 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 public class ResourceContents {
     private final GroupsManagement groupsManagement;
     private final IdentitiesManagement identitiesManagement;
-    private final ManagementHelper managementHelper;
+    private final ResourceLoaderService resourceLoader;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     public ResourceContents(@Qualifier("insecure") GroupsManagement groupsManagement,
                             @Qualifier("insecure") IdentitiesManagement identitiesManagement,
-                            ManagementHelper managementHelper) {
+                            ResourceLoaderService resourceLoader) {
         this.groupsManagement = groupsManagement;
         this.identitiesManagement = identitiesManagement;
-        this.managementHelper = managementHelper;
+        this.resourceLoader = resourceLoader;
     }
 
-    public UnicoreContent loadUnicoreContentFromFile(String resourcePath) throws IOException {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
-        return objectMapper.readValue(inputStream, UnicoreContent.class);
+    public UnicoreContent loadContentFromFile(String... resourcesLocations) throws EngineException {
+        for (String location : resourcesLocations) {
+            Resource resource = resourceLoader.getResource(location);
+            if (resource.exists() && resource.isReadable()) {
+                log.info(String.format("Reading content from resource '%s'.", location));
+                try {
+                    return objectMapper.readValue(resource.getInputStream(), UnicoreContent.class);
+                } catch (IOException e) {
+                    log.warn(String.format("Error reading content '%s'", location), e);
+                }
+            } else {
+                log.info(String.format("Resource '%s' not exists or is not readable.", location));
+            }
+        }
+        throw new EngineException("There was no valid initial content at locations: " + Arrays.toString(resourcesLocations));
     }
 
     public void addDistinguishedNamesToGroup(List<String> certificateIdentities,

@@ -28,7 +28,7 @@ public class HydraContentInitializer extends FileContentInitializer {
 
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
-        initializeContentFromResource("content-hydra.json");
+        initializeContentFromResource("classpath:content-hydra.json");
     }
 
     @Override

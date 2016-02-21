@@ -39,11 +39,14 @@ public class FileContentInitializer extends ContentInitializer {
 
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
-        initializeContentFromResource("content-all.json");
+        initializeContentFromResource(
+                "file:conf/content-init.json",
+                "file:/etc/unity-idm/content-init.json",
+                "classpath:content-all.json");
     }
 
-    protected void initializeContentFromResource(String resourcePath) throws IOException, EngineException {
-        final UnicoreContent content = resourceContents.loadUnicoreContentFromFile(resourcePath);
+    protected void initializeContentFromResource(String... resourcesLocations) throws EngineException {
+        final UnicoreContent content = resourceContents.loadContentFromFile(resourcesLocations);
 
         final InspectorsGroup inspectorsGroup = content.getInspectorsGroup();
         processInspectorsGroup(inspectorsGroup);
