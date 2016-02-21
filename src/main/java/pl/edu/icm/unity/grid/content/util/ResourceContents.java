@@ -83,12 +83,12 @@ public class ResourceContents {
                     .forEach(entityParam -> {
                         try {
                             groupsManagement.addMemberFromParent(parentGroupPath, entityParam);
-                            log.info(String.format("Added %s to group: %s", entityParam, groupPath));
+                            log.info(String.format("Added %s to group: %s", entityParam, parentGroupPath));
                         } catch (IllegalGroupValueException e) {
                             log.warn(String.format("Identity %s not added to group %s: %s",
-                                    entityParam, groupPath, e.getMessage()));
+                                    entityParam, parentGroupPath, e.getMessage()));
                         } catch (EngineException e) {
-                            log.warn(String.format("Problem adding %s to group: %s", entityParam, groupPath), e);
+                            log.warn(String.format("Problem adding %s to group: %s", entityParam, parentGroupPath), e);
                         }
                     });
         }

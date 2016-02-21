@@ -64,9 +64,10 @@ public class UnicoreGroups {
         groupsToRole.put("users", "user");
         groupsToRole.put("banned", "banned");
 
-        groupsToRole.keySet().stream()
-                .map(subGroup -> String.format("%s/%s", unicoreSiteGroupPath, subGroup))
-                .forEach(managementHelper::addGroupIfNotExists);
+        for (String subGroup : groupsToRole.keySet()) {
+            final String subGroupPath = String.format("%s/%s", unicoreSiteGroupPath, subGroup);
+            managementHelper.addGroupIfNotExists(subGroupPath);
+        }
 
         List<AttributeStatement2> unicoreSiteGroupStatements = Lists.newArrayList();
         unicoreSiteGroupStatements.addAll(

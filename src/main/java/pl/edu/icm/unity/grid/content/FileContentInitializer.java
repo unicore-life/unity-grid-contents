@@ -39,15 +39,25 @@ public class FileContentInitializer extends ContentInitializer {
 
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
-        final UnicoreContent content = resourceContents.loadUnicoreContentFromFile("draft.json");
+        initializeContentFromResource("draft.json");
+    }
+
+    protected void initializeContentFromResource(String resourcePath) throws IOException, EngineException {
+        final UnicoreContent content = resourceContents.loadUnicoreContentFromFile(resourcePath);
 
         final InspectorsGroup inspectorsGroup = content.getInspectorsGroup();
         processInspectorsGroup(inspectorsGroup);
 
-        for (UnicoreCentralGroup centralGroup : content.getUnicoreCentralGroups()) {
-            processCentralGroup(centralGroup, inspectorsGroup.getGroup());
-        }
+        processCentralGroups(content.getUnicoreCentralGroups(), inspectorsGroup.getGroup());
         processSiteGroups(content.getUnicoreSiteGroups(), inspectorsGroup.getGroup());
+    }
+
+    private void processCentralGroups(List<UnicoreCentralGroup> centralGroups,
+                                      String inspectorsGroupPath) throws EngineException {
+        log.debug(String.format("Processing central groups: %s", centralGroups));
+        for (UnicoreCentralGroup centralGroup : centralGroups) {
+            processCentralGroup(centralGroup, inspectorsGroupPath);
+        }
     }
 
     private void processCentralGroup(UnicoreCentralGroup centralGroup,
@@ -72,6 +82,7 @@ public class FileContentInitializer extends ContentInitializer {
 
     private void processSiteGroups(List<UnicoreSiteGroup> siteGroups,
                                    String inspectorsGroupPath) throws EngineException {
+        log.debug(String.format("Processing sites groups: %s", siteGroups));
         for (UnicoreSiteGroup siteGroup : siteGroups) {
             processSiteGroup(
                     siteGroup.getGroup(),
@@ -86,15 +97,14 @@ public class FileContentInitializer extends ContentInitializer {
                                   Optional<String> defaultQueue,
                                   String inspectorsGroupPath) throws EngineException {
         unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath, defaultQueue);
-
         resourceContents.addDistinguishedNamesToGroup(siteGroupServers, inspectorsGroupPath);
     }
 
     private void processInspectorsGroup(InspectorsGroup inspectorsContent) throws EngineException {
+        log.debug(String.format("Processing inspectors group: %s", inspectorsContent));
+
         final String groupPath = inspectorsContent.getGroup();
-
         unicoreContents.createInspectorsGroup(groupPath);
-
         resourceContents.addDistinguishedNamesToGroup(inspectorsContent.getIdentities(), groupPath);
     }
 

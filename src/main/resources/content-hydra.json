@@ -1,15 +1,15 @@
 {
-  "content": [
+  "inspectorsGroup": {
+    "group": "/_internal/inspectors",
+    "identities": [
+      "CN=unicore-portal.grid.icm.edu.pl,OU=Domain Control Validated"
+    ]
+  },
+  "unicoreSiteGroups": [
     {
-      "path": "/_internal/inspectors",
-      "identities": [
-        "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
-        "CN=unicore-portal.grid.icm.edu.pl,OU=Domain Control Validated"
-      ]
-    },
-    {
-      "path": "/vo.icm.edu.pl/unicore/servers",
-      "identities": [
+      "group": "/vo.icm.edu.pl/unicore",
+      "defaultQueue": "hydra",
+      "servers": [
         "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
       ]
     }

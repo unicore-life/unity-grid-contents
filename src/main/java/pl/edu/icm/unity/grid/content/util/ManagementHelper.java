@@ -31,7 +31,7 @@ class ManagementHelper {
         this.groupsManagement = groupsManagement;
     }
 
-    void createPathGroups(String groupPath) {
+    void createPathGroups(String groupPath) throws EngineException {
         final String[] pathElements = new Group(groupPath).getPath();
         String topGroupPath = "";
         for (String element : pathElements) {
@@ -46,20 +46,28 @@ class ManagementHelper {
                 .get(attributeName);
     }
 
-    void addGroupIfNotExists(String groupPath) {
-        try {
-            groupsManagement.getContents(groupPath, GroupContents.METADATA);
-            log.info(format("Group %s already exists...", groupPath));
-        } catch (IllegalGroupValueException e) {
+    void addGroupIfNotExists(String groupPath) throws EngineException {
+        if (!existsGroup(groupPath)) {
             Group newGroup = new Group(groupPath);
             try {
                 groupsManagement.addGroup(newGroup);
                 log.info(format("Added group '%s'", groupPath));
-            } catch (EngineException ex) {
-                log.warn("Could not add not existing group " + groupPath, ex);
+            } catch (EngineException engineException) {
+                log.warn(String.format("Could not add not existing group '%s'!", groupPath), engineException);
+                throw engineException;
             }
-        } catch (EngineException e) {
-            log.warn(format("Could not check if group %s exists (get contents).", groupPath));
+        }
+    }
+
+    boolean existsGroup(String groupPath) throws EngineException {
+        try {
+            groupsManagement.getContents(groupPath, GroupContents.METADATA);
+            return true;
+        } catch (IllegalGroupValueException e) {
+            return false;
+        } catch (EngineException engineException) {
+            log.warn(String.format("Could not check if group '%s' exists (get metadata contents)!", groupPath));
+            throw engineException;
         }
     }
 

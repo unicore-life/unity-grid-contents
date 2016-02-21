@@ -32,10 +32,12 @@ abstract class ContentInitializer implements ServerInitializer {
             unicoreContents.initializeUnicoreAttributeTypes();
 
             initializeSpecificContent();
+
+            log.info("Initializer " + getName() + " finished.");
         } catch (Exception e) {
             log.warn("Error loading default contents by: " + getName() + ". This is not critical.", e);
         }
     }
 
-    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, ContentInitializer.class);
+    protected static Logger log = Log.getLogger(LOG_GRID_CONTENTS, ContentInitializer.class);
 }

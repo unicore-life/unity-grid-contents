@@ -55,6 +55,10 @@ public class UnicoreContents {
     }
 
     public void createInspectorsGroup(final String inspectorsGroupPath) throws EngineException {
+        if (managementHelper.existsGroup(inspectorsGroupPath)) {
+            log.debug(String.format("Inspectors group '%s' already exists. Skipping.", inspectorsGroupPath));
+            return;
+        }
         managementHelper.createPathGroups(inspectorsGroupPath);
 
         AttributeStatement2[] inspectorsGroupStatements = {
@@ -81,6 +85,8 @@ public class UnicoreContents {
         Group rootGroup = new Group("/");
         rootGroup.setAttributeStatements(inspectorsRootStatements);
         groupsManagement.updateGroup(rootGroup.toString(), rootGroup);
+
+        log.info("Created inspectors group: " + inspectorsGroupPath);
     }
 
     public void initializeUnicoreAttributeTypes() throws EngineException {
