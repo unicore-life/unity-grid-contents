@@ -32,11 +32,13 @@ public class PolishGridContentInitializer extends ContentInitializer {
 
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
+        final String centralGroupPath = "/vo.plgrid.pl/unicore";
         String[] sites = {"CYFRONET", "ICM", "PSNC", "WCSS", "TASK"};
         for (String site : sites) {
-            String plgridSiteGroupPath = "/vo.plgrid.pl/unicore/" + site;
-            unicoreGroups.createUnicoreSiteGroupStructure(plgridSiteGroupPath);
+            String siteGroupPath = centralGroupPath + "/" + site;
+            unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath);
         }
+        unicoreGroups.createUnicoreCentralGroupStructure(centralGroupPath, sites);
 
         resourceContents.processGroupsIdentities("content-plgrid.json");
     }

@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.edu.icm.unity.exceptions.EngineException;
-import pl.edu.icm.unity.grid.content.ContentConstants;
 import pl.edu.icm.unity.server.utils.Log;
 import pl.edu.icm.unity.stdext.attr.EnumAttribute;
 import pl.edu.icm.unity.stdext.attr.StringAttribute;
@@ -34,7 +33,7 @@ public class UnicoreGroups {
         createUnicoreSiteGroupStructure(unicoreSitePath, Optional.empty());
     }
 
-    public void createUnicoreGroupStructure(String unicoreGroupPath, String[] sites) throws EngineException {
+    public void createUnicoreCentralGroupStructure(String unicoreGroupPath, String[] sites) throws EngineException {
         managementHelper.createPathGroups(unicoreGroupPath);
 
         List<AttributeStatement2> unicoreGroupStatements = Lists.newArrayList();

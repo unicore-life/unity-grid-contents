@@ -33,6 +33,7 @@ abstract class ContentInitializer implements ServerInitializer {
             unicoreContents.createInspectorsGroup("/_internal/inspectors");
 
             initializeSpecificContent();
+
         } catch (Exception e) {
             log.warn("Error loading default contents by: " + getName() + ". This is not critical.", e);
         }

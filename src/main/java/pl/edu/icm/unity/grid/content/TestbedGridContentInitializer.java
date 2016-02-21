@@ -32,13 +32,13 @@ public class TestbedGridContentInitializer extends ContentInitializer {
 
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
-        final String testbedGroupPath = "/vo.plgrid.pl/testbed";
+        final String centralGroupPath = "/vo.plgrid.pl/testbed";
         String[] sites = {"ICM", "NCU"};
         for (String site : sites) {
-            String testbedSiteGroupPath = testbedGroupPath + "/" + site;
-            unicoreGroups.createUnicoreSiteGroupStructure(testbedSiteGroupPath);
+            String siteGroupPath = centralGroupPath + "/" + site;
+            unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath);
         }
-        unicoreGroups.createUnicoreGroupStructure(testbedGroupPath, sites);
+        unicoreGroups.createUnicoreCentralGroupStructure(centralGroupPath, sites);
 
         resourceContents.processGroupsIdentities("content-testbed.json");
     }

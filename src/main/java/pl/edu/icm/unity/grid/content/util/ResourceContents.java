@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.exceptions.IllegalGroupValueException;
 import pl.edu.icm.unity.exceptions.IllegalIdentityValueException;
-import pl.edu.icm.unity.grid.content.ContentConstants;
 import pl.edu.icm.unity.grid.content.model.ContentEntries;
 import pl.edu.icm.unity.grid.content.model.ContentGroup;
 import pl.edu.icm.unity.server.api.GroupsManagement;
