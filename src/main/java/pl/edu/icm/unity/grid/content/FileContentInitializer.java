@@ -39,7 +39,7 @@ public class FileContentInitializer extends ContentInitializer {
 
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
-        initializeContentFromResource("draft.json");
+        initializeContentFromResource("content-all.json");
     }
 
     protected void initializeContentFromResource(String resourcePath) throws IOException, EngineException {

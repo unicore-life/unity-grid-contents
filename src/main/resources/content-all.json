@@ -2,9 +2,19 @@
   "inspectorsGroup": {
     "group": "/_internal/inspectors",
     "identities": [
+      "CN=portal/unicore.studmat.umk.pl,OU=UMK,O=UW,C=PL",
       "CN=unicore-portal.grid.icm.edu.pl,OU=Domain Control Validated"
     ]
   },
+  "unicoreSiteGroups": [
+    {
+      "group": "/vo.icm.edu.pl/unicore",
+      "defaultQueue": "hydra",
+      "servers": [
+        "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
+      ]
+    }
+  ],
   "unicoreCentralGroups": [
     {
       "group": "/vo.plgrid.pl/unicore",
@@ -44,6 +54,28 @@
             "CN=unicorex/lalande.wcss.pl,O=WCSS,O=GRID,C=PL"
           ]
         }
+      ]
+    },
+    {
+      "group": "/vo.plgrid.pl/testbed",
+      "sites": [
+        {
+          "group": "ICM",
+          "servers": [
+            "CN=unicorex/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
+          ]
+        },
+        {
+          "group": "NCU",
+          "servers": [
+            "CN=unicorex-testbed/unicore.studmat.umk.pl,OU=UMK,O=UW,C=PL"
+          ]
+        }
+      ],
+      "servers": [
+        "CN=registry-testbed/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
+        "CN=servorch-testbed/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
+        "CN=workflow-testbed/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
       ]
     }
   ]

@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.exceptions.IllegalGroupValueException;
 import pl.edu.icm.unity.exceptions.IllegalIdentityValueException;
-import pl.edu.icm.unity.grid.content.model.ContentEntries;
-import pl.edu.icm.unity.grid.content.model.ContentGroup;
 import pl.edu.icm.unity.grid.content.model.UnicoreContent;
 import pl.edu.icm.unity.server.api.GroupsManagement;
 import pl.edu.icm.unity.server.api.IdentitiesManagement;
@@ -47,18 +45,6 @@ public class ResourceContents {
     public UnicoreContent loadUnicoreContentFromFile(String resourcePath) throws IOException {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
         return objectMapper.readValue(inputStream, UnicoreContent.class);
-    }
-
-    public void processGroupsIdentities(String resourcePath) throws IOException, EngineException {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath);
-        ContentEntries entries = objectMapper.readValue(inputStream, ContentEntries.class);
-
-        List<ContentGroup> contentGroups = entries.getContent();
-        for (ContentGroup group : contentGroups) {
-            managementHelper.createPathGroups(group.getGroupPath());
-            addIdentitiesIfNotExists(group.getContentIdentities());
-            addIdentitiesToGroup(group.getGroupPath(), group.getContentIdentities());
-        }
     }
 
     public void addDistinguishedNamesToGroup(List<String> certificateIdentities,

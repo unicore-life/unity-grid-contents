@@ -20,8 +20,6 @@ abstract class ContentInitializer implements ServerInitializer {
         this.unicoreContents = unicoreContents;
     }
 
-    protected abstract void initializeSpecificContent() throws EngineException, IOException;
-
     @Override
     public void run() {
         try {
@@ -33,11 +31,13 @@ abstract class ContentInitializer implements ServerInitializer {
 
             initializeSpecificContent();
 
-            log.info("Initializer " + getName() + " finished.");
+            log.info("Initializer [" + getName() + "] finished.");
         } catch (Exception e) {
             log.warn("Error loading default contents by: " + getName() + ". This is not critical.", e);
         }
     }
+
+    protected abstract void initializeSpecificContent() throws EngineException, IOException;
 
     protected static Logger log = Log.getLogger(LOG_GRID_CONTENTS, ContentInitializer.class);
 }
