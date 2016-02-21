@@ -25,7 +25,6 @@ abstract class ContentInitializer implements ServerInitializer {
         try {
             commonInitializer.initializeCommonAttributeTypes();
             commonInitializer.assignCnToAdmin();
-            commonInitializer.initializeCommonAttributeStatements();
 
             unicoreContents.initializeUnicoreAttributeTypes();
 

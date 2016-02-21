@@ -16,6 +16,7 @@ import pl.edu.icm.unity.types.basic.AttributeStatement2;
 import pl.edu.icm.unity.types.basic.AttributeType;
 import pl.edu.icm.unity.types.basic.AttributeVisibility;
 import pl.edu.icm.unity.types.basic.Group;
+import pl.edu.icm.unity.types.basic.GroupContents;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -73,20 +74,23 @@ public class UnicoreContents {
         inspectorsGroup.setAttributeStatements(inspectorsGroupStatements);
         groupsManagement.updateGroup(inspectorsGroup.toString(), inspectorsGroup);
 
-        AttributeStatement2[] inspectorsRootStatements = {
-                new AttributeStatement2(
-                        "true",
-                        inspectorsGroupPath,
-                        AttributeStatement2.ConflictResolution.overwrite,
-                        AttributeVisibility.full,
-                        managementHelper.getAttribute(AUTHORIZATION_ROLE),
-                        String.format("eattrs['%s']", AUTHORIZATION_ROLE))
-        };
-        Group rootGroup = new Group("/");
-        rootGroup.setAttributeStatements(inspectorsRootStatements);
-        groupsManagement.updateGroup(rootGroup.toString(), rootGroup);
-
         log.info("Created inspectors group: " + inspectorsGroupPath);
+    }
+
+    public void initializeRootAttributeStatements(String inspectorsGroupPath) throws EngineException {
+        Group rootGroup = groupsManagement.getContents("/", GroupContents.METADATA).getGroup();
+        AttributeStatement2[] rootStatements = {
+                AttributeStatement2.getFixedEverybodyStatement(
+                        new EnumAttribute("sys:AuthorizationRole", "/", AttributeVisibility.local, "Regular User")),
+                new AttributeStatement2(
+                        "groups contains '" + inspectorsGroupPath + "'",
+                        null,
+                        AttributeStatement2.ConflictResolution.overwrite,
+                        new EnumAttribute(AUTHORIZATION_ROLE, "/", AttributeVisibility.local, "Inspector")
+                )
+        };
+        rootGroup.setAttributeStatements(rootStatements);
+        groupsManagement.updateGroup("/", rootGroup);
     }
 
     public void initializeUnicoreAttributeTypes() throws EngineException {

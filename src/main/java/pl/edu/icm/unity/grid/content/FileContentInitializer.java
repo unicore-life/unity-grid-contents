@@ -54,7 +54,11 @@ public class FileContentInitializer extends ContentInitializer {
 
     private void processCentralGroups(List<UnicoreCentralGroup> centralGroups,
                                       String inspectorsGroupPath) throws EngineException {
-        log.debug(String.format("Processing central groups: %s", centralGroups));
+        if (centralGroups == null) {
+            log.debug("No central groups in configuration.");
+            return;
+        }
+        log.trace(String.format("Processing central groups: %s", centralGroups));
         for (UnicoreCentralGroup centralGroup : centralGroups) {
             processCentralGroup(centralGroup, inspectorsGroupPath);
         }
@@ -82,6 +86,10 @@ public class FileContentInitializer extends ContentInitializer {
 
     private void processSiteGroups(List<UnicoreSiteGroup> siteGroups,
                                    String inspectorsGroupPath) throws EngineException {
+        if (siteGroups == null) {
+            log.debug("No site groups in configuration.");
+            return;
+        }
         log.debug(String.format("Processing sites groups: %s", siteGroups));
         for (UnicoreSiteGroup siteGroup : siteGroups) {
             processSiteGroup(
@@ -104,7 +112,10 @@ public class FileContentInitializer extends ContentInitializer {
         log.debug(String.format("Processing inspectors group: %s", inspectorsContent));
 
         final String groupPath = inspectorsContent.getGroup();
+
+        unicoreContents.initializeRootAttributeStatements(groupPath);
         unicoreContents.createInspectorsGroup(groupPath);
+
         resourceContents.addDistinguishedNamesToGroup(inspectorsContent.getIdentities(), groupPath);
     }
 

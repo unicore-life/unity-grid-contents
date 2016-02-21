@@ -1,5 +1,11 @@
 buildscript {
-    repositories { mavenCentral() }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.3.4'
+    }
 }
 
 plugins {
@@ -13,7 +19,8 @@ scmVersion.tag.prefix = 'unicore-grid-contents'
 group 'pl.edu.icm.unity'
 project.version = scmVersion.version
 
-sourceCompatibility = JavaVersion.VERSION_1_8
+apply plugin: 'com.novoda.bintray-release'
+
 
 dependencies {
     def unityVersion = '1.8.0'
@@ -29,6 +36,20 @@ repositories {
     maven { url 'http://unicore-dev.zam.kfa-juelich.de/maven' }
     maven { url 'http://maven.vaadin.com/vaadin-addons' }
 }
+
+publish {
+    userOrg = 'unicore-life'
+    groupId = project.group
+    artifactId = project.name
+    publishVersion = project.version
+    uploadName = rootProject.name
+
+    desc = 'Unity initializers with Grid contents.'
+    website = "http://github.com/unicore-life/${rootProject.name}"
+}
+
+
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 test.testLogging.showStandardStreams = true
 
