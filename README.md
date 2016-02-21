@@ -16,6 +16,12 @@ After successful build, copy file from `build/libs/unity-grid-contents-VERSION.j
 to `lib/` directory of UNITY IDM installation
 (in case of RPM distribution it is `/usr/share/unity-idm/lib/`).
 
+Already build plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven).
+
+```
+curl -O https://dl.bintray.com/unicore-life/maven/pl/icm/edu/unity/unity-grid-contents/0.1.1/:unity-grid-contents-0.1.1.jar
+```
+
 ## Configuration
 
 Edit `unityServer.conf` configuration file and add any of those initializers:
