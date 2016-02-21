@@ -30,6 +30,8 @@ repositories {
     maven { url 'http://maven.vaadin.com/vaadin-addons' }
 }
 
+test.testLogging.showStandardStreams = true
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.11'
 }

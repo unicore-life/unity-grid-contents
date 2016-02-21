@@ -33,7 +33,7 @@ public class UnicoreGroups {
         createUnicoreSiteGroupStructure(unicoreSitePath, Optional.empty());
     }
 
-    public void createUnicoreCentralGroupStructure(String unicoreGroupPath, String[] sites) throws EngineException {
+    public void createUnicoreCentralGroupStructure(String unicoreGroupPath, List<String> sites) throws EngineException {
         managementHelper.createPathGroups(unicoreGroupPath);
 
         List<AttributeStatement2> unicoreGroupStatements = Lists.newArrayList();

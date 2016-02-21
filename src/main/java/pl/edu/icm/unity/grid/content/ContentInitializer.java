@@ -13,7 +13,7 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 
 abstract class ContentInitializer implements ServerInitializer {
     private final InitializerCommon commonInitializer;
-    private final UnicoreContents unicoreContents;
+    protected final UnicoreContents unicoreContents;
 
     ContentInitializer(InitializerCommon commonInitializer, UnicoreContents unicoreContents) {
         this.commonInitializer = commonInitializer;
@@ -30,10 +30,8 @@ abstract class ContentInitializer implements ServerInitializer {
             commonInitializer.initializeCommonAttributeStatements();
 
             unicoreContents.initializeUnicoreAttributeTypes();
-            unicoreContents.createInspectorsGroup("/_internal/inspectors");
 
             initializeSpecificContent();
-
         } catch (Exception e) {
             log.warn("Error loading default contents by: " + getName() + ". This is not critical.", e);
         }

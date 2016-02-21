@@ -15,11 +15,10 @@ class ContentEntriesTest extends Specification {
         def expectedContentEntries = new ContentEntries([expectedContentGroup])
 
         def mapper = new ObjectMapper()
-        def input = getClass().getClassLoader().getResourceAsStream("content-test.json")
+        def input = getClass().getClassLoader().getResourceAsStream("content-test-old.json")
 
         when:
         def entries = mapper.readValue(input, ContentEntries)
-        println(entries)
 
         then:
         entries == expectedContentEntries

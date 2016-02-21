@@ -1,0 +1,13 @@
+{
+  "content": [
+    {
+      "path": "/vo.group/site",
+      "identities": [
+        "CN=site,O=Grid,C=PL"
+      ],
+      "statements": [
+        "simple-statement"
+      ]
+    }
+  ]
+}

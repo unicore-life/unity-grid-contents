@@ -34,6 +34,8 @@ public class HydraContentInitializer extends ContentInitializer {
 
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
+        unicoreContents.createInspectorsGroup("/_internal/inspectors");
+
         unicoreGroups.createUnicoreSiteGroupStructure("/vo.icm.edu.pl/unicore", of("hydra"));
 
         resourceContents.processGroupsIdentities("content-hydra.json");

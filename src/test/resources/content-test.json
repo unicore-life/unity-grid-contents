@@ -1,12 +1,39 @@
 {
-  "content": [
+  "inspectorsGroup": {
+    "group": "/inspectors",
+    "identities": [
+      "CN=inspector1,C=PL",
+      "CN=inspector2,C=DE"
+    ]
+  },
+  "unicoreCentralGroups": [
     {
-      "path": "/vo.group/site",
-      "identities": [
-        "CN=site,O=Grid,C=PL"
+      "group": "/vo.unicore",
+      "sites": [
+        {
+          "group": "site-1",
+          "servers": [
+            "CN=site-1,O=unicore"
+          ]
+        },
+        {
+          "group": "site-2",
+          "servers": [
+            "CN=site-2,O=unicore"
+          ]
+        }
       ],
-      "statements": [
-        "simple-statement"
+      "servers": [
+        "CN=central-server"
+      ]
+    }
+  ],
+  "unicoreSiteGroups": [
+    {
+      "group": "/vo.site",
+      "defaultQueue": "long",
+      "servers": [
+        "CN=long-site,O=unicore"
       ]
     }
   ]
