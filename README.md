@@ -19,7 +19,7 @@ to `lib/` directory of UNITY IDM installation
 Already build plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven).
 
 ```
-curl -O https://dl.bintray.com/unicore-life/maven/pl/icm/edu/unity/unity-grid-contents/0.1.1/:unity-grid-contents-0.1.1.jar
+curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.1.1/unity-grid-contents-0.1.1.jar
 ```
 
 ## Configuration
