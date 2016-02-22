@@ -84,6 +84,7 @@ public class FileContentInitializer extends ContentInitializer {
         }
         unicoreGroups.createUnicoreCentralGroupStructure(centralGroupPath, sites);
 
+        resourceContents.addDistinguishedNamesToGroup(centralGroup.getServers(), centralGroupPath + "/servers");
         resourceContents.addDistinguishedNamesToGroup(centralGroup.getServers(), inspectorsGroupPath);
     }
 
@@ -108,6 +109,8 @@ public class FileContentInitializer extends ContentInitializer {
                                   Optional<String> defaultQueue,
                                   String inspectorsGroupPath) throws EngineException {
         unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath, defaultQueue);
+
+        resourceContents.addDistinguishedNamesToGroup(siteGroupServers, siteGroupPath + "/servers");
         resourceContents.addDistinguishedNamesToGroup(siteGroupServers, inspectorsGroupPath);
     }
 

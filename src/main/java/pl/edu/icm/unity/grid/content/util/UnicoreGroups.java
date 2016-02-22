@@ -34,7 +34,7 @@ public class UnicoreGroups {
     }
 
     public void createUnicoreCentralGroupStructure(String unicoreGroupPath, List<String> sites) throws EngineException {
-        managementHelper.createPathGroups(unicoreGroupPath);
+        managementHelper.createPathGroups(unicoreGroupPath + "/servers");
 
         List<AttributeStatement2> unicoreGroupStatements = Lists.newArrayList();
         for (String site : sites) {
