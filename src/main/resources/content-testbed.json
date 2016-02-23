@@ -2,8 +2,9 @@
   "inspectorsGroup": {
     "group": "/_internal/inspectors",
     "identities": [
+      "CN=unicore-portal.grid.icm.edu.pl,OU=Domain Control Validated",
       "CN=portal/unicore.studmat.umk.pl,OU=UMK,O=UW,C=PL",
-      "CN=unicore-portal.grid.icm.edu.pl,OU=Domain Control Validated"
+      "CN=unicore.studmat.umk.pl,OU=ICM,O=UW,C=PL"
     ]
   },
   "unicoreCentralGroups": [
