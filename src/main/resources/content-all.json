@@ -3,6 +3,7 @@
     "group": "/_internal/inspectors",
     "identities": [
       "CN=portal/unicore.studmat.umk.pl,OU=UMK,O=UW,C=PL",
+      "CN=oxides.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
       "CN=unicore-portal.grid.icm.edu.pl,OU=Domain Control Validated"
     ]
   },
@@ -20,7 +21,7 @@
       "group": "/vo.plgrid.pl/unicore",
       "servers": [
         "CN=registry/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
-        "CN=workflow/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
+        "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
         "CN=workflow/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
       ],
       "sites": [
