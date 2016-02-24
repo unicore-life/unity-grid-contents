@@ -26,9 +26,9 @@
         }
       ],
       "servers": [
-        "CN=registry-testbed/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
-        "CN=servorch-testbed/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
-        "CN=workflow-testbed/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
+        "CN=registry-testbed/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
+        "CN=servorch-testbed/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
+        "CN=workflow-testbed/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
       ]
     }
   ]
