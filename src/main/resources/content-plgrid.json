@@ -45,7 +45,8 @@
         {
           "group": "WCSS",
           "servers": [
-            "CN=unicorex/lalande.wcss.pl,O=WCSS,O=GRID,C=PL"
+            "CN=unicorex/lalande.wcss.pl,O=WCSS,O=GRID,C=PL",
+            "CN=odysseus.trojan.kdm.wcss.pl,O=WCSS,O=GRID,C=PL"
           ]
         }
       ]
