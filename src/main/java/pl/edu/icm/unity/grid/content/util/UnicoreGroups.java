@@ -21,6 +21,9 @@ import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_QUEU
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
 
+/**
+ * @author R.Kluszczynski
+ */
 public class UnicoreGroups {
     private final ManagementHelper managementHelper;
 

@@ -11,6 +11,9 @@ import java.io.IOException;
 
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 
+/**
+ * @author R.Kluszczynski
+ */
 abstract class ContentInitializer implements ServerInitializer {
     private final InitializerCommon commonInitializer;
     protected final UnicoreContents unicoreContents;

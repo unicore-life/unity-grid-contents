@@ -19,6 +19,9 @@ import java.util.Collection;
 import static java.lang.String.format;
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 
+/**
+ * @author R.Kluszczynski
+ */
 @Component
 class ManagementHelper {
     private final AttributesManagement attributesManagement;

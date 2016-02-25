@@ -26,6 +26,9 @@ import java.util.List;
 
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 
+/**
+ * @author R.Kluszczynski
+ */
 @Component
 public class ResourceContents {
     private final GroupsManagement groupsManagement;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @author R.Kluszczynski
  */
 @Component
-public class ResourceLoaderService implements ResourceLoaderAware {
+class ResourceLoaderService implements ResourceLoaderAware {
     private ResourceLoader resourceLoader;
 
     @Override

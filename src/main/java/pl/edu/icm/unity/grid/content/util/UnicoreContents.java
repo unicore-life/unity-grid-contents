@@ -37,6 +37,9 @@ import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.VIRTUAL_ORGA
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
 import static pl.edu.icm.unity.sysattrs.SystemAttributeTypes.AUTHORIZATION_ROLE;
 
+/**
+ * @author R.Kluszczynski
+ */
 @Component
 public class UnicoreContents {
     private final AttributesManagement attributesManagement;

@@ -1,5 +1,8 @@
 package pl.edu.icm.unity.grid.content.model;
 
+/**
+ * @author R.Kluszczynski
+ */
 public enum UnicoreAttributes {
     XLOGIN("urn:unicore:attrType:xlogin"),
     DEFAULT_XLOGIN("urn:unicore:attrType:defaultXlogin"),
