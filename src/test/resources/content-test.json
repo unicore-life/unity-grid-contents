@@ -36,5 +36,8 @@
         "CN=long-site,O=unicore"
       ]
     }
+  ],
+  "unicorePortalGroups": [
+    "/portal"
   ]
 }

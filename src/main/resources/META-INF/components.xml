@@ -8,7 +8,6 @@
 
     <bean class="pl.edu.icm.unity.grid.content.util.ManagementHelper"/>
     <bean class="pl.edu.icm.unity.grid.content.util.ResourceContents"/>
-    <bean class="pl.edu.icm.unity.grid.content.util.ResourceLoaderService"/>
     <bean class="pl.edu.icm.unity.grid.content.util.UnicoreContents"/>
     <bean class="pl.edu.icm.unity.grid.content.util.UnicoreGroups"/>
 

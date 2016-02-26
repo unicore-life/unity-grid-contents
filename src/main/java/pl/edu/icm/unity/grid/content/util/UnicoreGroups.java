@@ -20,6 +20,9 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_QUEUE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
+import static pl.edu.icm.unity.stdext.utils.InitializerCommon.CN_ATTR;
+import static pl.edu.icm.unity.stdext.utils.InitializerCommon.EMAIL_ATTR;
+import static pl.edu.icm.unity.stdext.utils.InitializerCommon.ORG_ATTR;
 
 /**
  * @author R.Kluszczynski
@@ -30,10 +33,6 @@ public class UnicoreGroups {
     @Autowired
     public UnicoreGroups(ManagementHelper managementHelper) {
         this.managementHelper = managementHelper;
-    }
-
-    public void createUnicoreSiteGroupStructure(final String unicoreSitePath) throws EngineException {
-        createUnicoreSiteGroupStructure(unicoreSitePath, Optional.empty());
     }
 
     public void createUnicoreCentralGroupStructure(String unicoreGroupPath, List<String> sites) throws EngineException {
@@ -97,6 +96,26 @@ public class UnicoreGroups {
         managementHelper.updateGroupWithStatements(unicoreSiteGroupPath, unicoreSiteGroupStatements);
     }
 
+    public void createUnicorePortalGroupStructure(String groupPath) throws EngineException {
+        managementHelper.createPathGroups(groupPath);
+
+        final List<AttributeStatement2> groupStatements = Lists.newArrayList();
+        final String[] portalAttributes = {CN_ATTR, EMAIL_ATTR, ORG_ATTR};
+        for (String attributeName : portalAttributes) {
+            groupStatements.add(
+                    new AttributeStatement2(
+                            "true",
+                            "/",
+                            AttributeStatement2.ConflictResolution.skip,
+                            AttributeVisibility.full,
+                            managementHelper.getAttribute(attributeName),
+                            String.format("eattrs['%s']", attributeName)
+                    )
+            );
+        }
+        managementHelper.updateGroupWithStatements(groupPath, groupStatements);
+    }
+
     private AttributeStatement2 createXloginAttributeStatement(String extraAttributesGroup) {
         try {
             return new AttributeStatement2(
@@ -108,7 +127,7 @@ public class UnicoreGroups {
                     String.format("eattrs['%s']", XLOGIN.getAttributeName())
             );
         } catch (EngineException e) {
-            log.warn("Could not create attribute!", e);
+            log.warn("Could not create attributeName!", e);
             return null;
         }
     }

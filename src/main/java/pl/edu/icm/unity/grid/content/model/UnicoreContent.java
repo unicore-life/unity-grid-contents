@@ -15,14 +15,17 @@ public class UnicoreContent {
     private final InspectorsGroup inspectorsGroup;
     private final List<UnicoreCentralGroup> unicoreCentralGroups;
     private final List<UnicoreSiteGroup> unicoreSiteGroups;
+    private final List<String> unicorePortalGroups;
 
     @JsonCreator
     public UnicoreContent(@JsonProperty("inspectorsGroup") InspectorsGroup inspectorsGroup,
                           @JsonProperty("unicoreCentralGroups") List<UnicoreCentralGroup> unicoreCentralGroups,
-                          @JsonProperty("unicoreSiteGroups") List<UnicoreSiteGroup> unicoreSiteGroups) {
+                          @JsonProperty("unicoreSiteGroups") List<UnicoreSiteGroup> unicoreSiteGroups,
+                          @JsonProperty("unicorePortalGroups") List<String> unicorePortalGroups) {
         this.inspectorsGroup = inspectorsGroup;
         this.unicoreCentralGroups = unicoreCentralGroups;
         this.unicoreSiteGroups = unicoreSiteGroups;
+        this.unicorePortalGroups = unicorePortalGroups;
     }
 
     public InspectorsGroup getInspectorsGroup() {
@@ -37,10 +40,14 @@ public class UnicoreContent {
         return unicoreSiteGroups;
     }
 
+    public List<String> getUnicorePortalGroups() {
+        return unicorePortalGroups;
+    }
+
     @Override
     public String toString() {
-        return String.format("UnicoreContent{inspectorsGroup=%s, unicoreCentralGroups=%s, unicoreSiteGroups=%s}",
-                inspectorsGroup, unicoreCentralGroups, unicoreSiteGroups);
+        return String.format("UnicoreContent{inspectorsGroup=%s, unicoreCentralGroups=%s, unicoreSiteGroups=%s, " +
+                "unicorePortalGroups=%s}", inspectorsGroup, unicoreCentralGroups, unicoreSiteGroups, unicorePortalGroups);
     }
 
     @Override
@@ -50,11 +57,12 @@ public class UnicoreContent {
         UnicoreContent that = (UnicoreContent) o;
         return Objects.equals(inspectorsGroup, that.inspectorsGroup) &&
                 Objects.equals(unicoreCentralGroups, that.unicoreCentralGroups) &&
-                Objects.equals(unicoreSiteGroups, that.unicoreSiteGroups);
+                Objects.equals(unicoreSiteGroups, that.unicoreSiteGroups) &&
+                Objects.equals(unicorePortalGroups, that.unicorePortalGroups);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(inspectorsGroup, unicoreCentralGroups, unicoreSiteGroups);
+        return Objects.hash(inspectorsGroup, unicoreCentralGroups, unicoreSiteGroups, unicorePortalGroups);
     }
 }

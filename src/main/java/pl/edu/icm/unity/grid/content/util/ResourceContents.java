@@ -4,10 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
-import pl.edu.icm.unity.exceptions.IllegalGroupValueException;
 import pl.edu.icm.unity.exceptions.IllegalIdentityValueException;
 import pl.edu.icm.unity.grid.content.model.UnicoreContent;
 import pl.edu.icm.unity.server.api.GroupsManagement;
@@ -30,19 +31,24 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
  * @author R.Kluszczynski
  */
 @Component
-public class ResourceContents {
-    private final GroupsManagement groupsManagement;
+public class ResourceContents implements ResourceLoaderAware {
     private final IdentitiesManagement identitiesManagement;
-    private final ResourceLoaderService resourceLoader;
+    private final ManagementHelper managementHelper;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private ResourceLoader resourceLoader;
 
     @Autowired
     public ResourceContents(@Qualifier("insecure") GroupsManagement groupsManagement,
                             @Qualifier("insecure") IdentitiesManagement identitiesManagement,
-                            ResourceLoaderService resourceLoader) {
-        this.groupsManagement = groupsManagement;
+                            ManagementHelper managementHelper) {
         this.identitiesManagement = identitiesManagement;
+        this.managementHelper = managementHelper;
+    }
+
+    @Override
+    public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
     }
 
@@ -82,17 +88,7 @@ public class ResourceContents {
             contentIdentities.stream()
                     .map(id -> new IdentityTaV(X500Identity.ID, id))
                     .map(EntityParam::new)
-                    .forEach(entityParam -> {
-                        try {
-                            groupsManagement.addMemberFromParent(parentGroupPath, entityParam);
-                            log.info(String.format("Added %s to group: %s", entityParam, parentGroupPath));
-                        } catch (IllegalGroupValueException e) {
-                            log.warn(String.format("Identity %s not added to group %s: %s",
-                                    entityParam, parentGroupPath, e.getMessage()));
-                        } catch (EngineException e) {
-                            log.warn(String.format("Problem adding %s to group: %s", entityParam, parentGroupPath), e);
-                        }
-                    });
+                    .forEach(entity -> managementHelper.addMemberFromParent(parentGroupPath, entity));
         }
     }
 

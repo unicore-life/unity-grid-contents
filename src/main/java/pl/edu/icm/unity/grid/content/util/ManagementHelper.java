@@ -11,6 +11,7 @@ import pl.edu.icm.unity.server.api.GroupsManagement;
 import pl.edu.icm.unity.server.utils.Log;
 import pl.edu.icm.unity.types.basic.AttributeStatement2;
 import pl.edu.icm.unity.types.basic.AttributeType;
+import pl.edu.icm.unity.types.basic.EntityParam;
 import pl.edu.icm.unity.types.basic.Group;
 import pl.edu.icm.unity.types.basic.GroupContents;
 
@@ -43,10 +44,21 @@ class ManagementHelper {
         }
     }
 
+    boolean existsAttribute(String attributeName) throws EngineException {
+        return attributesManagement
+                .getAttributeTypesAsMap()
+                .containsKey(attributeName);
+    }
+
     AttributeType getAttribute(String attributeName) throws EngineException {
         return attributesManagement
                 .getAttributeTypesAsMap()
                 .get(attributeName);
+    }
+
+    void addAttribute(AttributeType attributeType) throws EngineException {
+        attributesManagement
+                .addAttributeType(attributeType);
     }
 
     void addGroupIfNotExists(String groupPath) throws EngineException {
@@ -75,10 +87,26 @@ class ManagementHelper {
     }
 
     void updateGroupWithStatements(String groupPath, Collection<AttributeStatement2> statements) throws EngineException {
-        Group group = new Group(groupPath);
-        group.setAttributeStatements(
-                statements.toArray(new AttributeStatement2[statements.size()]));
+        updateGroupWithStatements(groupPath, statements.toArray(new AttributeStatement2[statements.size()]));
+    }
+
+    void updateGroupWithStatements(String groupPath, AttributeStatement2[] statements) throws EngineException {
+        Group group = "/".equals(groupPath) ?
+                groupsManagement.getContents("/", GroupContents.METADATA).getGroup() : new Group(groupPath);
+        group.setAttributeStatements(statements);
         groupsManagement.updateGroup(group.toString(), group);
+    }
+
+    void addMemberFromParent(String groupPath, EntityParam entityParam) {
+        try {
+            groupsManagement.addMemberFromParent(groupPath, entityParam);
+            log.debug(String.format("Added %s to group: %s", entityParam, groupPath));
+        } catch (IllegalGroupValueException e) {
+            log.warn(String.format("Identity %s not added to group %s: %s",
+                    entityParam, groupPath, e.getMessage()));
+        } catch (EngineException e) {
+            log.warn(String.format("Problem adding %s to group: %s", entityParam, groupPath), e);
+        }
     }
 
     private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, ManagementHelper.class);

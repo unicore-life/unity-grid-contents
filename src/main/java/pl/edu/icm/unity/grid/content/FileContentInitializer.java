@@ -53,6 +53,7 @@ public class FileContentInitializer extends ContentInitializer {
 
         processCentralGroups(content.getUnicoreCentralGroups(), inspectorsGroup.getGroup());
         processSiteGroups(content.getUnicoreSiteGroups(), inspectorsGroup.getGroup());
+        processPortalGroups(content.getUnicorePortalGroups());
     }
 
     private void processCentralGroups(List<UnicoreCentralGroup> centralGroups,
@@ -112,6 +113,17 @@ public class FileContentInitializer extends ContentInitializer {
 
         resourceContents.addDistinguishedNamesToGroup(siteGroupServers, siteGroupPath + "/servers");
         resourceContents.addDistinguishedNamesToGroup(siteGroupServers, inspectorsGroupPath);
+    }
+
+    private void processPortalGroups(List<String> portalGroups) throws EngineException {
+        if (portalGroups == null) {
+            log.debug("No site groups in configuration.");
+            return;
+        }
+        log.debug(String.format("Processing portal groups: %s", portalGroups));
+        for (String group : portalGroups) {
+            unicoreGroups.createUnicorePortalGroupStructure(group);
+        }
     }
 
     private void processInspectorsGroup(InspectorsGroup inspectorsContent) throws EngineException {
