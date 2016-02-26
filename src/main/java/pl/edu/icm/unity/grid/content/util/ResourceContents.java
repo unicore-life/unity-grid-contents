@@ -3,22 +3,16 @@ package pl.edu.icm.unity.grid.content.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
-import pl.edu.icm.unity.exceptions.IllegalIdentityValueException;
 import pl.edu.icm.unity.grid.content.model.UnicoreContent;
-import pl.edu.icm.unity.server.api.GroupsManagement;
-import pl.edu.icm.unity.server.api.IdentitiesManagement;
 import pl.edu.icm.unity.server.utils.Log;
 import pl.edu.icm.unity.stdext.identity.X500Identity;
-import pl.edu.icm.unity.types.EntityState;
 import pl.edu.icm.unity.types.basic.EntityParam;
 import pl.edu.icm.unity.types.basic.Group;
-import pl.edu.icm.unity.types.basic.IdentityParam;
 import pl.edu.icm.unity.types.basic.IdentityTaV;
 
 import java.io.IOException;
@@ -32,19 +26,15 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
  */
 @Component
 public class ResourceContents implements ResourceLoaderAware {
-    private final IdentitiesManagement identitiesManagement;
-    private final ManagementHelper managementHelper;
+    private final UnityManagements unityManagements;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private ResourceLoader resourceLoader;
 
     @Autowired
-    public ResourceContents(@Qualifier("insecure") GroupsManagement groupsManagement,
-                            @Qualifier("insecure") IdentitiesManagement identitiesManagement,
-                            ManagementHelper managementHelper) {
-        this.identitiesManagement = identitiesManagement;
-        this.managementHelper = managementHelper;
+    public ResourceContents(UnityManagements unityManagements) {
+        this.unityManagements = unityManagements;
     }
 
     @Override
@@ -88,7 +78,7 @@ public class ResourceContents implements ResourceLoaderAware {
             contentIdentities.stream()
                     .map(id -> new IdentityTaV(X500Identity.ID, id))
                     .map(EntityParam::new)
-                    .forEach(entity -> managementHelper.addMemberFromParent(parentGroupPath, entity));
+                    .forEach(entity -> unityManagements.addMemberFromParent(parentGroupPath, entity));
         }
     }
 
@@ -97,22 +87,11 @@ public class ResourceContents implements ResourceLoaderAware {
             return;
         }
         for (String identity : contentIdentities) {
-            try {
-                identitiesManagement.getEntity(
-                        new EntityParam(
-                                new IdentityTaV(X500Identity.ID, identity)
-                        )
-                );
-                log.info(String.format("Identity '%s' already exists...", identity));
-            } catch (IllegalIdentityValueException e) {
-                identitiesManagement.addEntity(
-                        new IdentityParam(X500Identity.ID, identity),
-                        "Empty requirement",
-                        EntityState.valid,
-                        false
-                );
-                log.info(String.format("Added identity '%s'", identity));
+            if (unityManagements.existsIdentity(identity)) {
+                log.debug("Identity '" + identity + "' already exists.");
+                continue;
             }
+            unityManagements.addEntity(identity);
         }
     }
 

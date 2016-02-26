@@ -31,5 +31,8 @@
         "CN=workflow-testbed/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
       ]
     }
+  ],
+  "unicorePortalGroups": [
+    "/vo.plgrid.pl/testbed-portal"
   ]
 }

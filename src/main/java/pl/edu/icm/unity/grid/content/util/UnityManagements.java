@@ -6,14 +6,20 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.exceptions.IllegalGroupValueException;
+import pl.edu.icm.unity.exceptions.IllegalIdentityValueException;
 import pl.edu.icm.unity.server.api.AttributesManagement;
 import pl.edu.icm.unity.server.api.GroupsManagement;
+import pl.edu.icm.unity.server.api.IdentitiesManagement;
 import pl.edu.icm.unity.server.utils.Log;
+import pl.edu.icm.unity.stdext.identity.X500Identity;
+import pl.edu.icm.unity.types.EntityState;
 import pl.edu.icm.unity.types.basic.AttributeStatement2;
 import pl.edu.icm.unity.types.basic.AttributeType;
 import pl.edu.icm.unity.types.basic.EntityParam;
 import pl.edu.icm.unity.types.basic.Group;
 import pl.edu.icm.unity.types.basic.GroupContents;
+import pl.edu.icm.unity.types.basic.IdentityParam;
+import pl.edu.icm.unity.types.basic.IdentityTaV;
 
 import java.util.Collection;
 
@@ -24,15 +30,18 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
  * @author R.Kluszczynski
  */
 @Component
-class ManagementHelper {
+class UnityManagements {
     private final AttributesManagement attributesManagement;
     private final GroupsManagement groupsManagement;
+    private final IdentitiesManagement identitiesManagement;
 
     @Autowired
-    ManagementHelper(@Qualifier("insecure") AttributesManagement attributesManagement,
-                     @Qualifier("insecure") GroupsManagement groupsManagement) throws EngineException {
+    UnityManagements(@Qualifier("insecure") AttributesManagement attributesManagement,
+                     @Qualifier("insecure") GroupsManagement groupsManagement,
+                     @Qualifier("insecure") IdentitiesManagement identitiesManagement) throws EngineException {
         this.attributesManagement = attributesManagement;
         this.groupsManagement = groupsManagement;
+        this.identitiesManagement = identitiesManagement;
     }
 
     void createPathGroups(String groupPath) throws EngineException {
@@ -42,23 +51,6 @@ class ManagementHelper {
             topGroupPath += ("/" + element);
             addGroupIfNotExists(topGroupPath);
         }
-    }
-
-    boolean existsAttribute(String attributeName) throws EngineException {
-        return attributesManagement
-                .getAttributeTypesAsMap()
-                .containsKey(attributeName);
-    }
-
-    AttributeType getAttribute(String attributeName) throws EngineException {
-        return attributesManagement
-                .getAttributeTypesAsMap()
-                .get(attributeName);
-    }
-
-    void addAttribute(AttributeType attributeType) throws EngineException {
-        attributesManagement
-                .addAttributeType(attributeType);
     }
 
     void addGroupIfNotExists(String groupPath) throws EngineException {
@@ -109,5 +101,54 @@ class ManagementHelper {
         }
     }
 
-    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, ManagementHelper.class);
+    boolean existsAttribute(String attributeName) throws EngineException {
+        try {
+            return attributesManagement
+                    .getAttributeTypesAsMap()
+                    .containsKey(attributeName);
+        } catch (EngineException engineException) {
+            log.warn(String.format("Could not check if attribute '%s' exists!", attributeName));
+            throw engineException;
+        }
+    }
+
+    AttributeType getAttribute(String attributeName) throws EngineException {
+        return attributesManagement
+                .getAttributeTypesAsMap()
+                .get(attributeName);
+    }
+
+    void addAttribute(AttributeType attributeType) throws EngineException {
+        attributesManagement
+                .addAttributeType(attributeType);
+        log.info(String.format("Added new attribute type: %s", attributeType));
+    }
+
+    boolean existsIdentity(String identity) throws EngineException {
+        try {
+            identitiesManagement.getEntity(
+                    new EntityParam(
+                            new IdentityTaV(X500Identity.ID, identity)));
+            return true;
+        } catch (IllegalIdentityValueException e) {
+            return false;
+        } catch (EngineException engineException) {
+            log.warn(String.format("Could not check if identity '%s' exists!", identity));
+            throw engineException;
+        }
+    }
+
+    public void addEntity(String identity) throws EngineException {
+        identitiesManagement.addEntity(
+                new IdentityParam(X500Identity.ID, identity),
+                EMPTY_REQUIREMENT,
+                EntityState.valid,
+                false
+        );
+        log.info(String.format("Added entity with identity: '%s'", identity));
+    }
+
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnityManagements.class);
+
+    private static final String EMPTY_REQUIREMENT = "Empty requirement";
 }
