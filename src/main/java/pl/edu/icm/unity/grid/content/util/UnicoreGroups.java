@@ -68,7 +68,7 @@ public class UnicoreGroups {
 
         for (String subGroup : groupsToRole.keySet()) {
             final String subGroupPath = String.format("%s/%s", unicoreSiteGroupPath, subGroup);
-            unityManagements.addGroupIfNotExists(subGroupPath);
+            unityManagements.createPathGroups(subGroupPath);
         }
 
         List<AttributeStatement2> unicoreSiteGroupStatements = Lists.newArrayList();

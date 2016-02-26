@@ -8,9 +8,10 @@ import pl.edu.icm.unity.grid.content.model.InspectorsGroup;
 import pl.edu.icm.unity.grid.content.model.UnicoreCentralGroup;
 import pl.edu.icm.unity.grid.content.model.UnicoreContent;
 import pl.edu.icm.unity.grid.content.model.UnicoreSiteGroup;
-import pl.edu.icm.unity.grid.content.util.ResourceContents;
-import pl.edu.icm.unity.grid.content.util.UnicoreContents;
+import pl.edu.icm.unity.grid.content.util.ResourceManagement;
+import pl.edu.icm.unity.grid.content.util.UnicoreEntities;
 import pl.edu.icm.unity.grid.content.util.UnicoreGroups;
+import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
 import pl.edu.icm.unity.stdext.utils.InitializerCommon;
 
 import java.io.IOException;
@@ -25,16 +26,19 @@ import java.util.Optional;
 @Component
 public class FileContentInitializer extends ContentInitializer {
     private final UnicoreGroups unicoreGroups;
-    private final ResourceContents resourceContents;
+    private final UnicoreEntities unicoreEntities;
+    private final ResourceManagement resourceManagement;
 
     @Autowired
     public FileContentInitializer(InitializerCommon commonInitializer,
-                                  UnicoreContents unicoreContents,
+                                  UnicoreEntities unicoreEntities,
                                   UnicoreGroups unicoreGroups,
-                                  ResourceContents resourceContents) {
-        super(commonInitializer, unicoreContents);
+                                  UnicoreTypes unicoreTypes,
+                                  ResourceManagement resourceManagement) {
+        super(commonInitializer, unicoreTypes);
         this.unicoreGroups = unicoreGroups;
-        this.resourceContents = resourceContents;
+        this.unicoreEntities = unicoreEntities;
+        this.resourceManagement = resourceManagement;
     }
 
     @Override
@@ -46,7 +50,7 @@ public class FileContentInitializer extends ContentInitializer {
     }
 
     protected void initializeContentFromResource(String... resourcesLocations) throws EngineException {
-        final UnicoreContent content = resourceContents.loadContentFromFile(resourcesLocations);
+        final UnicoreContent content = resourceManagement.loadContentFromFile(resourcesLocations);
 
         final InspectorsGroup inspectorsGroup = content.getInspectorsGroup();
         processInspectorsGroup(inspectorsGroup);
@@ -85,8 +89,8 @@ public class FileContentInitializer extends ContentInitializer {
         }
         unicoreGroups.createUnicoreCentralGroupStructure(centralGroupPath, sites);
 
-        resourceContents.addDistinguishedNamesToGroup(centralGroup.getServers(), centralGroupPath + "/servers");
-        resourceContents.addDistinguishedNamesToGroup(centralGroup.getServers(), inspectorsGroupPath);
+        unicoreEntities.addDistinguishedNamesToGroup(centralGroup.getServers(), centralGroupPath + "/servers");
+        unicoreEntities.addDistinguishedNamesToGroup(centralGroup.getServers(), inspectorsGroupPath);
     }
 
     private void processSiteGroups(List<UnicoreSiteGroup> siteGroups,
@@ -111,8 +115,8 @@ public class FileContentInitializer extends ContentInitializer {
                                   String inspectorsGroupPath) throws EngineException {
         unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath, defaultQueue);
 
-        resourceContents.addDistinguishedNamesToGroup(siteGroupServers, siteGroupPath + "/servers");
-        resourceContents.addDistinguishedNamesToGroup(siteGroupServers, inspectorsGroupPath);
+        unicoreEntities.addDistinguishedNamesToGroup(siteGroupServers, siteGroupPath + "/servers");
+        unicoreEntities.addDistinguishedNamesToGroup(siteGroupServers, inspectorsGroupPath);
     }
 
     private void processPortalGroups(List<String> portalGroups) throws EngineException {
@@ -131,10 +135,10 @@ public class FileContentInitializer extends ContentInitializer {
 
         final String groupPath = inspectorsContent.getGroup();
 
-        unicoreContents.initializeRootAttributeStatements(groupPath);
-        unicoreContents.createInspectorsGroup(groupPath);
+        unicoreTypes.initializeRootAttributeStatements(groupPath);
+        unicoreTypes.createInspectorsGroup(groupPath);
 
-        resourceContents.addDistinguishedNamesToGroup(inspectorsContent.getIdentities(), groupPath);
+        unicoreEntities.addDistinguishedNamesToGroup(inspectorsContent.getIdentities(), groupPath);
     }
 
     @Override

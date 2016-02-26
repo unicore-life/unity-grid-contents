@@ -44,63 +44,6 @@ class UnityManagements {
         this.identitiesManagement = identitiesManagement;
     }
 
-    void createPathGroups(String groupPath) throws EngineException {
-        final String[] pathElements = new Group(groupPath).getPath();
-        String topGroupPath = "";
-        for (String element : pathElements) {
-            topGroupPath += ("/" + element);
-            addGroupIfNotExists(topGroupPath);
-        }
-    }
-
-    void addGroupIfNotExists(String groupPath) throws EngineException {
-        if (!existsGroup(groupPath)) {
-            Group newGroup = new Group(groupPath);
-            try {
-                groupsManagement.addGroup(newGroup);
-                log.info(format("Added group '%s'", groupPath));
-            } catch (EngineException engineException) {
-                log.warn(String.format("Could not add not existing group '%s'!", groupPath), engineException);
-                throw engineException;
-            }
-        }
-    }
-
-    boolean existsGroup(String groupPath) throws EngineException {
-        try {
-            groupsManagement.getContents(groupPath, GroupContents.METADATA);
-            return true;
-        } catch (IllegalGroupValueException e) {
-            return false;
-        } catch (EngineException engineException) {
-            log.warn(String.format("Could not check if group '%s' exists (get metadata contents)!", groupPath));
-            throw engineException;
-        }
-    }
-
-    void updateGroupWithStatements(String groupPath, Collection<AttributeStatement2> statements) throws EngineException {
-        updateGroupWithStatements(groupPath, statements.toArray(new AttributeStatement2[statements.size()]));
-    }
-
-    void updateGroupWithStatements(String groupPath, AttributeStatement2[] statements) throws EngineException {
-        Group group = "/".equals(groupPath) ?
-                groupsManagement.getContents("/", GroupContents.METADATA).getGroup() : new Group(groupPath);
-        group.setAttributeStatements(statements);
-        groupsManagement.updateGroup(group.toString(), group);
-    }
-
-    void addMemberFromParent(String groupPath, EntityParam entityParam) {
-        try {
-            groupsManagement.addMemberFromParent(groupPath, entityParam);
-            log.debug(String.format("Added %s to group: %s", entityParam, groupPath));
-        } catch (IllegalGroupValueException e) {
-            log.warn(String.format("Identity %s not added to group %s: %s",
-                    entityParam, groupPath, e.getMessage()));
-        } catch (EngineException e) {
-            log.warn(String.format("Problem adding %s to group: %s", entityParam, groupPath), e);
-        }
-    }
-
     boolean existsAttribute(String attributeName) throws EngineException {
         try {
             return attributesManagement
@@ -146,6 +89,65 @@ class UnityManagements {
                 false
         );
         log.info(String.format("Added entity with identity: '%s'", identity));
+    }
+
+    boolean existsGroup(String groupPath) throws EngineException {
+        try {
+            groupsManagement.getContents(groupPath, GroupContents.METADATA);
+            return true;
+        } catch (IllegalGroupValueException e) {
+            return false;
+        } catch (EngineException engineException) {
+            log.warn(String.format("Could not check if group '%s' exists (get metadata contents)!", groupPath));
+            throw engineException;
+        }
+    }
+
+    void createPathGroups(String groupPath) throws EngineException {
+        final String[] pathElements = new Group(groupPath).getPath();
+        String topGroupPath = "";
+        for (String element : pathElements) {
+            topGroupPath += ("/" + element);
+
+            if (!existsGroup(topGroupPath)) {
+                addGroup(topGroupPath);
+            }
+        }
+        log.debug(String.format("Groups exists or created for path: '%s'", groupPath));
+    }
+
+    void updateGroupWithStatements(String groupPath, Collection<AttributeStatement2> statements) throws EngineException {
+        updateGroupWithStatements(groupPath, statements.toArray(new AttributeStatement2[statements.size()]));
+    }
+
+    void updateGroupWithStatements(String groupPath, AttributeStatement2[] statements) throws EngineException {
+        Group group = "/".equals(groupPath) ?
+                groupsManagement.getContents("/", GroupContents.METADATA).getGroup() : new Group(groupPath);
+        group.setAttributeStatements(statements);
+        groupsManagement.updateGroup(group.toString(), group);
+        log.trace(String.format("Group '%s' updated with statements: %s", group, statements));
+    }
+
+    void addMemberFromParentGroup(String groupPath, EntityParam entityParam) {
+        try {
+            groupsManagement.addMemberFromParent(groupPath, entityParam);
+            log.debug(String.format("Added entity '%s' to group: '%s'", entityParam, groupPath));
+        } catch (IllegalGroupValueException e) {
+            log.warn(String.format("Entity '%s' not added to group '%s': %s", entityParam, groupPath, e.getMessage()));
+        } catch (EngineException engineException) {
+            log.warn(String.format("Problem adding entity '%s' to group '%s'", entityParam, groupPath), engineException);
+        }
+    }
+
+    private void addGroup(String groupPath) throws EngineException {
+        Group newGroup = new Group(groupPath);
+        try {
+            groupsManagement.addGroup(newGroup);
+            log.info(format("Added new group: '%s'", groupPath));
+        } catch (EngineException engineException) {
+            log.warn(String.format("Could not add not existing group '%s'!", groupPath), engineException);
+            throw engineException;
+        }
     }
 
     private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnityManagements.class);

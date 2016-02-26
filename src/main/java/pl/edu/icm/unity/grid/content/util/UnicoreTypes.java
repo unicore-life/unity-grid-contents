@@ -35,12 +35,12 @@ import static pl.edu.icm.unity.sysattrs.SystemAttributeTypes.AUTHORIZATION_ROLE;
  * @author R.Kluszczynski
  */
 @Component
-public class UnicoreContents {
+public class UnicoreTypes {
     private final UnityManagements unityManagements;
     private final UnityMessageSource messageSource;
 
     @Autowired
-    public UnicoreContents(UnityManagements unityManagements, UnityMessageSource messageSource) {
+    public UnicoreTypes(UnityManagements unityManagements, UnityMessageSource messageSource) {
         this.unityManagements = unityManagements;
         this.messageSource = messageSource;
     }
@@ -126,5 +126,5 @@ public class UnicoreContents {
         }
     }
 
-    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnicoreContents.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnicoreTypes.class);
 }

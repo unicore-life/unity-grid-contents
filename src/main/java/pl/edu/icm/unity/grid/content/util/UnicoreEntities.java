@@ -1,22 +1,15 @@
 package pl.edu.icm.unity.grid.content.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ResourceLoaderAware;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
-import pl.edu.icm.unity.grid.content.model.UnicoreContent;
 import pl.edu.icm.unity.server.utils.Log;
 import pl.edu.icm.unity.stdext.identity.X500Identity;
 import pl.edu.icm.unity.types.basic.EntityParam;
 import pl.edu.icm.unity.types.basic.Group;
 import pl.edu.icm.unity.types.basic.IdentityTaV;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
@@ -25,38 +18,12 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
  * @author R.Kluszczynski
  */
 @Component
-public class ResourceContents implements ResourceLoaderAware {
+public class UnicoreEntities {
     private final UnityManagements unityManagements;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    private ResourceLoader resourceLoader;
-
     @Autowired
-    public ResourceContents(UnityManagements unityManagements) {
+    public UnicoreEntities(UnityManagements unityManagements) {
         this.unityManagements = unityManagements;
-    }
-
-    @Override
-    public void setResourceLoader(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
-
-    public UnicoreContent loadContentFromFile(String... resourcesLocations) throws EngineException {
-        for (String location : resourcesLocations) {
-            Resource resource = resourceLoader.getResource(location);
-            if (resource.exists() && resource.isReadable()) {
-                log.info(String.format("Reading content from resource '%s'.", location));
-                try {
-                    return objectMapper.readValue(resource.getInputStream(), UnicoreContent.class);
-                } catch (IOException e) {
-                    log.warn(String.format("Error reading content '%s'", location), e);
-                }
-            } else {
-                log.info(String.format("Resource '%s' not exists or is not readable.", location));
-            }
-        }
-        throw new EngineException("There was no valid initial content at locations: " + Arrays.toString(resourcesLocations));
     }
 
     public void addDistinguishedNamesToGroup(List<String> certificateIdentities,
@@ -78,7 +45,7 @@ public class ResourceContents implements ResourceLoaderAware {
             contentIdentities.stream()
                     .map(id -> new IdentityTaV(X500Identity.ID, id))
                     .map(EntityParam::new)
-                    .forEach(entity -> unityManagements.addMemberFromParent(parentGroupPath, entity));
+                    .forEach(entity -> unityManagements.addMemberFromParentGroup(parentGroupPath, entity));
         }
     }
 
@@ -95,5 +62,5 @@ public class ResourceContents implements ResourceLoaderAware {
         }
     }
 
-    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, ResourceContents.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnicoreEntities.class);
 }
