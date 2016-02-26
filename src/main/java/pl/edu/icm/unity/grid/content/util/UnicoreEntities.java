@@ -28,37 +28,31 @@ public class UnicoreEntities {
 
     public void addDistinguishedNamesToGroup(List<String> certificateIdentities,
                                              String groupPath) throws EngineException {
-        addIdentitiesIfNotExists(certificateIdentities);
-        addIdentitiesToGroup(groupPath, certificateIdentities);
-    }
-
-    private void addIdentitiesToGroup(String groupPath, List<String> contentIdentities) {
-        if (contentIdentities == null) {
+        if (certificateIdentities == null) {
             return;
         }
+
         final String[] pathElements = new Group(groupPath).getPath();
         String topGroupPath = "";
         for (String element : pathElements) {
             topGroupPath += ("/" + element);
 
-            final String parentGroupPath = topGroupPath;
-            contentIdentities.stream()
-                    .map(id -> new IdentityTaV(X500Identity.ID, id))
-                    .map(EntityParam::new)
-                    .forEach(entity -> unityManagements.addMemberFromParentGroup(parentGroupPath, entity));
+            addIdentitiesToGroup(certificateIdentities, topGroupPath);
         }
     }
 
-    private void addIdentitiesIfNotExists(List<String> contentIdentities) throws EngineException {
-        if (contentIdentities == null) {
-            return;
-        }
-        for (String identity : contentIdentities) {
-            if (unityManagements.existsIdentity(identity)) {
+    private void addIdentitiesToGroup(List<String> certificateIdentities, String groupPath) throws EngineException {
+        for (String identity : certificateIdentities) {
+            EntityParam entityParam = new EntityParam(
+                    new IdentityTaV(X500Identity.ID, identity)
+            );
+
+            if (!unityManagements.existsIdentity(identity)) {
+                unityManagements.addEntity(identity);
+            } else {
                 log.debug("Identity '" + identity + "' already exists.");
-                continue;
             }
-            unityManagements.addEntity(identity);
+            unityManagements.addMemberFromParentGroup(groupPath, entityParam);
         }
     }
 

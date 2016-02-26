@@ -60,6 +60,15 @@ public class FileContentInitializer extends ContentInitializer {
         processPortalGroups(content.getUnicorePortalGroups());
     }
 
+    private void processInspectorsGroup(InspectorsGroup inspectorsContent) throws EngineException {
+        log.debug(String.format("Processing inspectors group: %s", inspectorsContent));
+
+        final String groupPath = inspectorsContent.getGroup();
+        unicoreTypes.initializeRootAttributeStatements(groupPath);
+        unicoreGroups.createInspectorsGroup(groupPath);
+        unicoreEntities.addDistinguishedNamesToGroup(inspectorsContent.getIdentities(), groupPath);
+    }
+
     private void processCentralGroups(List<UnicoreCentralGroup> centralGroups,
                                       String inspectorsGroupPath) throws EngineException {
         if (centralGroups == null) {
@@ -128,17 +137,6 @@ public class FileContentInitializer extends ContentInitializer {
         for (String group : portalGroups) {
             unicoreGroups.createUnicorePortalGroupStructure(group);
         }
-    }
-
-    private void processInspectorsGroup(InspectorsGroup inspectorsContent) throws EngineException {
-        log.debug(String.format("Processing inspectors group: %s", inspectorsContent));
-
-        final String groupPath = inspectorsContent.getGroup();
-
-        unicoreTypes.initializeRootAttributeStatements(groupPath);
-        unicoreTypes.createInspectorsGroup(groupPath);
-
-        unicoreEntities.addDistinguishedNamesToGroup(inspectorsContent.getIdentities(), groupPath);
     }
 
     @Override

@@ -128,7 +128,7 @@ class UnityManagements {
         log.trace(String.format("Group '%s' updated with statements: %s", group, statements));
     }
 
-    void addMemberFromParentGroup(String groupPath, EntityParam entityParam) {
+    void addMemberFromParentGroup(String groupPath, EntityParam entityParam) throws EngineException {
         try {
             groupsManagement.addMemberFromParent(groupPath, entityParam);
             log.debug(String.format("Added entity '%s' to group: '%s'", entityParam, groupPath));
@@ -136,6 +136,7 @@ class UnityManagements {
             log.warn(String.format("Entity '%s' not added to group '%s': %s", entityParam, groupPath, e.getMessage()));
         } catch (EngineException engineException) {
             log.warn(String.format("Problem adding entity '%s' to group '%s'", entityParam, groupPath), engineException);
+            throw engineException;
         }
     }
 

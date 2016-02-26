@@ -23,6 +23,7 @@ import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
 import static pl.edu.icm.unity.stdext.utils.InitializerCommon.CN_ATTR;
 import static pl.edu.icm.unity.stdext.utils.InitializerCommon.EMAIL_ATTR;
 import static pl.edu.icm.unity.stdext.utils.InitializerCommon.ORG_ATTR;
+import static pl.edu.icm.unity.sysattrs.SystemAttributeTypes.AUTHORIZATION_ROLE;
 
 /**
  * @author R.Kluszczynski
@@ -33,6 +34,26 @@ public class UnicoreGroups {
     @Autowired
     public UnicoreGroups(UnityManagements unityManagements) {
         this.unityManagements = unityManagements;
+    }
+
+    public void createInspectorsGroup(final String inspectorsGroupPath) throws EngineException {
+        if (unityManagements.existsGroup(inspectorsGroupPath)) {
+            log.debug(String.format("Inspectors group '%s' already exists. Skipping.", inspectorsGroupPath));
+            return;
+        }
+        unityManagements.createPathGroups(inspectorsGroupPath);
+
+        AttributeStatement2[] inspectorsGroupStatements = {
+                new AttributeStatement2(
+                        "true",
+                        null,
+                        AttributeStatement2.ConflictResolution.overwrite,
+                        new EnumAttribute(AUTHORIZATION_ROLE, inspectorsGroupPath, AttributeVisibility.local, "Inspector")
+                )
+        };
+        unityManagements.updateGroupWithStatements(inspectorsGroupPath, inspectorsGroupStatements);
+
+        log.info("Created inspectors group: " + inspectorsGroupPath);
     }
 
     public void createUnicoreCentralGroupStructure(String unicoreGroupPath, List<String> sites) throws EngineException {

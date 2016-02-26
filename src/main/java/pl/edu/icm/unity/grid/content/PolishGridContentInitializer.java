@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.grid.content.util.ResourceManagement;
 import pl.edu.icm.unity.grid.content.util.UnicoreEntities;
-import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
 import pl.edu.icm.unity.grid.content.util.UnicoreGroups;
+import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
 import pl.edu.icm.unity.stdext.utils.InitializerCommon;
 
 import java.io.IOException;

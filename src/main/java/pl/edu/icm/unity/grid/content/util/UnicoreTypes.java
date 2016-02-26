@@ -45,26 +45,6 @@ public class UnicoreTypes {
         this.messageSource = messageSource;
     }
 
-    public void createInspectorsGroup(final String inspectorsGroupPath) throws EngineException {
-        if (unityManagements.existsGroup(inspectorsGroupPath)) {
-            log.debug(String.format("Inspectors group '%s' already exists. Skipping.", inspectorsGroupPath));
-            return;
-        }
-        unityManagements.createPathGroups(inspectorsGroupPath);
-
-        AttributeStatement2[] inspectorsGroupStatements = {
-                new AttributeStatement2(
-                        "true",
-                        null,
-                        AttributeStatement2.ConflictResolution.overwrite,
-                        new EnumAttribute(AUTHORIZATION_ROLE, inspectorsGroupPath, AttributeVisibility.local, "Inspector")
-                )
-        };
-        unityManagements.updateGroupWithStatements(inspectorsGroupPath, inspectorsGroupStatements);
-
-        log.info("Created inspectors group: " + inspectorsGroupPath);
-    }
-
     public void initializeRootAttributeStatements(String inspectorsGroupPath) throws EngineException {
         AttributeStatement2[] rootStatements = {
                 AttributeStatement2.getFixedEverybodyStatement(
