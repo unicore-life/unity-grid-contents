@@ -18,7 +18,8 @@ class UnicoreContentTest extends Specification {
         def expectedCentralGroup = new UnicoreCentralGroup('/vo.unicore', expectedCentralSites, ['CN=central-server'])
         def expectedSiteGroup = new UnicoreSiteGroup('/vo.site', ['CN=long-site,O=unicore'], 'long')
 
-        def expectedContent = new UnicoreContent(expectedInspectorsGroup, [expectedCentralGroup], [expectedSiteGroup])
+        def expectedContent = new UnicoreContent(
+                expectedInspectorsGroup, [expectedCentralGroup], [expectedSiteGroup], ["/portal"])
 
         def inputStream = getClass().getClassLoader().getResourceAsStream("content-test.json")
 

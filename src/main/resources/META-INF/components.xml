@@ -6,11 +6,11 @@
 
     <context:annotation-config/>
 
-    <bean class="pl.edu.icm.unity.grid.content.util.ManagementHelper"/>
-    <bean class="pl.edu.icm.unity.grid.content.util.ResourceContents"/>
-    <bean class="pl.edu.icm.unity.grid.content.util.ResourceLoaderService"/>
-    <bean class="pl.edu.icm.unity.grid.content.util.UnicoreContents"/>
+    <bean class="pl.edu.icm.unity.grid.content.util.ResourceManagement"/>
+    <bean class="pl.edu.icm.unity.grid.content.util.UnicoreEntities"/>
     <bean class="pl.edu.icm.unity.grid.content.util.UnicoreGroups"/>
+    <bean class="pl.edu.icm.unity.grid.content.util.UnicoreTypes"/>
+    <bean class="pl.edu.icm.unity.grid.content.util.UnityManagements"/>
 
     <bean class="pl.edu.icm.unity.grid.content.FileContentInitializer"/>
     <bean class="pl.edu.icm.unity.grid.content.HydraContentInitializer"/>

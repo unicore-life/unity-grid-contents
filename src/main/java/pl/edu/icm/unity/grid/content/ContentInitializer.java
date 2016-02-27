@@ -2,7 +2,7 @@ package pl.edu.icm.unity.grid.content;
 
 import org.apache.log4j.Logger;
 import pl.edu.icm.unity.exceptions.EngineException;
-import pl.edu.icm.unity.grid.content.util.UnicoreContents;
+import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
 import pl.edu.icm.unity.server.utils.Log;
 import pl.edu.icm.unity.server.utils.ServerInitializer;
 import pl.edu.icm.unity.stdext.utils.InitializerCommon;
@@ -16,11 +16,11 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
  */
 abstract class ContentInitializer implements ServerInitializer {
     private final InitializerCommon commonInitializer;
-    protected final UnicoreContents unicoreContents;
+    protected final UnicoreTypes unicoreTypes;
 
-    ContentInitializer(InitializerCommon commonInitializer, UnicoreContents unicoreContents) {
+    ContentInitializer(InitializerCommon commonInitializer, UnicoreTypes unicoreTypes) {
         this.commonInitializer = commonInitializer;
-        this.unicoreContents = unicoreContents;
+        this.unicoreTypes = unicoreTypes;
     }
 
     @Override
@@ -29,7 +29,7 @@ abstract class ContentInitializer implements ServerInitializer {
             commonInitializer.initializeCommonAttributeTypes();
             commonInitializer.assignCnToAdmin();
 
-            unicoreContents.initializeUnicoreAttributeTypes();
+            unicoreTypes.initializeUnicoreAttributeTypes();
 
             initializeSpecificContent();
 

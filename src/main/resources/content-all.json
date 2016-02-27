@@ -20,6 +20,7 @@
     {
       "group": "/vo.plgrid.pl/unicore",
       "servers": [
+        "CN=odysseus.trojan.kdm.wcss.pl,O=WCSS,O=GRID,C=PL",
         "CN=registry/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
         "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
         "CN=workflow/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
@@ -73,5 +74,10 @@
         "CN=workflow-testbed/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
       ]
     }
+  ],
+  "unicorePortalGroups": [
+    "/vo.icm.edu.pl/unicore-portal",
+    "/vo.plgrid.pl/unicore-portal",
+    "/vo.plgrid.pl/testbed-portal"
   ]
 }

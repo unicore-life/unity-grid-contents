@@ -20,24 +20,44 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_QUEUE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
+import static pl.edu.icm.unity.stdext.utils.InitializerCommon.CN_ATTR;
+import static pl.edu.icm.unity.stdext.utils.InitializerCommon.EMAIL_ATTR;
+import static pl.edu.icm.unity.stdext.utils.InitializerCommon.ORG_ATTR;
+import static pl.edu.icm.unity.sysattrs.SystemAttributeTypes.AUTHORIZATION_ROLE;
 
 /**
  * @author R.Kluszczynski
  */
 public class UnicoreGroups {
-    private final ManagementHelper managementHelper;
+    private final UnityManagements unityManagements;
 
     @Autowired
-    public UnicoreGroups(ManagementHelper managementHelper) {
-        this.managementHelper = managementHelper;
+    public UnicoreGroups(UnityManagements unityManagements) {
+        this.unityManagements = unityManagements;
     }
 
-    public void createUnicoreSiteGroupStructure(final String unicoreSitePath) throws EngineException {
-        createUnicoreSiteGroupStructure(unicoreSitePath, Optional.empty());
+    public void createInspectorsGroup(final String inspectorsGroupPath) throws EngineException {
+        if (unityManagements.existsGroup(inspectorsGroupPath)) {
+            log.debug(String.format("Inspectors group '%s' already exists. Skipping.", inspectorsGroupPath));
+            return;
+        }
+        unityManagements.createPathGroups(inspectorsGroupPath);
+
+        AttributeStatement2[] inspectorsGroupStatements = {
+                new AttributeStatement2(
+                        "true",
+                        null,
+                        AttributeStatement2.ConflictResolution.overwrite,
+                        new EnumAttribute(AUTHORIZATION_ROLE, inspectorsGroupPath, AttributeVisibility.local, "Inspector")
+                )
+        };
+        unityManagements.updateGroupWithStatements(inspectorsGroupPath, inspectorsGroupStatements);
+
+        log.info("Created inspectors group: " + inspectorsGroupPath);
     }
 
     public void createUnicoreCentralGroupStructure(String unicoreGroupPath, List<String> sites) throws EngineException {
-        managementHelper.createPathGroups(unicoreGroupPath + "/servers");
+        unityManagements.createPathGroups(unicoreGroupPath + "/servers");
 
         List<AttributeStatement2> unicoreGroupStatements = Lists.newArrayList();
         for (String site : sites) {
@@ -47,19 +67,19 @@ public class UnicoreGroups {
                             unicoreGroupPath + "/" + site,
                             AttributeStatement2.ConflictResolution.merge,
                             AttributeVisibility.full,
-                            managementHelper.getAttribute(ROLE.getAttributeName()),
+                            unityManagements.getAttribute(ROLE.getAttributeName()),
                             String.format("eattrs['%s']", ROLE.getAttributeName())
                     )
             );
         }
         unicoreGroupStatements.add(
                 createRoleAttributeStatement(unicoreGroupPath, "servers", "server"));
-        managementHelper.updateGroupWithStatements(unicoreGroupPath, unicoreGroupStatements);
+        unityManagements.updateGroupWithStatements(unicoreGroupPath, unicoreGroupStatements);
     }
 
     public void createUnicoreSiteGroupStructure(final String unicoreSiteGroupPath,
                                                 final Optional<String> defaultQueue) throws EngineException {
-        managementHelper.createPathGroups(unicoreSiteGroupPath);
+        unityManagements.createPathGroups(unicoreSiteGroupPath);
 
         final Map<String, String> groupsToRole = Maps.newLinkedHashMap();
         groupsToRole.put("servers", "server");
@@ -69,7 +89,7 @@ public class UnicoreGroups {
 
         for (String subGroup : groupsToRole.keySet()) {
             final String subGroupPath = String.format("%s/%s", unicoreSiteGroupPath, subGroup);
-            managementHelper.addGroupIfNotExists(subGroupPath);
+            unityManagements.createPathGroups(subGroupPath);
         }
 
         List<AttributeStatement2> unicoreSiteGroupStatements = Lists.newArrayList();
@@ -94,7 +114,27 @@ public class UnicoreGroups {
                     new AttributeStatement2("true", null, AttributeStatement2.ConflictResolution.overwrite, defaultQueueAttribute));
         });
 
-        managementHelper.updateGroupWithStatements(unicoreSiteGroupPath, unicoreSiteGroupStatements);
+        unityManagements.updateGroupWithStatements(unicoreSiteGroupPath, unicoreSiteGroupStatements);
+    }
+
+    public void createUnicorePortalGroupStructure(String groupPath) throws EngineException {
+        unityManagements.createPathGroups(groupPath);
+
+        final List<AttributeStatement2> groupStatements = Lists.newArrayList();
+        final String[] portalAttributes = {CN_ATTR, EMAIL_ATTR, ORG_ATTR};
+        for (String attributeName : portalAttributes) {
+            groupStatements.add(
+                    new AttributeStatement2(
+                            "true",
+                            "/",
+                            AttributeStatement2.ConflictResolution.skip,
+                            AttributeVisibility.full,
+                            unityManagements.getAttribute(attributeName),
+                            String.format("eattrs['%s']", attributeName)
+                    )
+            );
+        }
+        unityManagements.updateGroupWithStatements(groupPath, groupStatements);
     }
 
     private AttributeStatement2 createXloginAttributeStatement(String extraAttributesGroup) {
@@ -104,11 +144,11 @@ public class UnicoreGroups {
                     extraAttributesGroup,
                     AttributeStatement2.ConflictResolution.overwrite,
                     AttributeVisibility.full,
-                    managementHelper.getAttribute(XLOGIN.getAttributeName()),
+                    unityManagements.getAttribute(XLOGIN.getAttributeName()),
                     String.format("eattrs['%s']", XLOGIN.getAttributeName())
             );
         } catch (EngineException e) {
-            log.warn("Could not create attribute!", e);
+            log.warn("Could not create attributeName!", e);
             return null;
         }
     }

@@ -2,11 +2,8 @@ package pl.edu.icm.unity.grid.content.util;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
-import pl.edu.icm.unity.server.api.AttributesManagement;
-import pl.edu.icm.unity.server.api.GroupsManagement;
 import pl.edu.icm.unity.server.utils.Log;
 import pl.edu.icm.unity.server.utils.UnityMessageSource;
 import pl.edu.icm.unity.stdext.attr.EnumAttribute;
@@ -15,11 +12,8 @@ import pl.edu.icm.unity.stdext.attr.StringAttributeSyntax;
 import pl.edu.icm.unity.types.basic.AttributeStatement2;
 import pl.edu.icm.unity.types.basic.AttributeType;
 import pl.edu.icm.unity.types.basic.AttributeVisibility;
-import pl.edu.icm.unity.types.basic.Group;
-import pl.edu.icm.unity.types.basic.GroupContents;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
@@ -41,50 +35,20 @@ import static pl.edu.icm.unity.sysattrs.SystemAttributeTypes.AUTHORIZATION_ROLE;
  * @author R.Kluszczynski
  */
 @Component
-public class UnicoreContents {
-    private final AttributesManagement attributesManagement;
-    private final GroupsManagement groupsManagement;
-    private final ManagementHelper managementHelper;
+public class UnicoreTypes {
+    private final UnityManagements unityManagements;
     private final UnityMessageSource messageSource;
 
     @Autowired
-    public UnicoreContents(@Qualifier("insecure") AttributesManagement attributesManagement,
-                           @Qualifier("insecure") GroupsManagement groupsManagement,
-                           ManagementHelper managementHelper,
-                           UnityMessageSource messageSource) {
-        this.attributesManagement = attributesManagement;
-        this.groupsManagement = groupsManagement;
-        this.managementHelper = managementHelper;
+    public UnicoreTypes(UnityManagements unityManagements, UnityMessageSource messageSource) {
+        this.unityManagements = unityManagements;
         this.messageSource = messageSource;
     }
 
-    public void createInspectorsGroup(final String inspectorsGroupPath) throws EngineException {
-        if (managementHelper.existsGroup(inspectorsGroupPath)) {
-            log.debug(String.format("Inspectors group '%s' already exists. Skipping.", inspectorsGroupPath));
-            return;
-        }
-        managementHelper.createPathGroups(inspectorsGroupPath);
-
-        AttributeStatement2[] inspectorsGroupStatements = {
-                new AttributeStatement2(
-                        "true",
-                        null,
-                        AttributeStatement2.ConflictResolution.overwrite,
-                        new EnumAttribute(AUTHORIZATION_ROLE, inspectorsGroupPath, AttributeVisibility.local, "Inspector")
-                )
-        };
-        Group inspectorsGroup = new Group(inspectorsGroupPath);
-        inspectorsGroup.setAttributeStatements(inspectorsGroupStatements);
-        groupsManagement.updateGroup(inspectorsGroup.toString(), inspectorsGroup);
-
-        log.info("Created inspectors group: " + inspectorsGroupPath);
-    }
-
     public void initializeRootAttributeStatements(String inspectorsGroupPath) throws EngineException {
-        Group rootGroup = groupsManagement.getContents("/", GroupContents.METADATA).getGroup();
         AttributeStatement2[] rootStatements = {
                 AttributeStatement2.getFixedEverybodyStatement(
-                        new EnumAttribute("sys:AuthorizationRole", "/", AttributeVisibility.local, "Regular User")),
+                        new EnumAttribute(AUTHORIZATION_ROLE, "/", AttributeVisibility.local, "Regular User")),
                 new AttributeStatement2(
                         "groups contains '" + inspectorsGroupPath + "'",
                         null,
@@ -92,17 +56,14 @@ public class UnicoreContents {
                         new EnumAttribute(AUTHORIZATION_ROLE, "/", AttributeVisibility.local, "Inspector")
                 )
         };
-        rootGroup.setAttributeStatements(rootStatements);
-        groupsManagement.updateGroup("/", rootGroup);
+        unityManagements.updateGroupWithStatements("/", rootStatements);
     }
 
     public void initializeUnicoreAttributeTypes() throws EngineException {
-        Map<String, AttributeType> existingAttributes = attributesManagement.getAttributeTypesAsMap();
-
         String[] serverEnumAttributes = {ROLE.getAttributeName(), DEFAULT_ROLE.getAttributeName()};
         for (String attribute : serverEnumAttributes) {
-            if (existingAttributes.containsKey(attribute)) {
-                log.warn("Attribute '" + attribute + "' already exists.");
+            if (unityManagements.existsAttribute(attribute)) {
+                log.debug("Attribute '" + attribute + "' already exists.");
                 continue;
             }
             Set<String> allowedRoles = new HashSet<>();
@@ -115,8 +76,7 @@ public class UnicoreContents {
             AttributeType roleAttributeType = new AttributeType(attribute, enumAttributeSyntax, messageSource);
             roleAttributeType.setMinElements(1);
 
-            attributesManagement.addAttributeType(roleAttributeType);
-            log.info("Added attribute type: " + roleAttributeType);
+            unityManagements.addAttribute(roleAttributeType);
         }
 
         String[] stringAttributes = {
@@ -132,8 +92,8 @@ public class UnicoreContents {
                 VIRTUAL_ORGANISATIONS.getAttributeName()
         };
         for (String attribute : stringAttributes) {
-            if (existingAttributes.containsKey(attribute)) {
-                log.warn("Attribute '" + attribute + "' already exists.");
+            if (unityManagements.existsAttribute(attribute)) {
+                log.debug("Attribute '" + attribute + "' already exists.");
                 continue;
             }
             AttributeType newAttributeType = new AttributeType(attribute, new StringAttributeSyntax(), messageSource);
@@ -142,10 +102,9 @@ public class UnicoreContents {
             ((StringAttributeSyntax) newAttributeType.getValueType()).setMaxLength(200);
             ((StringAttributeSyntax) newAttributeType.getValueType()).setMinLength(1);
 
-            attributesManagement.addAttributeType(newAttributeType);
-            log.info("Added attribute type: " + newAttributeType);
+            unityManagements.addAttribute(newAttributeType);
         }
     }
 
-    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnicoreContents.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnicoreTypes.class);
 }
