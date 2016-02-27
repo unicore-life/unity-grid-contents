@@ -10,7 +10,7 @@ Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) 
 First download it archive:
 
 ```
-curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.1.2/unity-grid-contents-0.1.2.jar
+curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.1.3/unity-grid-contents-0.1.3.jar
 ```
 
 and then place it in `lib/` directory of Unity IDM installation

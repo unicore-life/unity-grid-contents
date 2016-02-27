@@ -50,7 +50,7 @@ public class UnicoreEntities {
             if (!unityManagements.existsIdentity(identity)) {
                 unityManagements.addEntity(identity);
             } else {
-                log.debug("Identity '" + identity + "' already exists.");
+                log.trace("Identity '" + identity + "' already exists.");
             }
             unityManagements.addMemberFromParentGroup(groupPath, entityParam);
         }
