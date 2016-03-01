@@ -4,8 +4,6 @@
 
 ## Installation
 
-After successful build, copy file from `build/libs/unity-grid-contents-VERSION.jar`
-
 Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) maven repository.
 First download it archive:
 
@@ -30,7 +28,7 @@ Next, you should just clean database (make a backup!) and start Unity IDM.
 Remember, initalizers are executed only once, when Unity database has not been set.
 
 All identities are added with requirements **Empty requirement**, so be sure to has such in Unity IDM.
-One way of accomplished that is to add lines:
+One way of accomplish that is to add lines:
 
 ```
 unityServer.core.credentialRequirements.1.credentialReqName=Empty requirement
@@ -38,6 +36,10 @@ unityServer.core.credentialRequirements.1.credentialReqDescription=Empty credent
 ```
 
 to configuration file *unityServer.conf*.
+
+## Generic initializer
+
+TODO
 
 # Links
 
