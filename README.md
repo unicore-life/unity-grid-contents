@@ -18,6 +18,8 @@ curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-co
 and then place it in `lib/` directory of Unity IDM installation
 (in case of RPM distribution it is `/usr/share/unity-idm/lib/`).
 
+Versions since 0.1.0 is for use with version 1.8.0 of Unity IDM.
+
 ## Configuration
 
 Edit `unityServer.conf` configuration file and add any of those initializers:
