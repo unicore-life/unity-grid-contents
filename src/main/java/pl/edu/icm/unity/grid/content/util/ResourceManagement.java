@@ -37,7 +37,7 @@ public class ResourceManagement implements ResourceLoaderAware {
                 try {
                     return objectMapper.readValue(resource.getInputStream(), UnicoreContent.class);
                 } catch (IOException e) {
-                    log.warn(String.format("Error reading content '%s'", location), e);
+                    log.warn(String.format("Error reading from '%s'. Skipping.", location), e);
                 }
             } else {
                 log.info(String.format("Resource '%s' not exists or is not readable.", location));
