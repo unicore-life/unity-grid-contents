@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author R.Kluszczynski
  */
-public class CollectionsHelper {
+public final class CollectionsHelper {
     private CollectionsHelper() {
     }
 
