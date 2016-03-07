@@ -18,17 +18,21 @@ curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-co
 and then place it in `lib/` directory of Unity IDM installation
 (in case of RPM distribution it is `/usr/share/unity-idm/lib/`).
 
-Versions since 0.1.x is for use with version 1.8.0 of Unity IDM.
+Version 0.1.x is for use with version 1.8.0 of Unity IDM.
 
 ## Configuration
 
-Edit `unityServer.conf` configuration file and add any of those initializers:
+The library provides generic initializer named **configurationFileInitializer** which prepares content based on
+UNICORE specific configuration file. In order to execute this initializer file `unityServer.conf` should contain:
 
 ```
-unityServer.core.initializers.0=polishGridInitializer
-unityServer.core.initializers.1=hydraInitializer
-unityServer.core.initializers.2=testbedGridInitializer
+unityServer.core.initializers.0=configurationFileInitializer
 ```
+
+The initializer first tries to read file `conf/content-init.json`. If it exists it will be used, otherwise plugin
+tries to read content from path `/etc/unity-idm/content-init.json`. Again, if it exists and has valid content
+initializer will use it. Otherwise, database will be initialized based on sample configuration file:
+[content-all.json](src/main/resources/content-all.json).
 
 Next, you should clean database (make a backup!) and start Unity IDM.
 Remember, initializers are executed only once, when Unity IDM database has not been set.
@@ -43,19 +47,26 @@ unityServer.core.credentialRequirements.1.credentialReqDescription=Empty credent
 
 in configuration file *unityServer.conf*.
 
-## Generic initializer
+## Specific initializers
 
-The library provides also more generic initializer named **configurationFileInitializer** initializing content based on
-UNICORE specific configuration file. In order to execute this initilizer file `unityServer.conf` should contain:
+The library contains also several specific initializers used in PLGrid.
+To enable them please edit `unityServer.conf` configuration file and put lines:
 
 ```
-unityServer.core.initializers.0=configurationFileInitializer
+unityServer.core.initializers.0=polishGridInitializer
+unityServer.core.initializers.1=hydraInitializer
+unityServer.core.initializers.2=testbedGridInitializer
 ```
 
-This initializer first tries to read file `conf/content-init.json`. If it exists it will be used, otherwise plugin
-tries to read content from path `/etc/unity-idm/content-init.json`. Again, if it exists and has valid content
-initializer will use it. Otherwise, database will be initialized based on sample configuration file:
-[content-all.json](src/main/resources/content-all.json).
+All of presented initializers use configuration files boundled with archive as resources.
+In above example, they are respectively:
+
+* [content-plgrid.json](src/main/resources/content-plgrid.json).
+* [content-hydra.json](src/main/resources/content-hydra.json).
+* [content-testbed.json](src/main/resources/content-testbed.json).
+
+Remember, that also here **Empty requirement** needs to be defined in Unity IDM configuration file
+(see previous section).
 
 ## Logging
 
