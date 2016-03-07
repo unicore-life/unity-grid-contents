@@ -1,4 +1,4 @@
-package pl.edu.icm.unity.grid.content.util;
+package pl.edu.icm.unity.grid.content.model;
 
 import java.util.Collections;
 import java.util.List;
@@ -6,11 +6,11 @@ import java.util.List;
 /**
  * @author R.Kluszczynski
  */
-public final class CollectionsHelper {
+final class CollectionsHelper {
     private CollectionsHelper() {
     }
 
-    public static <T> List<T> unmodifiableOrEmptyOnNull(List<T> objectList) {
+    static <T> List<T> unmodifiableOrEmptyOnNull(List<T> objectList) {
         return objectList == null ? Collections.emptyList() : Collections.unmodifiableList(objectList);
     }
 }
