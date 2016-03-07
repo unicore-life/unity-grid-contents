@@ -1,5 +1,7 @@
 package pl.edu.icm.unity.grid.content;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,8 @@ import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
 import pl.edu.icm.unity.stdext.utils.InitializerCommon;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,9 +118,30 @@ public class FileContentInitializer extends ContentInitializer {
         final List<String> siteGroupServers = siteGroup.getServers();
         final Optional<String> defaultQueue = Optional.ofNullable(siteGroup.getDefaultQueue());
 
-        // TODO: add agents and banned
-
         unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath, defaultQueue);
+
+        final String dnKey = "dn";
+        for (ObjectNode agentNode : siteGroup.getAgents()) {
+            final JsonNode dnNode = agentNode.findValue(dnKey);
+            if (dnNode == null || "".equalsIgnoreCase(dnNode.asText(""))) {
+                break;
+            }
+            final String idenityDn = dnNode.asText();
+            final String siteAgentsGroupPath = siteGroupPath + "/agents";
+            unicoreEntities.addDistinguishedNamesToGroup(Arrays.asList(idenityDn), siteAgentsGroupPath);
+
+            final Iterator<String> iterator = agentNode.fieldNames();
+            while (iterator.hasNext()) {
+                final String attributeKey = iterator.next();
+                if (dnKey.equals(attributeKey)) {
+                    continue;
+                }
+
+                final String attributeValue = agentNode.get(attributeKey).asText();
+                unicoreEntities.setEntityGroupAttribute(idenityDn, siteAgentsGroupPath, attributeKey, attributeValue);
+            }
+        }
+        unicoreEntities.addDistinguishedNamesToGroup(siteGroup.getBanned(), siteGroupPath + "/banned");
 
         unicoreEntities.addDistinguishedNamesToGroup(siteGroupServers, siteGroupPath + "/servers");
         unicoreEntities.addDistinguishedNamesToGroup(siteGroupServers, inspectorsGroupPath);

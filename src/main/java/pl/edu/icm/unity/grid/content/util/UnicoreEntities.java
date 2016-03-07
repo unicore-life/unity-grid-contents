@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.server.utils.Log;
+import pl.edu.icm.unity.stdext.attr.StringAttribute;
 import pl.edu.icm.unity.stdext.identity.X500Identity;
+import pl.edu.icm.unity.types.basic.AttributeVisibility;
 import pl.edu.icm.unity.types.basic.EntityParam;
 import pl.edu.icm.unity.types.basic.Group;
 import pl.edu.icm.unity.types.basic.IdentityTaV;
@@ -39,6 +41,15 @@ public class UnicoreEntities {
 
             addIdentitiesToGroup(certificateIdentities, topGroupPath);
         }
+    }
+
+    public void setEntityGroupAttribute(String identityCertificate,
+                                        String groupPath,
+                                        String attributeName,
+                                        String attributeValue) throws EngineException {
+        StringAttribute attribute = new StringAttribute(attributeName, groupPath, AttributeVisibility.full, attributeValue);
+
+        unityManagements.setAttribute(identityCertificate, attribute);
     }
 
     private void addIdentitiesToGroup(List<String> certificateIdentities, String groupPath) throws EngineException {
