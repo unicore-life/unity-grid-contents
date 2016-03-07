@@ -88,13 +88,7 @@ public class FileContentInitializer extends ContentInitializer {
 
         for (UnicoreSiteGroup siteSubGroup : centralGroup.getSites()) {
             sites.add(siteSubGroup.getGroup());
-
-            processSiteGroup(
-                    centralGroupPath + "/" + siteSubGroup.getGroup(),
-                    siteSubGroup.getServers(),
-                    Optional.ofNullable(siteSubGroup.getDefaultQueue()),
-                    inspectorsGroupPath
-            );
+            processSiteGroup(centralGroupPath + "/" + siteSubGroup.getGroup(), siteSubGroup, inspectorsGroupPath);
         }
         unicoreGroups.createUnicoreCentralGroupStructure(centralGroupPath, sites);
 
@@ -110,18 +104,18 @@ public class FileContentInitializer extends ContentInitializer {
         }
         log.debug(String.format("Processing sites groups: %s", siteGroups));
         for (UnicoreSiteGroup siteGroup : siteGroups) {
-            processSiteGroup(
-                    siteGroup.getGroup(),
-                    siteGroup.getServers(),
-                    Optional.ofNullable(siteGroup.getDefaultQueue()),
-                    inspectorsGroupPath);
+            processSiteGroup(siteGroup.getGroup(), siteGroup, inspectorsGroupPath);
         }
     }
 
     private void processSiteGroup(String siteGroupPath,
-                                  List<String> siteGroupServers,
-                                  Optional<String> defaultQueue,
+                                  UnicoreSiteGroup siteGroup,
                                   String inspectorsGroupPath) throws EngineException {
+        final List<String> siteGroupServers = siteGroup.getServers();
+        final Optional<String> defaultQueue = Optional.ofNullable(siteGroup.getDefaultQueue());
+
+        // TODO: add agents and banned
+
         unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath, defaultQueue);
 
         unicoreEntities.addDistinguishedNamesToGroup(siteGroupServers, siteGroupPath + "/servers");
