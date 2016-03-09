@@ -19,11 +19,13 @@ import java.util.Set;
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ADD_DEFAULT_GROUPS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_GROUP;
+import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_PROJECT;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_QUEUE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_SUPPLEMENTARY_GROUPS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_XLOGIN;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.GROUP;
+import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.PROJECT;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.QUEUE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.SUPPLEMENTARY_GROUPS;
@@ -89,6 +91,8 @@ public class UnicoreTypes {
                 ADD_DEFAULT_GROUPS.getAttributeName(),
                 QUEUE.getAttributeName(),
                 DEFAULT_QUEUE.getAttributeName(),
+                PROJECT.getAttributeName(),
+                DEFAULT_PROJECT.getAttributeName(),
                 VIRTUAL_ORGANISATIONS.getAttributeName()
         };
         for (String attribute : stringAttributes) {
@@ -99,7 +103,7 @@ public class UnicoreTypes {
             AttributeType newAttributeType = new AttributeType(attribute, new StringAttributeSyntax(), messageSource);
             newAttributeType.setMinElements(1);
             newAttributeType.setMaxElements(16);
-            ((StringAttributeSyntax) newAttributeType.getValueType()).setMaxLength(200);
+            ((StringAttributeSyntax) newAttributeType.getValueType()).setMaxLength(512);
             ((StringAttributeSyntax) newAttributeType.getValueType()).setMinLength(1);
 
             unityManagements.addAttribute(newAttributeType);

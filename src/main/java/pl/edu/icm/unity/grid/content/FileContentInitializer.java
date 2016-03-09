@@ -85,8 +85,8 @@ public class FileContentInitializer extends ContentInitializer {
         }
     }
 
-    private void processCentralGroup(UnicoreCentralGroup centralGroup,
-                                     String inspectorsGroupPath) throws EngineException {
+    private void processCentralGroup(final UnicoreCentralGroup centralGroup,
+                                     final String inspectorsGroupPath) throws EngineException {
         final String centralGroupPath = centralGroup.getGroup();
         final List<String> sites = Lists.newArrayList();
 
@@ -112,9 +112,9 @@ public class FileContentInitializer extends ContentInitializer {
         }
     }
 
-    private void processSiteGroup(String siteGroupPath,
-                                  UnicoreSiteGroup siteGroup,
-                                  String inspectorsGroupPath) throws EngineException {
+    private void processSiteGroup(final String siteGroupPath,
+                                  final UnicoreSiteGroup siteGroup,
+                                  final String inspectorsGroupPath) throws EngineException {
         final List<String> siteGroupServers = siteGroup.getServers();
         final Optional<String> defaultQueue = Optional.ofNullable(siteGroup.getDefaultQueue());
 

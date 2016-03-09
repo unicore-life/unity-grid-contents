@@ -1,6 +1,6 @@
 {
   "inspectorsGroup": {
-    "group": "/_internal/inspectors",
+    "group": "/unicore-inspectors",
     "identities": [
       "CN=unicore-portal.grid.icm.edu.pl,OU=Domain Control Validated"
     ]

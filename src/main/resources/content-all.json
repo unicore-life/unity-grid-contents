@@ -29,24 +29,28 @@
         {
           "group": "CYFRONET",
           "servers": [
+            "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=uni-ce.grid.cyf-kr.edu.pl,O=Cyfronet,O=GRID,C=PL"
           ]
         },
         {
           "group": "ICM",
           "servers": [
+            "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
           ]
         },
         {
           "group": "TASK",
           "servers": [
+            "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=unicorex/unicore.grid.task.gda.pl,O=TASK,O=GRID,C=PL"
           ]
         },
         {
           "group": "WCSS",
           "servers": [
+            "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=odysseus.trojan.kdm.wcss.pl,O=WCSS,O=GRID,C=PL"
           ]
         }
@@ -58,12 +62,14 @@
         {
           "group": "ICM",
           "servers": [
+            "CN=servorch-testbed/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=unicorex/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
           ]
         },
         {
           "group": "NCU",
           "servers": [
+            "CN=servorch-testbed/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=unicorex-testbed/unicore.studmat.umk.pl,OU=UMK,O=UW,C=PL"
           ]
         }
