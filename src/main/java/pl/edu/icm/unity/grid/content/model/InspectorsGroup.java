@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Objects;
 
-import static pl.edu.icm.unity.grid.content.model.CollectionsHelper.unmodifiableOrEmptyOnNull;
+import static pl.edu.icm.unity.grid.content.util.CollectionsHelper.unmodifiableOrEmptyOnNull;
 
 /**
  * @author R.Kluszczynski

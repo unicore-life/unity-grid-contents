@@ -3,6 +3,7 @@ package pl.edu.icm.unity.grid.content.model
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
+import pl.edu.icm.unity.stdext.identity.X500Identity
 import spock.lang.Specification
 
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE
@@ -23,7 +24,7 @@ class UnicoreContentTest extends Specification {
         def expectedCentralGroup = new UnicoreCentralGroup('/vo.unicore', expectedCentralSites, ['CN=central-server'])
 
         def expectedSiteGroupAgent = new ObjectNode(new JsonNodeFactory())
-        expectedSiteGroupAgent.put('dn', 'CN=monitor,O=unicore')
+        expectedSiteGroupAgent.put(X500Identity.ID, 'CN=monitor,O=unicore')
         expectedSiteGroupAgent.put(XLOGIN.attributeName, 'monitor')
         expectedSiteGroupAgent.put(ROLE.attributeName, 'user')
         def expectedSiteGroup =
