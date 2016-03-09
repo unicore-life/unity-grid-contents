@@ -1,10 +1,10 @@
 {
   "inspectorsGroup": {
-    "group": "/_internal/inspectors",
+    "group": "/testbed-inspectors",
     "identities": [
+      "CN=unicore.studmat.umk.pl,OU=ICM,O=UW,C=PL",
       "CN=unicore-portal.grid.icm.edu.pl,OU=Domain Control Validated",
-      "CN=portal/unicore.studmat.umk.pl,OU=UMK,O=UW,C=PL",
-      "CN=unicore.studmat.umk.pl,OU=ICM,O=UW,C=PL"
+      "CN=portal/unicore.studmat.umk.pl,OU=UMK,O=UW,C=PL"
     ]
   },
   "unicoreCentralGroups": [
@@ -13,14 +13,30 @@
       "sites": [
         {
           "group": "ICM",
+          "agents": [
+            {
+              "dn": "CN=nagios/alfred.studmat.umk.pl,O=ICM,O=Usluga,O=PL-Grid,C=PL",
+              "urn:unicore:attrType:xlogin": "plgmonitoring",
+              "urn:unicore:attrType:role": "user"
+            }
+          ],
           "servers": [
-            "CN=unicorex/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
-            "CN=portal/unicore.studmat.umk.pl,OU=UMK,O=UW,C=PL"
+            "CN=portal/unicore.studmat.umk.pl,OU=UMK,O=UW,C=PL",
+            "CN=servorch-testbed/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
+            "CN=unicorex/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
           ]
         },
         {
           "group": "NCU",
+          "agents": [
+            {
+              "dn": "CN=nagios/alfred.studmat.umk.pl,O=ICM,O=Usluga,O=PL-Grid,C=PL",
+              "urn:unicore:attrType:xlogin": "plgmonitoring",
+              "urn:unicore:attrType:role": "user"
+            }
+          ],
           "servers": [
+            "CN=servorch-testbed/testbed.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=unicorex-testbed/unicore.studmat.umk.pl,OU=UMK,O=UW,C=PL"
           ]
         }

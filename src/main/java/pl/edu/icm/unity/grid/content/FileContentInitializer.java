@@ -1,5 +1,7 @@
 package pl.edu.icm.unity.grid.content;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,8 @@ import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
 import pl.edu.icm.unity.stdext.utils.InitializerCommon;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,20 +85,14 @@ public class FileContentInitializer extends ContentInitializer {
         }
     }
 
-    private void processCentralGroup(UnicoreCentralGroup centralGroup,
-                                     String inspectorsGroupPath) throws EngineException {
+    private void processCentralGroup(final UnicoreCentralGroup centralGroup,
+                                     final String inspectorsGroupPath) throws EngineException {
         final String centralGroupPath = centralGroup.getGroup();
         final List<String> sites = Lists.newArrayList();
 
         for (UnicoreSiteGroup siteSubGroup : centralGroup.getSites()) {
             sites.add(siteSubGroup.getGroup());
-
-            processSiteGroup(
-                    centralGroupPath + "/" + siteSubGroup.getGroup(),
-                    siteSubGroup.getServers(),
-                    Optional.ofNullable(siteSubGroup.getDefaultQueue()),
-                    inspectorsGroupPath
-            );
+            processSiteGroup(centralGroupPath + "/" + siteSubGroup.getGroup(), siteSubGroup, inspectorsGroupPath);
         }
         unicoreGroups.createUnicoreCentralGroupStructure(centralGroupPath, sites);
 
@@ -110,19 +108,40 @@ public class FileContentInitializer extends ContentInitializer {
         }
         log.debug(String.format("Processing sites groups: %s", siteGroups));
         for (UnicoreSiteGroup siteGroup : siteGroups) {
-            processSiteGroup(
-                    siteGroup.getGroup(),
-                    siteGroup.getServers(),
-                    Optional.ofNullable(siteGroup.getDefaultQueue()),
-                    inspectorsGroupPath);
+            processSiteGroup(siteGroup.getGroup(), siteGroup, inspectorsGroupPath);
         }
     }
 
-    private void processSiteGroup(String siteGroupPath,
-                                  List<String> siteGroupServers,
-                                  Optional<String> defaultQueue,
-                                  String inspectorsGroupPath) throws EngineException {
+    private void processSiteGroup(final String siteGroupPath,
+                                  final UnicoreSiteGroup siteGroup,
+                                  final String inspectorsGroupPath) throws EngineException {
+        final List<String> siteGroupServers = siteGroup.getServers();
+        final Optional<String> defaultQueue = Optional.ofNullable(siteGroup.getDefaultQueue());
+
         unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath, defaultQueue);
+
+        final String dnKey = "dn";
+        for (ObjectNode agentNode : siteGroup.getAgents()) {
+            final JsonNode dnNode = agentNode.findValue(dnKey);
+            if (dnNode == null || "".equalsIgnoreCase(dnNode.asText(""))) {
+                break;
+            }
+            final String idenityDn = dnNode.asText();
+            final String siteAgentsGroupPath = siteGroupPath + "/agents";
+            unicoreEntities.addDistinguishedNamesToGroup(Arrays.asList(idenityDn), siteAgentsGroupPath);
+
+            final Iterator<String> iterator = agentNode.fieldNames();
+            while (iterator.hasNext()) {
+                final String attributeKey = iterator.next();
+                if (dnKey.equals(attributeKey)) {
+                    continue;
+                }
+
+                final String attributeValue = agentNode.get(attributeKey).asText();
+                unicoreEntities.setEntityGroupAttribute(idenityDn, siteAgentsGroupPath, attributeKey, attributeValue);
+            }
+        }
+        unicoreEntities.addDistinguishedNamesToGroup(siteGroup.getBanned(), siteGroupPath + "/banned");
 
         unicoreEntities.addDistinguishedNamesToGroup(siteGroupServers, siteGroupPath + "/servers");
         unicoreEntities.addDistinguishedNamesToGroup(siteGroupServers, inspectorsGroupPath);

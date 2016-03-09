@@ -15,6 +15,8 @@ public enum UnicoreAttributes {
     ADD_DEFAULT_GROUPS("urn:unicore:attrType:addDefaultGroups"),
     QUEUE("urn:unicore:attrType:queue"),
     DEFAULT_QUEUE("urn:unicore:attrType:defaultQueue"),
+    PROJECT("urn:unicore:attrType:project"),
+    DEFAULT_PROJECT("urn:unicore:attrType:defaultProject"),
     VIRTUAL_ORGANISATIONS("urn:SAML:voprofile:group");
 
     private final String attributeName;

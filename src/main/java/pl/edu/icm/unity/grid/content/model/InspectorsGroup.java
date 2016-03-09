@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Objects;
 
+import static pl.edu.icm.unity.grid.content.model.CollectionsHelper.unmodifiableOrEmptyOnNull;
+
 /**
  * @author R.Kluszczynski
  */
@@ -17,7 +19,7 @@ public class InspectorsGroup {
     public InspectorsGroup(@JsonProperty("group") String groupPath,
                            @JsonProperty("identities") List<String> identities) {
         this.groupPath = groupPath;
-        this.identities = identities;
+        this.identities = unmodifiableOrEmptyOnNull(identities);
     }
 
     public String getGroup() {

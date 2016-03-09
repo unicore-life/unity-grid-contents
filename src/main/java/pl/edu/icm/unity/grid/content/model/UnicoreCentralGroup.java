@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Objects;
 
+import static pl.edu.icm.unity.grid.content.model.CollectionsHelper.unmodifiableOrEmptyOnNull;
+
 /**
  * @author R.Kluszczynski
  */
@@ -19,8 +21,8 @@ public class UnicoreCentralGroup {
                                @JsonProperty("sites") List<UnicoreSiteGroup> sites,
                                @JsonProperty("servers") List<String> servers) {
         this.groupPath = groupPath;
-        this.sites = sites;
-        this.servers = servers;
+        this.sites = unmodifiableOrEmptyOnNull(sites);
+        this.servers = unmodifiableOrEmptyOnNull(servers);
     }
 
     public String getGroup() {

@@ -32,6 +32,13 @@
     {
       "group": "/vo.site",
       "defaultQueue": "long",
+      "agents": [
+        {
+          "dn": "CN=monitor,O=unicore",
+          "urn:unicore:attrType:xlogin": "monitor",
+          "urn:unicore:attrType:role": "user"
+        }
+      ],
       "servers": [
         "CN=long-site,O=unicore"
       ]

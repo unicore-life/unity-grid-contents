@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Objects;
 
+import static pl.edu.icm.unity.grid.content.model.CollectionsHelper.unmodifiableOrEmptyOnNull;
+
 /**
  * @author R.Kluszczynski
  */
@@ -23,9 +25,9 @@ public class UnicoreContent {
                           @JsonProperty("unicoreSiteGroups") List<UnicoreSiteGroup> unicoreSiteGroups,
                           @JsonProperty("unicorePortalGroups") List<String> unicorePortalGroups) {
         this.inspectorsGroup = inspectorsGroup;
-        this.unicoreCentralGroups = unicoreCentralGroups;
-        this.unicoreSiteGroups = unicoreSiteGroups;
-        this.unicorePortalGroups = unicorePortalGroups;
+        this.unicoreCentralGroups = unmodifiableOrEmptyOnNull(unicoreCentralGroups);
+        this.unicoreSiteGroups = unmodifiableOrEmptyOnNull(unicoreSiteGroups);
+        this.unicorePortalGroups = unmodifiableOrEmptyOnNull(unicorePortalGroups);
     }
 
     public InspectorsGroup getInspectorsGroup() {

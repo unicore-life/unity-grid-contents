@@ -13,6 +13,7 @@ import pl.edu.icm.unity.server.api.IdentitiesManagement;
 import pl.edu.icm.unity.server.utils.Log;
 import pl.edu.icm.unity.stdext.identity.X500Identity;
 import pl.edu.icm.unity.types.EntityState;
+import pl.edu.icm.unity.types.basic.Attribute;
 import pl.edu.icm.unity.types.basic.AttributeStatement2;
 import pl.edu.icm.unity.types.basic.AttributeType;
 import pl.edu.icm.unity.types.basic.EntityParam;
@@ -21,6 +22,7 @@ import pl.edu.icm.unity.types.basic.GroupContents;
 import pl.edu.icm.unity.types.basic.IdentityParam;
 import pl.edu.icm.unity.types.basic.IdentityTaV;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 import static java.lang.String.format;
@@ -65,6 +67,13 @@ class UnityManagements {
         attributesManagement
                 .addAttributeType(attributeType);
         log.info(String.format("Added new attribute type: %s", attributeType));
+    }
+
+    <T> void setAttribute(String identity, Attribute<T> attribute) throws EngineException {
+        attributesManagement.setAttribute(
+                new EntityParam(
+                        new IdentityTaV(X500Identity.ID, identity)), attribute, true);
+        log.info(String.format("Updating for %s attribute: %s", identity, attribute));
     }
 
     boolean existsIdentity(String identity) throws EngineException {
@@ -125,7 +134,7 @@ class UnityManagements {
                 groupsManagement.getContents("/", GroupContents.METADATA).getGroup() : new Group(groupPath);
         group.setAttributeStatements(statements);
         groupsManagement.updateGroup(group.toString(), group);
-        log.trace(String.format("Group '%s' updated with statements: %s", group, statements));
+        log.trace(String.format("Group '%s' updated with statements: %s", group, Arrays.toString(statements)));
     }
 
     void addMemberFromParentGroup(String groupPath, EntityParam entityParam) throws EngineException {
