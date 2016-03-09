@@ -34,7 +34,7 @@
       "defaultQueue": "long",
       "agents": [
         {
-          "dn": "CN=monitor,O=unicore",
+          "x500Name": "CN=monitor,O=unicore",
           "urn:unicore:attrType:xlogin": "monitor",
           "urn:unicore:attrType:role": "user"
         }

@@ -61,8 +61,8 @@ unityServer.core.initializers.2=testbedGridInitializer
 All of presented initializers use configuration files boundled with archive as resources.
 In above example, they are respectively:
 
-* [content-plgrid.json](src/main/resources/content-plgrid.json).
-* [content-hydra.json](src/main/resources/content-hydra.json).
+* [content-plgrid.json](src/main/resources/content-plgrid.json),
+* [content-hydra.json](src/main/resources/content-hydra.json),
 * [content-testbed.json](src/main/resources/content-testbed.json).
 
 Remember, that also here **Empty requirement** needs to be defined in Unity IDM configuration file

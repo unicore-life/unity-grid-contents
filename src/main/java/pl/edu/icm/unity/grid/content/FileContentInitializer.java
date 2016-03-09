@@ -14,6 +14,7 @@ import pl.edu.icm.unity.grid.content.util.ResourceManagement;
 import pl.edu.icm.unity.grid.content.util.UnicoreEntities;
 import pl.edu.icm.unity.grid.content.util.UnicoreGroups;
 import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
+import pl.edu.icm.unity.stdext.identity.X500Identity;
 import pl.edu.icm.unity.stdext.utils.InitializerCommon;
 
 import java.io.IOException;
@@ -21,6 +22,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+
+import static pl.edu.icm.unity.grid.content.util.CollectionsHelper.isListNullOrEmpty;
 
 /**
  * Populates DB with UNICORE related contents defined in configuration file.
@@ -75,7 +78,7 @@ public class FileContentInitializer extends ContentInitializer {
 
     private void processCentralGroups(List<UnicoreCentralGroup> centralGroups,
                                       String inspectorsGroupPath) throws EngineException {
-        if (centralGroups == null) {
+        if (isListNullOrEmpty(centralGroups)) {
             log.debug("No central groups in configuration.");
             return;
         }
@@ -102,7 +105,7 @@ public class FileContentInitializer extends ContentInitializer {
 
     private void processSiteGroups(List<UnicoreSiteGroup> siteGroups,
                                    String inspectorsGroupPath) throws EngineException {
-        if (siteGroups == null) {
+        if (isListNullOrEmpty(siteGroups)) {
             log.debug("No site groups in configuration.");
             return;
         }
@@ -120,26 +123,8 @@ public class FileContentInitializer extends ContentInitializer {
 
         unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath, defaultQueue);
 
-        final String dnKey = "dn";
         for (ObjectNode agentNode : siteGroup.getAgents()) {
-            final JsonNode dnNode = agentNode.findValue(dnKey);
-            if (dnNode == null || "".equalsIgnoreCase(dnNode.asText(""))) {
-                break;
-            }
-            final String idenityDn = dnNode.asText();
-            final String siteAgentsGroupPath = siteGroupPath + "/agents";
-            unicoreEntities.addDistinguishedNamesToGroup(Arrays.asList(idenityDn), siteAgentsGroupPath);
-
-            final Iterator<String> iterator = agentNode.fieldNames();
-            while (iterator.hasNext()) {
-                final String attributeKey = iterator.next();
-                if (dnKey.equals(attributeKey)) {
-                    continue;
-                }
-
-                final String attributeValue = agentNode.get(attributeKey).asText();
-                unicoreEntities.setEntityGroupAttribute(idenityDn, siteAgentsGroupPath, attributeKey, attributeValue);
-            }
+            processSiteAgent(siteGroupPath, agentNode);
         }
         unicoreEntities.addDistinguishedNamesToGroup(siteGroup.getBanned(), siteGroupPath + "/banned");
 
@@ -147,9 +132,34 @@ public class FileContentInitializer extends ContentInitializer {
         unicoreEntities.addDistinguishedNamesToGroup(siteGroupServers, inspectorsGroupPath);
     }
 
+    private void processSiteAgent(String siteGroupPath, ObjectNode agentNode) throws EngineException {
+        final String x500NameKey = X500Identity.ID;
+        final JsonNode x500NameNode = agentNode.findValue(x500NameKey);
+        if (x500NameNode == null || "".equalsIgnoreCase(x500NameNode.asText(""))) {
+            log.warn(String.format("No '%s' key in agent entry '%s'. Skipping it.", x500NameKey, agentNode.asText()));
+            return;
+        }
+
+        final String identityX500Name = x500NameNode.asText();
+        final String siteAgentsGroupPath = siteGroupPath + "/agents";
+        unicoreEntities.addDistinguishedNamesToGroup(Arrays.asList(identityX500Name), siteAgentsGroupPath);
+
+        final Iterator<String> iterator = agentNode.fieldNames();
+        while (iterator.hasNext()) {
+            final String attributeKey = iterator.next();
+            if (x500NameKey.equals(attributeKey)) {
+                continue;
+            }
+
+            final String attributeValue = agentNode.get(attributeKey).asText();
+            unicoreEntities.setEntityGroupAttribute(identityX500Name, siteAgentsGroupPath, attributeKey, attributeValue);
+        }
+        log.info(String.format("Agent '%s' added to group '%s'.", identityX500Name, siteAgentsGroupPath));
+    }
+
     private void processPortalGroups(List<String> portalGroups) throws EngineException {
-        if (portalGroups == null) {
-            log.debug("No site groups in configuration.");
+        if (isListNullOrEmpty(portalGroups)) {
+            log.debug("No portal groups in configuration.");
             return;
         }
         log.debug(String.format("Processing portal groups: %s", portalGroups));

@@ -15,7 +15,7 @@
           "group": "ICM",
           "agents": [
             {
-              "dn": "CN=nagios/alfred.studmat.umk.pl,O=ICM,O=Usluga,O=PL-Grid,C=PL",
+              "x500Name": "CN=nagios/alfred.studmat.umk.pl,O=ICM,O=Usluga,O=PL-Grid,C=PL",
               "urn:unicore:attrType:xlogin": "plgmonitoring",
               "urn:unicore:attrType:role": "user"
             }
@@ -30,7 +30,7 @@
           "group": "NCU",
           "agents": [
             {
-              "dn": "CN=nagios/alfred.studmat.umk.pl,O=ICM,O=Usluga,O=PL-Grid,C=PL",
+              "x500Name": "CN=nagios/alfred.studmat.umk.pl,O=ICM,O=Usluga,O=PL-Grid,C=PL",
               "urn:unicore:attrType:xlogin": "plgmonitoring",
               "urn:unicore:attrType:role": "user"
             }
