@@ -11,6 +11,7 @@ import pl.edu.icm.unity.stdext.attr.StringAttribute;
 import pl.edu.icm.unity.types.basic.AttributeStatement2;
 import pl.edu.icm.unity.types.basic.AttributeVisibility;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,7 +52,7 @@ public class UnicoreGroups {
                         new EnumAttribute(AUTHORIZATION_ROLE, inspectorsGroupPath, AttributeVisibility.local, "Inspector")
                 )
         };
-        unityManagements.updateGroupWithStatements(inspectorsGroupPath, inspectorsGroupStatements);
+        unityManagements.updateGroupWithStatements(inspectorsGroupPath, Arrays.asList(inspectorsGroupStatements));
 
         log.info("Created inspectors group: " + inspectorsGroupPath);
     }
@@ -72,8 +73,7 @@ public class UnicoreGroups {
                     )
             );
         }
-        unicoreGroupStatements.add(
-                createRoleAttributeStatement(unicoreGroupPath, "servers", "server"));
+        unicoreGroupStatements.add(createRoleAttributeStatement(unicoreGroupPath, "servers", "server"));
         unityManagements.updateGroupWithStatements(unicoreGroupPath, unicoreGroupStatements);
     }
 
