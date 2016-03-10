@@ -142,7 +142,7 @@ class UnityManagements {
     void updateRootGroupWithStatements(AttributeStatement2[] statements) throws EngineException {
         final Group rootGroup = groupsManagement.getContents("/", GroupContents.EVERYTHING).getGroup();
         AttributeStatement2[] currentStatements = rootGroup.getAttributeStatements();
-        log.debug("Overwriting ROOT group with statements: " + Arrays.toString(currentStatements));
+        log.debug("Updating root group with current statements: " + Arrays.toString(currentStatements));
 
         List<AttributeStatement2> updatedRootStatements = Lists.newArrayList(currentStatements);
         for (AttributeStatement2 statement : statements) {
