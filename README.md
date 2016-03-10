@@ -12,7 +12,7 @@ Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) 
 First download the archive:
 
 ```
-curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.1.6/unity-grid-contents-0.1.6.jar
+curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.1.7/unity-grid-contents-0.1.7.jar
 ```
 
 and then place it in `lib/` directory of Unity IDM installation
