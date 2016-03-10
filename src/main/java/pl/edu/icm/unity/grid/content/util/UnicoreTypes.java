@@ -58,7 +58,7 @@ public class UnicoreTypes {
                         new EnumAttribute(AUTHORIZATION_ROLE, "/", AttributeVisibility.local, "Inspector")
                 )
         };
-        unityManagements.updateGroupWithStatements("/", rootStatements);
+        unityManagements.updateRootGroupWithStatements(rootStatements);
     }
 
     public void initializeUnicoreAttributeTypes() throws EngineException {

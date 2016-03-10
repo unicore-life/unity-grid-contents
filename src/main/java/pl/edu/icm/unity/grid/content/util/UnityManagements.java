@@ -1,5 +1,6 @@
 package pl.edu.icm.unity.grid.content.util;
 
+import com.google.common.collect.Lists;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,6 +25,7 @@ import pl.edu.icm.unity.types.basic.IdentityTaV;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static java.lang.String.format;
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
@@ -90,7 +92,7 @@ class UnityManagements {
         }
     }
 
-    public void addEntity(String identity) throws EngineException {
+    void addEntity(String identity) throws EngineException {
         identitiesManagement.addEntity(
                 new IdentityParam(X500Identity.ID, identity),
                 EMPTY_REQUIREMENT,
@@ -125,18 +127,6 @@ class UnityManagements {
         log.debug(String.format("Groups exists or created for path: '%s'", groupPath));
     }
 
-    void updateGroupWithStatements(String groupPath, Collection<AttributeStatement2> statements) throws EngineException {
-        updateGroupWithStatements(groupPath, statements.toArray(new AttributeStatement2[statements.size()]));
-    }
-
-    void updateGroupWithStatements(String groupPath, AttributeStatement2[] statements) throws EngineException {
-        Group group = "/".equals(groupPath) ?
-                groupsManagement.getContents("/", GroupContents.METADATA).getGroup() : new Group(groupPath);
-        group.setAttributeStatements(statements);
-        groupsManagement.updateGroup(group.toString(), group);
-        log.trace(String.format("Group '%s' updated with statements: %s", group, Arrays.toString(statements)));
-    }
-
     void addMemberFromParentGroup(String groupPath, EntityParam entityParam) throws EngineException {
         try {
             groupsManagement.addMemberFromParent(groupPath, entityParam);
@@ -149,6 +139,32 @@ class UnityManagements {
         }
     }
 
+    void updateRootGroupWithStatements(AttributeStatement2[] statements) throws EngineException {
+        final Group rootGroup = groupsManagement.getContents("/", GroupContents.EVERYTHING).getGroup();
+        AttributeStatement2[] currentStatements = rootGroup.getAttributeStatements();
+        log.debug("Updating root group with current statements: " + Arrays.toString(currentStatements));
+
+        List<AttributeStatement2> updatedRootStatements = Lists.newArrayList(currentStatements);
+        for (AttributeStatement2 statement : statements) {
+            if (!existsStatementInList(statement, currentStatements)) {
+                updatedRootStatements.add(statement);
+            }
+        }
+        updateGroupWithStatements("/", updatedRootStatements);
+    }
+
+    void updateGroupWithStatements(String groupPath, Collection<AttributeStatement2> statements) throws EngineException {
+        updateGroupWithStatements(groupPath, statements.toArray(new AttributeStatement2[statements.size()]));
+    }
+
+    private void updateGroupWithStatements(String groupPath, AttributeStatement2[] statements) throws EngineException {
+        Group group = "/".equals(groupPath) ?
+                groupsManagement.getContents("/", GroupContents.METADATA).getGroup() : new Group(groupPath);
+        group.setAttributeStatements(statements);
+        groupsManagement.updateGroup(group.toString(), group);
+        log.trace(String.format("Group '%s' updated with statements: %s", group, Arrays.toString(statements)));
+    }
+
     private void addGroup(String groupPath) throws EngineException {
         Group newGroup = new Group(groupPath);
         try {
@@ -158,6 +174,34 @@ class UnityManagements {
             log.warn(String.format("Could not add not existing group '%s'!", groupPath), engineException);
             throw engineException;
         }
+    }
+
+    private boolean existsStatementInList(AttributeStatement2 statement, AttributeStatement2[] statements) {
+        for (AttributeStatement2 attributeStatement : statements) {
+            if (equalsAttributeStatements(statement, attributeStatement)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean equalsAttributeStatements(AttributeStatement2 left, AttributeStatement2 right) {
+        if (!left.getCondition().equals(right.getCondition())) {
+            return false;
+        }
+        if (left.dynamicAttributeMode() != right.dynamicAttributeMode()) {
+            return false;
+        }
+        if (!left.dynamicAttributeMode() && !right.dynamicAttributeMode()) {
+            return left.getFixedAttribute().equals(right.getFixedAttribute());
+        }
+        if (left.dynamicAttributeMode() && right.dynamicAttributeMode()) {
+            if (!left.getDynamicAttributeType().equals(right.getDynamicAttributeType()) ||
+                    !left.getDynamicAttributeExpression().equals(right.getDynamicAttributeExpression())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnityManagements.class);
