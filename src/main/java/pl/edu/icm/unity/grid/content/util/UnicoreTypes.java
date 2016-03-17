@@ -34,6 +34,8 @@ import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
 import static pl.edu.icm.unity.sysattrs.SystemAttributeTypes.AUTHORIZATION_ROLE;
 
 /**
+ * Component with methods workgin with Unity IDM attributes.
+ *
  * @author R.Kluszczynski
  */
 @Component

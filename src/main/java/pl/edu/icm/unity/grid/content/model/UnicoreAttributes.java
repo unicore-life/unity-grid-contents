@@ -1,6 +1,8 @@
 package pl.edu.icm.unity.grid.content.model;
 
 /**
+ * All UNICORE attributes with names.
+ *
  * @author R.Kluszczynski
  */
 public enum UnicoreAttributes {

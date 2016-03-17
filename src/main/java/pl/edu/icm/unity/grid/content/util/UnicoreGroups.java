@@ -27,6 +27,8 @@ import static pl.edu.icm.unity.stdext.utils.InitializerCommon.ORG_ATTR;
 import static pl.edu.icm.unity.sysattrs.SystemAttributeTypes.AUTHORIZATION_ROLE;
 
 /**
+ * Component with methods operating on Unity IDM groups.
+ *
  * @author R.Kluszczynski
  */
 public class UnicoreGroups {
