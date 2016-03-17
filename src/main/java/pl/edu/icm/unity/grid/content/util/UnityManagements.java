@@ -1,6 +1,7 @@
 package pl.edu.icm.unity.grid.content.util;
 
 import com.google.common.collect.Lists;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,6 +32,9 @@ import static java.lang.String.format;
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 
 /**
+ * Single point of entry to Unity IDM management system.
+ * No other class in this project should access it directly.
+ *
  * @author R.Kluszczynski
  */
 @Component
@@ -131,8 +135,12 @@ class UnityManagements {
         try {
             groupsManagement.addMemberFromParent(groupPath, entityParam);
             log.debug(String.format("Added entity '%s' to group: '%s'", entityParam, groupPath));
-        } catch (IllegalGroupValueException e) {
-            log.warn(String.format("Entity '%s' not added to group '%s': %s", entityParam, groupPath, e.getMessage()));
+        } catch (IllegalGroupValueException illegalGroupException) {
+            final String message = illegalGroupException.getMessage();
+            final Level logLevel =
+                    (message != null && message.startsWith(ALREADY_GROUP_MEMBER_MESSAGE)) ? Level.INFO : Level.WARN;
+
+            log.log(logLevel, String.format("Entity '%s' not added to group '%s': %s", entityParam, groupPath, message));
         } catch (EngineException engineException) {
             log.warn(String.format("Problem adding entity '%s' to group '%s'", entityParam, groupPath), engineException);
             throw engineException;
@@ -207,4 +215,5 @@ class UnityManagements {
     private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnityManagements.class);
 
     private static final String EMPTY_REQUIREMENT = "Empty requirement";
+    private static final String ALREADY_GROUP_MEMBER_MESSAGE = "The entity is already a member of this group";
 }
