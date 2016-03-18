@@ -21,6 +21,8 @@ import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_ROLE
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 
 /**
+ * Component allowing to work with Unity IDM entities and identities.
+ *
  * @author R.Kluszczynski
  */
 @Component

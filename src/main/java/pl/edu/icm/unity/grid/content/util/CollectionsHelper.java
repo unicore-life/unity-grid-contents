@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Helper class with used collections methods.
+ *
  * @author R.Kluszczynski
  */
 public final class CollectionsHelper {

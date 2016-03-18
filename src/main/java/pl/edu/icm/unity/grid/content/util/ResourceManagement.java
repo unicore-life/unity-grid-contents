@@ -16,6 +16,8 @@ import java.util.Arrays;
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 
 /**
+ * Helper method for working with resources.
+ *
  * @author R.Kluszczynski
  */
 @Component
