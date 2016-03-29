@@ -5,6 +5,7 @@ middleware. It helps to setup all attributes, groups and server entities togethe
 security logs are misleading especially for newbies.
 
 [![Build Status](https://travis-ci.org/unicore-life/unity-grid-contents.svg?branch=master)](https://travis-ci.org/unicore-life/unity-grid-contents)
+[![Download](https://api.bintray.com/packages/unicore-life/maven/unity-grid-contents/images/download.svg)](https://bintray.com/unicore-life/maven/unity-grid-contents/_latestVersion)
 
 ## Installation
 
