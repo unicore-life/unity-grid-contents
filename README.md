@@ -10,7 +10,7 @@ security logs are misleading especially for newbies.
 ## Installation
 
 Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) maven repository.
-In case of latest release version download the archive from:
+In case of latest release version download archive using command:
 
 ```
 curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.0/unity-grid-contents-0.2.0.jar
