@@ -13,13 +13,15 @@ Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) 
 First download the archive:
 
 ```
-curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.1.8/unity-grid-contents-0.1.8.jar
+curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.0/unity-grid-contents-0.1.8.jar
 ```
 
 and then place it in `lib/` directory of Unity IDM installation
 (in case of RPM distribution it is `/usr/share/unity-idm/lib/`).
 
 Version 0.1.x is for use with version 1.8.0 of Unity IDM.
+
+Version 0.2.x is for use with version 1.9.0 of Unity IDM.
 
 ## Configuration
 
