@@ -26,7 +26,6 @@ Plugin version depends on Unity IDM version which show compatibility table below
 | 1.8.0 | 0.1.x |
 | 1.9.0 | 0.2.x |
 
-
 ## Configuration
 
 The library provides generic initializer named **configurationFileInitializer** which prepares content based on
