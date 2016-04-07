@@ -10,13 +10,13 @@ security logs are misleading especially for newbies.
 ## Installation
 
 Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) maven repository.
-First download the archive:
+In case of latest release version download the archive from:
 
 ```
 curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.0/unity-grid-contents-0.2.0.jar
 ```
 
-and then place it in `lib/` directory of Unity IDM installation
+and place it in `lib/` directory of Unity IDM installation
 (in case of RPM distribution it is `/usr/share/unity-idm/lib/`).
 
 Plugin version depends on Unity IDM version which show compatibility table below.
