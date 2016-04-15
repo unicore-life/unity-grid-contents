@@ -23,7 +23,7 @@ apply plugin: 'com.novoda.bintray-release'
 
 
 dependencies {
-    def unityVersion = '1.9.0'
+    def unityVersion = '1.9.1'
 
     compile "pl.edu.icm.unity:unity-server-engine:${unityVersion}",
             "pl.edu.icm.unity:unity-server-unicore:${unityVersion}"
