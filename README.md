@@ -12,8 +12,8 @@ security logs are misleading especially for newbies.
 Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) maven repository.
 In case of latest release version download archive using command:
 
-```
-curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.0/unity-grid-contents-0.2.0.jar
+```bash
+curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.1/unity-grid-contents-0.2.1.jar
 ```
 
 and place it in `lib/` directory of Unity IDM installation
@@ -24,7 +24,7 @@ Plugin version depends on Unity IDM version which show compatibility table below
 | Unity IDM version | Plugin version |
 | --- | --- |
 | 1.8.0 | 0.1.x |
-| 1.9.0 | 0.2.x |
+| 1.9.x | 0.2.x |
 
 ## Configuration
 
