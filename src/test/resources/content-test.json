@@ -41,7 +41,10 @@
       ],
       "servers": [
         "CN=long-site,O=unicore"
-      ]
+      ],
+      "attributes": {
+        "urn:unicore:attrType:defaultQueue": "short"
+      }
     }
   ],
   "unicorePortalGroups": [

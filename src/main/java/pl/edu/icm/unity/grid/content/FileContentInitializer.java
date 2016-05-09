@@ -121,7 +121,7 @@ public class FileContentInitializer extends ContentInitializer {
         final List<String> siteGroupServers = siteGroup.getServers();
         final Optional<String> defaultQueue = Optional.ofNullable(siteGroup.getDefaultQueue());
 
-        unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath, defaultQueue);
+        unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath, siteGroup.getAttributes(), defaultQueue);
 
         for (ObjectNode agentNode : siteGroup.getAgents()) {
             processSiteAgent(siteGroupPath, agentNode);
