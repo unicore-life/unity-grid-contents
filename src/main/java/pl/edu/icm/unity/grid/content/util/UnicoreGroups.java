@@ -121,6 +121,8 @@ public class UnicoreGroups {
                 final String attributeKey = iterator.next();
                 final String attributeValue = attributesNode.get(attributeKey).asText();
 
+                // TODO: handle non existing attributes (detect or add?)
+
                 final StringAttribute stringAttribute = new StringAttribute(
                         attributeKey, unicoreSiteGroupPath, AttributeVisibility.full, attributeValue);
 
