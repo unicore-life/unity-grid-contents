@@ -8,7 +8,6 @@ import pl.edu.icm.unity.server.utils.Log;
 import pl.edu.icm.unity.server.utils.UnityMessageSource;
 import pl.edu.icm.unity.stdext.attr.EnumAttribute;
 import pl.edu.icm.unity.stdext.attr.EnumAttributeSyntax;
-import pl.edu.icm.unity.stdext.attr.StringAttributeSyntax;
 import pl.edu.icm.unity.types.basic.AttributeStatement2;
 import pl.edu.icm.unity.types.basic.AttributeType;
 import pl.edu.icm.unity.types.basic.AttributeVisibility;
@@ -31,6 +30,7 @@ import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.SUPPLEMENTARY_GROUPS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.VIRTUAL_ORGANISATIONS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
+import static pl.edu.icm.unity.grid.content.util.UnityAttributeHelper.createStringAttributeIfNotExists;
 import static pl.edu.icm.unity.sysattrs.SystemAttributeTypes.AUTHORIZATION_ROLE;
 
 /**
@@ -98,17 +98,7 @@ public class UnicoreTypes {
                 VIRTUAL_ORGANISATIONS.getAttributeName()
         };
         for (String attribute : stringAttributes) {
-            if (unityManagements.existsAttribute(attribute)) {
-                log.debug("Attribute '" + attribute + "' already exists.");
-                continue;
-            }
-            AttributeType newAttributeType = new AttributeType(attribute, new StringAttributeSyntax(), messageSource);
-            newAttributeType.setMinElements(1);
-            newAttributeType.setMaxElements(16);
-            ((StringAttributeSyntax) newAttributeType.getValueType()).setMaxLength(512);
-            ((StringAttributeSyntax) newAttributeType.getValueType()).setMinLength(1);
-
-            unityManagements.addAttribute(newAttributeType);
+            createStringAttributeIfNotExists(attribute, unityManagements, messageSource, log);
         }
     }
 

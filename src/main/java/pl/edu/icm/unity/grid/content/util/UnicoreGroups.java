@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.server.utils.Log;
+import pl.edu.icm.unity.server.utils.UnityMessageSource;
 import pl.edu.icm.unity.stdext.attr.EnumAttribute;
 import pl.edu.icm.unity.stdext.attr.StringAttribute;
 import pl.edu.icm.unity.types.basic.AttributeStatement2;
@@ -23,6 +24,7 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_QUEUE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
+import static pl.edu.icm.unity.grid.content.util.UnityAttributeHelper.createStringAttributeIfNotExists;
 import static pl.edu.icm.unity.stdext.utils.InitializerCommon.CN_ATTR;
 import static pl.edu.icm.unity.stdext.utils.InitializerCommon.EMAIL_ATTR;
 import static pl.edu.icm.unity.stdext.utils.InitializerCommon.ORG_ATTR;
@@ -38,10 +40,12 @@ import static pl.edu.icm.unity.types.basic.AttributeStatement2.ConflictResolutio
  */
 public class UnicoreGroups {
     private final UnityManagements unityManagements;
+    private final UnityMessageSource messageSource;
 
     @Autowired
-    public UnicoreGroups(UnityManagements unityManagements) {
+    public UnicoreGroups(UnityManagements unityManagements, UnityMessageSource messageSource) {
         this.unityManagements = unityManagements;
+        this.messageSource = messageSource;
     }
 
     public void createInspectorsGroup(final String inspectorsGroupPath) throws EngineException {
@@ -115,20 +119,23 @@ public class UnicoreGroups {
                         .collect(Collectors.toList())
         );
 
-        unicoreSiteGroupAttributes.ifPresent(attributesNode -> {
+        if (unicoreSiteGroupAttributes.isPresent()) {
+            final ObjectNode attributesNode = unicoreSiteGroupAttributes.get();
             final Iterator<String> iterator = attributesNode.fieldNames();
             while (iterator.hasNext()) {
                 final String attributeKey = iterator.next();
                 final String attributeValue = attributesNode.get(attributeKey).asText();
 
-                // TODO: handle non existing attributes (detect or add?)
+                // TODO: handle non existing attributes (check and skip or add?)
+                // FIXME: at the moment assuming ONLY string attribute
+                createStringAttributeIfNotExists(attributeKey, unityManagements, messageSource, log);
 
                 final StringAttribute stringAttribute = new StringAttribute(
                         attributeKey, unicoreSiteGroupPath, AttributeVisibility.full, attributeValue);
 
                 unicoreSiteGroupStatements.add(new AttributeStatement2("true", null, overwrite, stringAttribute));
             }
-        });
+        }
         defaultQueue.ifPresent(defaultQueueName -> {
             final StringAttribute defaultQueueAttribute = new StringAttribute(
                     DEFAULT_QUEUE.getAttributeName(), unicoreSiteGroupPath, AttributeVisibility.full, defaultQueueName);
