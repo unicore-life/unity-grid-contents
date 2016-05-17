@@ -126,8 +126,7 @@ public class UnicoreGroups {
                 final String attributeKey = iterator.next();
                 final String attributeValue = attributesNode.get(attributeKey).asText();
 
-                // TODO: handle non existing attributes (check and skip or add?)
-                // FIXME: at the moment assuming ONLY string attribute
+                // Note: at the moment assuming ONLY string attributes
                 createStringAttributeIfNotExists(attributeKey, unityManagements, messageSource, log);
 
                 final StringAttribute stringAttribute = new StringAttribute(
