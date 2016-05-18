@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
-import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_QUEUE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
 import static pl.edu.icm.unity.grid.content.util.UnityAttributeHelper.createStringAttributeIfNotExists;
@@ -89,8 +88,8 @@ public class UnicoreGroups {
     }
 
     public void createUnicoreSiteGroupStructure(final String unicoreSiteGroupPath,
-                                                final Optional<ObjectNode> unicoreSiteGroupAttributes,
-                                                final Optional<String> defaultQueue) throws EngineException {
+                                                final Optional<ObjectNode> unicoreSiteGroupAttributes)
+            throws EngineException {
         unityManagements.createPathGroups(unicoreSiteGroupPath);
 
         final Map<String, String> groupsToRole = Maps.newLinkedHashMap();
@@ -135,12 +134,6 @@ public class UnicoreGroups {
                 unicoreSiteGroupStatements.add(new AttributeStatement2("true", null, overwrite, stringAttribute));
             }
         }
-        defaultQueue.ifPresent(defaultQueueName -> {
-            final StringAttribute defaultQueueAttribute = new StringAttribute(
-                    DEFAULT_QUEUE.getAttributeName(), unicoreSiteGroupPath, AttributeVisibility.full, defaultQueueName);
-
-            unicoreSiteGroupStatements.add(new AttributeStatement2("true", null, overwrite, defaultQueueAttribute));
-        });
 
         unityManagements.updateGroupWithStatements(unicoreSiteGroupPath, unicoreSiteGroupStatements);
     }

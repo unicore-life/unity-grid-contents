@@ -19,21 +19,18 @@ public class UnicoreSiteGroup {
     private final List<String> banned;
     private final List<String> servers;
     private final Optional<ObjectNode> attributes;
-    private final String defaultQueue;
 
     @JsonCreator
     public UnicoreSiteGroup(@JsonProperty("group") String group,
                             @JsonProperty("agents") List<ObjectNode> agents,
                             @JsonProperty("banned") List<String> banned,
                             @JsonProperty("servers") List<String> servers,
-                            @JsonProperty("attributes") ObjectNode attributes,
-                            @JsonProperty("defaultQueue") String defaultQueue) {
+                            @JsonProperty("attributes") ObjectNode attributes) {
         this.group = group;
         this.agents = unmodifiableOrEmptyOnNull(agents);
         this.banned = unmodifiableOrEmptyOnNull(banned);
         this.servers = unmodifiableOrEmptyOnNull(servers);
         this.attributes = attributes == null ? Optional.empty() : Optional.of(attributes.deepCopy());
-        this.defaultQueue = defaultQueue;
     }
 
     public String getGroup() {
@@ -56,15 +53,10 @@ public class UnicoreSiteGroup {
         return attributes;
     }
 
-    public String getDefaultQueue() {
-        return defaultQueue;
-    }
-
     @Override
     public String toString() {
-        return String.format(
-                "UnicoreSiteGroup{group='%s', agents=%s, banned=%s, servers=%s, attributes=%s, defaultQueue='%s'}",
-                group, agents, banned, servers, attributes, defaultQueue);
+        return String.format("UnicoreSiteGroup{group='%s', agents=%s, banned=%s, servers=%s, attributes=%s}",
+                group, agents, banned, servers, attributes);
     }
 
     @Override
@@ -76,12 +68,11 @@ public class UnicoreSiteGroup {
                 Objects.equals(agents, that.agents) &&
                 Objects.equals(banned, that.banned) &&
                 Objects.equals(servers, that.servers) &&
-                Objects.equals(attributes, that.attributes) &&
-                Objects.equals(defaultQueue, that.defaultQueue);
+                Objects.equals(attributes, that.attributes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(group, agents, banned, servers, attributes, defaultQueue);
+        return Objects.hash(group, agents, banned, servers, attributes);
     }
 }

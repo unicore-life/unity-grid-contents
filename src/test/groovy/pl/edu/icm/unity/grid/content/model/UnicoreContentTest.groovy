@@ -19,8 +19,8 @@ class UnicoreContentTest extends Specification {
         given:
         def expectedInspectorsGroup = new InspectorsGroup('/inspectors', ['CN=inspector1,C=PL', 'CN=inspector2,C=DE'])
         def expectedCentralSites = [
-                new UnicoreSiteGroup('site-1', null, null, ['CN=site-1,O=unicore'], null, null),
-                new UnicoreSiteGroup('site-2', null, null, ['CN=site-2,O=unicore'], null, null)
+                new UnicoreSiteGroup('site-1', null, null, ['CN=site-1,O=unicore'], null),
+                new UnicoreSiteGroup('site-2', null, null, ['CN=site-2,O=unicore'], null)
         ]
         def expectedCentralGroup = new UnicoreCentralGroup('/vo.unicore', expectedCentralSites, ['CN=central-server'])
 
@@ -32,8 +32,8 @@ class UnicoreContentTest extends Specification {
         def expectedSiteGroupAttributes = new ObjectNode(new JsonNodeFactory())
         expectedSiteGroupAttributes.put(DEFAULT_QUEUE.attributeName, 'short')
 
-        def expectedSiteGroup = new UnicoreSiteGroup('/vo.site',
-                [expectedSiteGroupAgent], null, ['CN=long-site,O=unicore'], expectedSiteGroupAttributes, 'long')
+        def expectedSiteGroup = new UnicoreSiteGroup(
+                '/vo.site', [expectedSiteGroupAgent], null, ['CN=long-site,O=unicore'], expectedSiteGroupAttributes)
 
         def expectedContent = new UnicoreContent(
                 expectedInspectorsGroup, [expectedCentralGroup], [expectedSiteGroup], ["/portal"])

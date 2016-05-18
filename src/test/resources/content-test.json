@@ -31,7 +31,6 @@
   "unicoreSiteGroups": [
     {
       "group": "/vo.site",
-      "defaultQueue": "long",
       "agents": [
         {
           "x500Name": "CN=monitor,O=unicore",

@@ -119,9 +119,8 @@ public class FileContentInitializer extends ContentInitializer {
                                   final UnicoreSiteGroup siteGroup,
                                   final String inspectorsGroupPath) throws EngineException {
         final List<String> siteGroupServers = siteGroup.getServers();
-        final Optional<String> defaultQueue = Optional.ofNullable(siteGroup.getDefaultQueue());
 
-        unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath, siteGroup.getAttributes(), defaultQueue);
+        unicoreGroups.createUnicoreSiteGroupStructure(siteGroupPath, siteGroup.getAttributes());
 
         for (ObjectNode agentNode : siteGroup.getAgents()) {
             processSiteAgent(siteGroupPath, agentNode);

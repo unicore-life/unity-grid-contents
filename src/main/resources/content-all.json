@@ -10,10 +10,13 @@
   "unicoreSiteGroups": [
     {
       "group": "/vo.icm.edu.pl/unicore",
-      "defaultQueue": "hydra",
       "servers": [
         "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
-      ]
+      ],
+      "attributes": {
+        "urn:unicore:attrType:defaultHydraQueue": "hydra",
+        "urn:unicore:attrType:defaultOkeanosQueue": "workq"
+      }
     }
   ],
   "unicoreCentralGroups": [
