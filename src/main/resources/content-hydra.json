@@ -12,7 +12,7 @@
         "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
       ],
       "attributes": {
-        "urn:unicore:attrType:defaultHydraQueue": "hydra"
+        "urn:unicore:attrType:defaultHydraQueue": "hydra",
         "urn:unicore:attrType:defaultOkeanosQueue": "workq"
       }
     }
