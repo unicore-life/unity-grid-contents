@@ -60,7 +60,7 @@ To enable them please edit `unityServer.conf` configuration file and put lines:
 
 ```
 unityServer.core.initializers.0=polishGridInitializer
-unityServer.core.initializers.1=hydraInitializer
+unityServer.core.initializers.1=icmInitializer
 unityServer.core.initializers.2=testbedGridInitializer
 ```
 
@@ -68,7 +68,7 @@ All of presented initializers use configuration files boundled with archive as r
 In above example, they are respectively:
 
 * [content-plgrid.json](src/main/resources/content-plgrid.json),
-* [content-hydra.json](src/main/resources/content-hydra.json),
+* [content-icm.json](src/main/resources/content-icm.json),
 * [content-testbed.json](src/main/resources/content-testbed.json).
 
 Remember, that also here **Empty requirement** needs to be defined in Unity IDM configuration file

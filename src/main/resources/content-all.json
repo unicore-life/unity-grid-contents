@@ -1,6 +1,6 @@
 {
   "inspectorsGroup": {
-    "group": "/_internal/inspectors",
+    "group": "/unicore-inspectors",
     "identities": [
       "CN=portal/unicore.studmat.umk.pl,OU=UMK,O=UW,C=PL",
       "CN=oxides.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
@@ -23,6 +23,7 @@
     {
       "group": "/vo.plgrid.pl/unicore",
       "servers": [
+        "CN=unicore-portal.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
         "CN=odysseus.trojan.kdm.wcss.pl,O=WCSS,O=GRID,C=PL",
         "CN=registry/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
         "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
@@ -31,6 +32,13 @@
       "sites": [
         {
           "group": "CYFRONET",
+          "agents": [
+            {
+              "x500Name": "CN=nagios/alfred.studmat.umk.pl,O=ICM,O=Usluga,O=PL-Grid,C=PL",
+              "urn:unicore:attrType:xlogin": "plgmonitoring",
+              "urn:unicore:attrType:role": "user"
+            }
+          ],
           "servers": [
             "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=uni-ce.grid.cyf-kr.edu.pl,O=Cyfronet,O=GRID,C=PL"
@@ -38,13 +46,28 @@
         },
         {
           "group": "ICM",
+          "agents": [
+            {
+              "x500Name": "CN=nagios/alfred.studmat.umk.pl,O=ICM,O=Usluga,O=PL-Grid,C=PL",
+              "urn:unicore:attrType:xlogin": "plgmonitoring",
+              "urn:unicore:attrType:role": "user"
+            }
+          ],
           "servers": [
+            "CN=unicore-portal.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
           ]
         },
         {
           "group": "TASK",
+          "agents": [
+            {
+              "x500Name": "CN=nagios/alfred.studmat.umk.pl,O=ICM,O=Usluga,O=PL-Grid,C=PL",
+              "urn:unicore:attrType:xlogin": "plgmonitoring",
+              "urn:unicore:attrType:role": "user"
+            }
+          ],
           "servers": [
             "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=unicorex/unicore.grid.task.gda.pl,O=TASK,O=GRID,C=PL"
@@ -52,6 +75,13 @@
         },
         {
           "group": "WCSS",
+          "agents": [
+            {
+              "x500Name": "CN=nagios/alfred.studmat.umk.pl,O=ICM,O=Usluga,O=PL-Grid,C=PL",
+              "urn:unicore:attrType:xlogin": "plgmonitoring",
+              "urn:unicore:attrType:role": "user"
+            }
+          ],
           "servers": [
             "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=odysseus.trojan.kdm.wcss.pl,O=WCSS,O=GRID,C=PL"
@@ -88,5 +118,6 @@
     "/vo.icm.edu.pl/unicore-portal",
     "/vo.plgrid.pl/unicore-portal",
     "/vo.plgrid.pl/testbed-portal"
-  ]
+  ],
+  "comment": "more about plugin at https://github.com/unicore-life/unity-grid-contents"
 }
