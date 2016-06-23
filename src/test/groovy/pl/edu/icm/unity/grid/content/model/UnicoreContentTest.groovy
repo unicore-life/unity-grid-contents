@@ -36,9 +36,9 @@ class UnicoreContentTest extends Specification {
                 '/vo.site', [expectedSiteGroupAgent], null, ['CN=long-site,O=unicore'], expectedSiteGroupAttributes)
 
         def expectedContent = new UnicoreContent(
-                expectedInspectorsGroup, [expectedCentralGroup], [expectedSiteGroup], ["/portal"])
+                expectedInspectorsGroup, [expectedCentralGroup], [expectedSiteGroup], ['/portal'])
 
-        def inputStream = getClass().getClassLoader().getResourceAsStream("content-test.json")
+        def inputStream = getClass().getClassLoader().getResourceAsStream('content-test.json')
 
         expect:
         new ObjectMapper().readValue(inputStream, UnicoreContent) == expectedContent
