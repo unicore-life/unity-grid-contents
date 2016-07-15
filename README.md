@@ -83,22 +83,39 @@ configuration directory. Setting full logging needs adding a line:
 logger.log4j.grid.contents = TRACE
 ```
 
-# Development
+## Development
 
-## Building
+### Building
+
+Just clone the project and run Gradle command presented below.
 
 ```bash
 ./gradlew build
 ```
 
-## Releasing
+### Releasing
+
+To see current version of the sources use Gradle task
+[currentVersion](http://axion-release-plugin.readthedocs.io/en/latest/configuration/tasks.html#currentversion)
+(it is stored as a git tag).
 
 ```bash
 ./gradlew currentVersion
-./gradlew release
-./gradlew build currentVersion
-./gradlew bintrayUpload
 ```
+
+To release a new version use
+[release](http://axion-release-plugin.readthedocs.io/en/latest/configuration/tasks.html#release) task.
+Later, for uploading artifact to [Bintray](https://bintray.com/unicore-life/maven) maven repository
+use [bintrayUpload](https://github.com/novoda/bintray-release) task.
+Sample command are presented below.
+
+```
+./gradlew release
+./gradlew bintrayUpload -PdryRun=false
+```
+
+Remember to configure [Bintray](https://bintray.com) user and key by using parameters
+`-PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY` or just put them in `gradle.properties` file.
 
 # Links
 
