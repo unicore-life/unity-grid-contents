@@ -1,30 +1,36 @@
 package pl.edu.icm.unity.grid.content.util;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.server.utils.Log;
+import pl.edu.icm.unity.server.utils.UnityMessageSource;
 import pl.edu.icm.unity.stdext.attr.EnumAttribute;
 import pl.edu.icm.unity.stdext.attr.StringAttribute;
 import pl.edu.icm.unity.types.basic.AttributeStatement2;
 import pl.edu.icm.unity.types.basic.AttributeVisibility;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
-import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_QUEUE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
+import static pl.edu.icm.unity.grid.content.util.UnityAttributeHelper.createStringAttributeIfNotExists;
 import static pl.edu.icm.unity.stdext.utils.InitializerCommon.CN_ATTR;
 import static pl.edu.icm.unity.stdext.utils.InitializerCommon.EMAIL_ATTR;
 import static pl.edu.icm.unity.stdext.utils.InitializerCommon.ORG_ATTR;
 import static pl.edu.icm.unity.sysattrs.SystemAttributeTypes.AUTHORIZATION_ROLE;
+import static pl.edu.icm.unity.types.basic.AttributeStatement2.ConflictResolution.merge;
+import static pl.edu.icm.unity.types.basic.AttributeStatement2.ConflictResolution.overwrite;
+import static pl.edu.icm.unity.types.basic.AttributeStatement2.ConflictResolution.skip;
 
 /**
  * Component with methods operating on Unity IDM groups.
@@ -33,10 +39,12 @@ import static pl.edu.icm.unity.sysattrs.SystemAttributeTypes.AUTHORIZATION_ROLE;
  */
 public class UnicoreGroups {
     private final UnityManagements unityManagements;
+    private final UnityMessageSource messageSource;
 
     @Autowired
-    public UnicoreGroups(UnityManagements unityManagements) {
+    public UnicoreGroups(UnityManagements unityManagements, UnityMessageSource messageSource) {
         this.unityManagements = unityManagements;
+        this.messageSource = messageSource;
     }
 
     public void createInspectorsGroup(final String inspectorsGroupPath) throws EngineException {
@@ -50,7 +58,7 @@ public class UnicoreGroups {
                 new AttributeStatement2(
                         "true",
                         null,
-                        AttributeStatement2.ConflictResolution.overwrite,
+                        overwrite,
                         new EnumAttribute(AUTHORIZATION_ROLE, inspectorsGroupPath, AttributeVisibility.local, "Inspector")
                 )
         };
@@ -68,7 +76,7 @@ public class UnicoreGroups {
                     new AttributeStatement2(
                             "true",
                             unicoreGroupPath + "/" + site,
-                            AttributeStatement2.ConflictResolution.merge,
+                            merge,
                             AttributeVisibility.full,
                             unityManagements.getAttribute(ROLE.getAttributeName()),
                             String.format("eattrs['%s']", ROLE.getAttributeName())
@@ -80,7 +88,8 @@ public class UnicoreGroups {
     }
 
     public void createUnicoreSiteGroupStructure(final String unicoreSiteGroupPath,
-                                                final Optional<String> defaultQueue) throws EngineException {
+                                                final Optional<ObjectNode> unicoreSiteGroupAttributes)
+            throws EngineException {
         unityManagements.createPathGroups(unicoreSiteGroupPath);
 
         final Map<String, String> groupsToRole = Maps.newLinkedHashMap();
@@ -109,12 +118,22 @@ public class UnicoreGroups {
                         .collect(Collectors.toList())
         );
 
-        defaultQueue.ifPresent(defaultQueueName -> {
-            final StringAttribute defaultQueueAttribute = new StringAttribute(
-                    DEFAULT_QUEUE.getAttributeName(), unicoreSiteGroupPath, AttributeVisibility.full, defaultQueueName);
-            unicoreSiteGroupStatements.add(
-                    new AttributeStatement2("true", null, AttributeStatement2.ConflictResolution.overwrite, defaultQueueAttribute));
-        });
+        if (unicoreSiteGroupAttributes.isPresent()) {
+            final ObjectNode attributesNode = unicoreSiteGroupAttributes.get();
+            final Iterator<String> iterator = attributesNode.fieldNames();
+            while (iterator.hasNext()) {
+                final String attributeKey = iterator.next();
+                final String attributeValue = attributesNode.get(attributeKey).asText();
+
+                // Note: at the moment assuming ONLY string attributes
+                createStringAttributeIfNotExists(attributeKey, unityManagements, messageSource, log);
+
+                final StringAttribute stringAttribute = new StringAttribute(
+                        attributeKey, unicoreSiteGroupPath, AttributeVisibility.full, attributeValue);
+
+                unicoreSiteGroupStatements.add(new AttributeStatement2("true", null, overwrite, stringAttribute));
+            }
+        }
 
         unityManagements.updateGroupWithStatements(unicoreSiteGroupPath, unicoreSiteGroupStatements);
     }
@@ -129,7 +148,7 @@ public class UnicoreGroups {
                     new AttributeStatement2(
                             "true",
                             "/",
-                            AttributeStatement2.ConflictResolution.skip,
+                            skip,
                             AttributeVisibility.full,
                             unityManagements.getAttribute(attributeName),
                             String.format("eattrs['%s']", attributeName)
@@ -144,7 +163,7 @@ public class UnicoreGroups {
             return new AttributeStatement2(
                     "true",
                     extraAttributesGroup,
-                    AttributeStatement2.ConflictResolution.overwrite,
+                    overwrite,
                     AttributeVisibility.full,
                     unityManagements.getAttribute(XLOGIN.getAttributeName()),
                     String.format("eattrs['%s']", XLOGIN.getAttributeName())
@@ -159,7 +178,7 @@ public class UnicoreGroups {
         return new AttributeStatement2(
                 "groups contains '" + (unicorePath + "/" + subGroup) + "'",
                 null,
-                AttributeStatement2.ConflictResolution.overwrite,
+                overwrite,
                 new EnumAttribute(ROLE.getAttributeName(), unicorePath, AttributeVisibility.full, subGroupRole)
         );
     }

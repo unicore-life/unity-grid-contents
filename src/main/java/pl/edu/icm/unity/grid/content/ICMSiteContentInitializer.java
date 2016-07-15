@@ -17,24 +17,24 @@ import java.io.IOException;
  * @author R.Kluszczynski
  */
 @Component
-public class HydraContentInitializer extends FileContentInitializer {
+public class ICMSiteContentInitializer extends FileContentInitializer {
 
     @Autowired
-    public HydraContentInitializer(InitializerCommon commonInitializer,
-                                   UnicoreEntities unicoreEntities,
-                                   UnicoreGroups unicoreGroups,
-                                   UnicoreTypes unicoreTypes,
-                                   ResourceManagement resourceManagement) {
+    public ICMSiteContentInitializer(InitializerCommon commonInitializer,
+                                     UnicoreEntities unicoreEntities,
+                                     UnicoreGroups unicoreGroups,
+                                     UnicoreTypes unicoreTypes,
+                                     ResourceManagement resourceManagement) {
         super(commonInitializer, unicoreEntities, unicoreGroups, unicoreTypes, resourceManagement);
     }
 
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
-        initializeContentFromResource("classpath:content-hydra.json");
+        initializeContentFromResource("classpath:content-icm.json");
     }
 
     @Override
     public String getName() {
-        return "hydraInitializer";
+        return "icmSiteInitializer";
     }
 }

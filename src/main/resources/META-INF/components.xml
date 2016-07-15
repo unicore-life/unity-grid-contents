@@ -13,7 +13,7 @@
     <bean class="pl.edu.icm.unity.grid.content.util.UnityManagements"/>
 
     <bean class="pl.edu.icm.unity.grid.content.FileContentInitializer"/>
-    <bean class="pl.edu.icm.unity.grid.content.HydraContentInitializer"/>
+    <bean class="pl.edu.icm.unity.grid.content.ICMSiteContentInitializer"/>
     <bean class="pl.edu.icm.unity.grid.content.PolishGridContentInitializer"/>
     <bean class="pl.edu.icm.unity.grid.content.TestbedGridContentInitializer"/>
 </beans>

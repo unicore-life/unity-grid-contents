@@ -34,13 +34,6 @@
           ]
         },
         {
-          "group": "PSNC",
-          "servers": [
-            "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
-            "CN=unicorex/unicore-ui.reef.man.poznan.pl,O=PSNC,O=GRID,C=PL"
-          ]
-        },
-        {
           "group": "TASK",
           "servers": [
             "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
@@ -59,5 +52,6 @@
   ],
   "unicorePortalGroups": [
     "/vo.plgrid.pl/unicore-portal"
-  ]
+  ],
+  "comment": "more about plugin at https://github.com/unicore-life/unity-grid-contents"
 }

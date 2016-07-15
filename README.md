@@ -13,7 +13,7 @@ Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) 
 In case of latest release version download archive using command:
 
 ```bash
-curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.1/unity-grid-contents-0.2.1.jar
+curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.2/unity-grid-contents-0.2.2.jar
 ```
 
 and place it in `lib/` directory of Unity IDM installation
@@ -60,7 +60,7 @@ To enable them please edit `unityServer.conf` configuration file and put lines:
 
 ```
 unityServer.core.initializers.0=polishGridInitializer
-unityServer.core.initializers.1=hydraInitializer
+unityServer.core.initializers.1=icmSiteInitializer
 unityServer.core.initializers.2=testbedGridInitializer
 ```
 
@@ -68,7 +68,7 @@ All of presented initializers use configuration files boundled with archive as r
 In above example, they are respectively:
 
 * [content-plgrid.json](src/main/resources/content-plgrid.json),
-* [content-hydra.json](src/main/resources/content-hydra.json),
+* [content-icm.json](src/main/resources/content-icm.json),
 * [content-testbed.json](src/main/resources/content-testbed.json).
 
 Remember, that also here **Empty requirement** needs to be defined in Unity IDM configuration file
@@ -82,6 +82,40 @@ configuration directory. Setting full logging needs adding a line:
 ```
 logger.log4j.grid.contents = TRACE
 ```
+
+## Development
+
+### Building
+
+Just clone the project and run Gradle command presented below.
+
+```bash
+./gradlew build
+```
+
+### Releasing
+
+To see current version of the sources use Gradle task
+[currentVersion](http://axion-release-plugin.readthedocs.io/en/latest/configuration/tasks.html#currentversion)
+(it is stored as a git tag).
+
+```bash
+./gradlew currentVersion
+```
+
+To release a new version use
+[release](http://axion-release-plugin.readthedocs.io/en/latest/configuration/tasks.html#release) task.
+Later, for uploading artifact to [Bintray](https://dl.bintray.com/unicore-life/maven) maven repository
+use [bintrayUpload](https://github.com/novoda/bintray-release) task.
+Sample command are presented below.
+
+```
+./gradlew release
+./gradlew bintrayUpload -PdryRun=false
+```
+
+Remember to configure [Bintray](https://bintray.com) user and key by using parameters
+`-PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY` or just put them in `gradle.properties` file.
 
 # Links
 

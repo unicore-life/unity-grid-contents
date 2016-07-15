@@ -31,7 +31,6 @@
   "unicoreSiteGroups": [
     {
       "group": "/vo.site",
-      "defaultQueue": "long",
       "agents": [
         {
           "x500Name": "CN=monitor,O=unicore",
@@ -41,7 +40,10 @@
       ],
       "servers": [
         "CN=long-site,O=unicore"
-      ]
+      ],
+      "attributes": {
+        "urn:unicore:attrType:defaultQueue": "short"
+      }
     }
   ],
   "unicorePortalGroups": [

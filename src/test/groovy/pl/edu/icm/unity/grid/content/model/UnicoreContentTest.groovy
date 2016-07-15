@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import pl.edu.icm.unity.stdext.identity.X500Identity
 import spock.lang.Specification
 
+import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_QUEUE
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN
 
@@ -27,13 +28,17 @@ class UnicoreContentTest extends Specification {
         expectedSiteGroupAgent.put(X500Identity.ID, 'CN=monitor,O=unicore')
         expectedSiteGroupAgent.put(XLOGIN.attributeName, 'monitor')
         expectedSiteGroupAgent.put(ROLE.attributeName, 'user')
-        def expectedSiteGroup =
-                new UnicoreSiteGroup('/vo.site', [expectedSiteGroupAgent], null, ['CN=long-site,O=unicore'], 'long')
+
+        def expectedSiteGroupAttributes = new ObjectNode(new JsonNodeFactory())
+        expectedSiteGroupAttributes.put(DEFAULT_QUEUE.attributeName, 'short')
+
+        def expectedSiteGroup = new UnicoreSiteGroup(
+                '/vo.site', [expectedSiteGroupAgent], null, ['CN=long-site,O=unicore'], expectedSiteGroupAttributes)
 
         def expectedContent = new UnicoreContent(
-                expectedInspectorsGroup, [expectedCentralGroup], [expectedSiteGroup], ["/portal"])
+                expectedInspectorsGroup, [expectedCentralGroup], [expectedSiteGroup], ['/portal'])
 
-        def inputStream = getClass().getClassLoader().getResourceAsStream("content-test.json")
+        def inputStream = getClass().getClassLoader().getResourceAsStream('content-test.json')
 
         expect:
         new ObjectMapper().readValue(inputStream, UnicoreContent) == expectedContent
