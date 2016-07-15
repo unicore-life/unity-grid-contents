@@ -105,7 +105,7 @@ To see current version of the sources use Gradle task
 
 To release a new version use
 [release](http://axion-release-plugin.readthedocs.io/en/latest/configuration/tasks.html#release) task.
-Later, for uploading artifact to [Bintray](https://bintray.com/unicore-life/maven) maven repository
+Later, for uploading artifact to [Bintray](https://dl.bintray.com/unicore-life/maven) maven repository
 use [bintrayUpload](https://github.com/novoda/bintray-release) task.
 Sample command are presented below.
 
