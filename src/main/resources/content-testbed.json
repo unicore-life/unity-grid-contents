@@ -50,5 +50,6 @@
   ],
   "unicorePortalGroups": [
     "/vo.plgrid.pl/testbed-portal"
-  ]
+  ],
+  "comment": "more about plugin at https://github.com/unicore-life/unity-grid-contents"
 }

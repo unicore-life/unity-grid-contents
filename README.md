@@ -13,7 +13,7 @@ Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) 
 In case of latest release version download archive using command:
 
 ```bash
-curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.2/unity-grid-contents-0.2.2.jar
+curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.3/unity-grid-contents-0.2.3.jar
 ```
 
 and place it in `lib/` directory of Unity IDM installation
@@ -60,7 +60,7 @@ To enable them please edit `unityServer.conf` configuration file and put lines:
 
 ```
 unityServer.core.initializers.0=polishGridInitializer
-unityServer.core.initializers.1=icmInitializer
+unityServer.core.initializers.1=icmSiteInitializer
 unityServer.core.initializers.2=testbedGridInitializer
 ```
 
@@ -81,6 +81,23 @@ configuration directory. Setting full logging needs adding a line:
 
 ```
 logger.log4j.grid.contents = TRACE
+```
+
+# Development
+
+## Building
+
+```bash
+./gradlew build
+```
+
+## Releasing
+
+```bash
+./gradlew currentVersion
+./gradlew release
+./gradlew build currentVersion
+./gradlew bintrayUpload
 ```
 
 # Links
