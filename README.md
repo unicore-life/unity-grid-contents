@@ -13,7 +13,7 @@ Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) 
 In case of latest release version download archive using command:
 
 ```bash
-curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.3/unity-grid-contents-0.2.3.jar
+curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.4/unity-grid-contents-0.2.4.jar
 ```
 
 and place it in `lib/` directory of Unity IDM installation
