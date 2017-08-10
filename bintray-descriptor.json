@@ -1,0 +1,17 @@
+{
+  "package": {
+    "name": "unity-grid-contents",
+    "repo": "maven",
+    "subject": "unicore-life"
+  },
+  "version": {
+    "name": "0.2.5",
+    "vcs_tag": "unity-grid-contents-0.2.5"
+  },
+  "files": [
+    {
+      "includePattern": "build/libs/(.*\\.jar)"
+    }
+  ],
+  "publish": true
+}
