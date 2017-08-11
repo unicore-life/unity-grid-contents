@@ -1,14 +1,14 @@
 package pl.edu.icm.unity.grid.content.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
+import pl.edu.icm.unity.base.utils.Log;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.grid.content.model.UnicoreContent;
-import pl.edu.icm.unity.server.utils.Log;
 
 import java.io.IOException;
 import java.util.Arrays;

@@ -15,13 +15,11 @@ import pl.edu.icm.unity.grid.content.util.UnicoreEntities;
 import pl.edu.icm.unity.grid.content.util.UnicoreGroups;
 import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
 import pl.edu.icm.unity.stdext.identity.X500Identity;
-import pl.edu.icm.unity.stdext.utils.InitializerCommon;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 import static pl.edu.icm.unity.grid.content.util.CollectionsHelper.isListNullOrEmpty;
 
@@ -37,12 +35,11 @@ public class FileContentInitializer extends ContentInitializer {
     private final ResourceManagement resourceManagement;
 
     @Autowired
-    public FileContentInitializer(InitializerCommon commonInitializer,
-                                  UnicoreEntities unicoreEntities,
+    public FileContentInitializer(UnicoreEntities unicoreEntities,
                                   UnicoreGroups unicoreGroups,
                                   UnicoreTypes unicoreTypes,
                                   ResourceManagement resourceManagement) {
-        super(commonInitializer, unicoreTypes);
+        super(unicoreTypes);
         this.unicoreGroups = unicoreGroups;
         this.unicoreEntities = unicoreEntities;
         this.resourceManagement = resourceManagement;

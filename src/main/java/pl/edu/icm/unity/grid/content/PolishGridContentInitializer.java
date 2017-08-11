@@ -7,7 +7,6 @@ import pl.edu.icm.unity.grid.content.util.ResourceManagement;
 import pl.edu.icm.unity.grid.content.util.UnicoreEntities;
 import pl.edu.icm.unity.grid.content.util.UnicoreGroups;
 import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
-import pl.edu.icm.unity.stdext.utils.InitializerCommon;
 
 import java.io.IOException;
 
@@ -20,12 +19,11 @@ import java.io.IOException;
 public class PolishGridContentInitializer extends FileContentInitializer {
 
     @Autowired
-    public PolishGridContentInitializer(InitializerCommon commonInitializer,
-                                        UnicoreEntities unicoreEntities,
+    public PolishGridContentInitializer(UnicoreEntities unicoreEntities,
                                         UnicoreGroups unicoreGroups,
                                         UnicoreTypes unicoreTypes,
                                         ResourceManagement resourceManagement) {
-        super(commonInitializer, unicoreEntities, unicoreGroups, unicoreTypes, resourceManagement);
+        super(unicoreEntities, unicoreGroups, unicoreTypes, resourceManagement);
     }
 
     @Override

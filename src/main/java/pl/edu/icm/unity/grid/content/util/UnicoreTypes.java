@@ -1,20 +1,20 @@
 package pl.edu.icm.unity.grid.content.util;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.edu.icm.unity.base.utils.Log;
+import pl.edu.icm.unity.engine.api.msg.UnityMessageSource;
 import pl.edu.icm.unity.exceptions.EngineException;
-import pl.edu.icm.unity.server.utils.Log;
-import pl.edu.icm.unity.server.utils.UnityMessageSource;
 import pl.edu.icm.unity.stdext.attr.EnumAttribute;
 import pl.edu.icm.unity.stdext.attr.EnumAttributeSyntax;
-import pl.edu.icm.unity.types.basic.AttributeStatement2;
+import pl.edu.icm.unity.types.basic.AttributeStatement;
 import pl.edu.icm.unity.types.basic.AttributeType;
-import pl.edu.icm.unity.types.basic.AttributeVisibility;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import static pl.edu.icm.unity.engine.authz.RoleAttributeTypeProvider.AUTHORIZATION_ROLE;
 import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ADD_DEFAULT_GROUPS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_GROUP;
@@ -31,7 +31,6 @@ import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.SUPPLEMENTAR
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.VIRTUAL_ORGANISATIONS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
 import static pl.edu.icm.unity.grid.content.util.UnityAttributeHelper.createStringAttributeIfNotExists;
-import static pl.edu.icm.unity.sysattrs.SystemAttributeTypes.AUTHORIZATION_ROLE;
 
 /**
  * Component with methods workgin with Unity IDM attributes.
@@ -50,14 +49,14 @@ public class UnicoreTypes {
     }
 
     public void initializeRootAttributeStatements(String inspectorsGroupPath) throws EngineException {
-        AttributeStatement2[] rootStatements = {
-                AttributeStatement2.getFixedEverybodyStatement(
-                        new EnumAttribute(AUTHORIZATION_ROLE, "/", AttributeVisibility.local, "Regular User")),
-                new AttributeStatement2(
+        AttributeStatement[] rootStatements = {
+                AttributeStatement.getFixedEverybodyStatement(
+                        EnumAttribute.of(AUTHORIZATION_ROLE, "/", "Regular User")),
+                new AttributeStatement(
                         "groups contains '" + inspectorsGroupPath + "'",
                         null,
-                        AttributeStatement2.ConflictResolution.overwrite,
-                        new EnumAttribute(AUTHORIZATION_ROLE, "/", AttributeVisibility.local, "Inspector")
+                        AttributeStatement.ConflictResolution.overwrite,
+                        EnumAttribute.of(AUTHORIZATION_ROLE, "/", "Inspector")
                 )
         };
         unityManagements.updateRootGroupWithStatements(rootStatements);
@@ -77,8 +76,10 @@ public class UnicoreTypes {
             allowedRoles.add("banned");
 
             EnumAttributeSyntax enumAttributeSyntax = new EnumAttributeSyntax(allowedRoles);
-            AttributeType roleAttributeType = new AttributeType(attribute, enumAttributeSyntax, messageSource);
+
+            AttributeType roleAttributeType = new AttributeType(attribute, EnumAttributeSyntax.ID, messageSource);
             roleAttributeType.setMinElements(1);
+            roleAttributeType.setValueSyntaxConfiguration(enumAttributeSyntax.getSerializedConfiguration());
 
             unityManagements.addAttribute(roleAttributeType);
         }

@@ -1,15 +1,14 @@
 package pl.edu.icm.unity.grid.content.util;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pl.edu.icm.unity.base.utils.Log;
 import pl.edu.icm.unity.exceptions.EngineException;
-import pl.edu.icm.unity.server.utils.Log;
 import pl.edu.icm.unity.stdext.attr.EnumAttribute;
 import pl.edu.icm.unity.stdext.attr.StringAttribute;
 import pl.edu.icm.unity.stdext.identity.X500Identity;
 import pl.edu.icm.unity.types.basic.Attribute;
-import pl.edu.icm.unity.types.basic.AttributeVisibility;
 import pl.edu.icm.unity.types.basic.EntityParam;
 import pl.edu.icm.unity.types.basic.Group;
 import pl.edu.icm.unity.types.basic.IdentityTaV;
@@ -53,11 +52,11 @@ public class UnicoreEntities {
                                         String groupPath,
                                         String attributeName,
                                         String attributeValue) throws EngineException {
-        Attribute<String> attribute;
+        Attribute attribute;
         if (ROLE.getAttributeName().equals(attributeName) || DEFAULT_ROLE.getAttributeName().equals(attributeName)) {
-            attribute = new EnumAttribute(attributeName, groupPath, AttributeVisibility.full, attributeValue);
+            attribute = EnumAttribute.of(attributeName, groupPath, attributeValue);
         } else {
-            attribute = new StringAttribute(attributeName, groupPath, AttributeVisibility.full, attributeValue);
+            attribute = StringAttribute.of(attributeName, groupPath, attributeValue);
         }
         unityManagements.setAttribute(identityCertificate, attribute);
     }
