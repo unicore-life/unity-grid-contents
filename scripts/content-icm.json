@@ -21,6 +21,7 @@
         "CN=workflow/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
         "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
         "CN=unicore.ocean.icm.edu.pl,OU=ICM,O=UW,C=PL",
+        "CN=hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
         "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
       ],
       "attributes": {

@@ -21,10 +21,11 @@ and place it in `lib/` directory of Unity IDM installation
 
 Plugin version depends on Unity IDM version which show compatibility table below.
 
-| Unity IDM version | Plugin version |
-| --- | --- |
-| 1.8.0 | 0.1.x |
-| 1.9.x | 0.2.x |
+| Unity IDM version | Plugin version | Documentation Link |
+| --- | --- | --- |
+| 1.8.0 | 0.1.x | https://github.com/unicore-life/unity-grid-contents/blob/unicore-grid-contents-0.1.8/README.md |
+| 1.9.x | 0.2.x | https://github.com/unicore-life/unity-grid-contents/blob/unity-grid-contents-0.2.4/README.md |
+| 2.1.x | 1.0.x | https://github.com/unicore-life/unity-grid-contents/blob/master/README.md |
 
 ## Configuration
 
@@ -52,27 +53,6 @@ unityServer.core.credentialRequirements.1.credentialReqDescription=Empty credent
 ```
 
 in configuration file *unityServer.conf*.
-
-## Specific initializers
-
-The library contains also several specific initializers used in PLGrid.
-To enable them please edit `unityServer.conf` configuration file and put lines:
-
-```
-unityServer.core.initializers.0=polishGridInitializer
-unityServer.core.initializers.1=icmSiteInitializer
-unityServer.core.initializers.2=testbedGridInitializer
-```
-
-All of presented initializers use configuration files boundled with archive as resources.
-In above example, they are respectively:
-
-* [content-plgrid.json](src/main/resources/content-plgrid.json),
-* [content-icm.json](src/main/resources/content-icm.json),
-* [content-testbed.json](src/main/resources/content-testbed.json).
-
-Remember, that also here **Empty requirement** needs to be defined in Unity IDM configuration file
-(see previous section).
 
 ## Logging
 

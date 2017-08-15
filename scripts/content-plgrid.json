@@ -30,6 +30,7 @@
           "servers": [
             "CN=unicore-portal.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=servorch/unicore.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
+            "CN=hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL",
             "CN=unicorex/hyx.grid.icm.edu.pl,O=ICM,O=GRID,C=PL"
           ]
         },

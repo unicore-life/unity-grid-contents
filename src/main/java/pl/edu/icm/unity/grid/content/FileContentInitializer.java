@@ -16,6 +16,7 @@ import pl.edu.icm.unity.grid.content.util.UnicoreGroups;
 import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
 import pl.edu.icm.unity.stdext.identity.X500Identity;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -45,6 +46,11 @@ public class FileContentInitializer extends ContentInitializer {
         this.resourceManagement = resourceManagement;
     }
 
+    @PostConstruct
+    private void storeBeanAsStaticField() {
+        GroovyHelper.setContentInitializer(this);
+    }
+
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
         initializeContentFromResource(
@@ -53,7 +59,7 @@ public class FileContentInitializer extends ContentInitializer {
                 "classpath:content-all.json");
     }
 
-    protected void initializeContentFromResource(String... resourcesLocations) throws EngineException {
+    void initializeContentFromResource(String... resourcesLocations) throws EngineException {
         final UnicoreContent content = resourceManagement.loadContentFromFile(resourcesLocations);
 
         final InspectorsGroup inspectorsGroup = content.getInspectorsGroup();
