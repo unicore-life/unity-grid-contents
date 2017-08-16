@@ -1,8 +1,7 @@
 package pl.edu.icm.unity.grid.content.util;
 
-import org.apache.log4j.Logger;
+import pl.edu.icm.unity.engine.api.msg.UnityMessageSource;
 import pl.edu.icm.unity.exceptions.EngineException;
-import pl.edu.icm.unity.server.utils.UnityMessageSource;
 import pl.edu.icm.unity.stdext.attr.StringAttributeSyntax;
 import pl.edu.icm.unity.types.basic.AttributeType;
 
@@ -18,17 +17,20 @@ final class UnityAttributeHelper {
     static void createStringAttributeIfNotExists(String attributeName,
                                                  UnityManagements unityManagements,
                                                  UnityMessageSource messageSource,
-                                                 Logger log) throws EngineException {
+                                                 org.apache.logging.log4j.Logger log) throws EngineException {
         if (unityManagements.existsAttribute(attributeName)) {
             log.debug("Attribute '" + attributeName + "' already exists.");
             return;
         }
 
-        AttributeType newAttributeType = new AttributeType(attributeName, new StringAttributeSyntax(), messageSource);
+        final StringAttributeSyntax stringAttributeSyntax = new StringAttributeSyntax();
+        stringAttributeSyntax.setMaxLength(512);
+        stringAttributeSyntax.setMinLength(1);
+
+        AttributeType newAttributeType = new AttributeType(attributeName, StringAttributeSyntax.ID, messageSource);
         newAttributeType.setMinElements(1);
         newAttributeType.setMaxElements(16);
-        ((StringAttributeSyntax) newAttributeType.getValueType()).setMaxLength(512);
-        ((StringAttributeSyntax) newAttributeType.getValueType()).setMinLength(1);
+        newAttributeType.setValueSyntaxConfiguration(stringAttributeSyntax.getSerializedConfiguration());
 
         unityManagements.addAttribute(newAttributeType);
     }

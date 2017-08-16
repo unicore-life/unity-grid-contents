@@ -15,13 +15,12 @@ import pl.edu.icm.unity.grid.content.util.UnicoreEntities;
 import pl.edu.icm.unity.grid.content.util.UnicoreGroups;
 import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
 import pl.edu.icm.unity.stdext.identity.X500Identity;
-import pl.edu.icm.unity.stdext.utils.InitializerCommon;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 import static pl.edu.icm.unity.grid.content.util.CollectionsHelper.isListNullOrEmpty;
 
@@ -37,27 +36,31 @@ public class FileContentInitializer extends ContentInitializer {
     private final ResourceManagement resourceManagement;
 
     @Autowired
-    public FileContentInitializer(InitializerCommon commonInitializer,
-                                  UnicoreEntities unicoreEntities,
+    public FileContentInitializer(UnicoreEntities unicoreEntities,
                                   UnicoreGroups unicoreGroups,
                                   UnicoreTypes unicoreTypes,
                                   ResourceManagement resourceManagement) {
-        super(commonInitializer, unicoreTypes);
+        super(unicoreTypes);
         this.unicoreGroups = unicoreGroups;
         this.unicoreEntities = unicoreEntities;
         this.resourceManagement = resourceManagement;
     }
 
+    @PostConstruct
+    private void storeBeanAsStaticField() {
+        GridContentHelper.setContentInitializer(this);
+    }
+
     @Override
     protected void initializeSpecificContent() throws EngineException, IOException {
-        initializeContentFromResource(
+        initializeContentFromLocations(
                 "file:conf/content-init.json",
                 "file:/etc/unity-idm/content-init.json",
                 "classpath:content-all.json");
     }
 
-    protected void initializeContentFromResource(String... resourcesLocations) throws EngineException {
-        final UnicoreContent content = resourceManagement.loadContentFromFile(resourcesLocations);
+    void initializeContentFromLocations(String... contentLocations) throws EngineException {
+        final UnicoreContent content = resourceManagement.loadContentFromFile(contentLocations);
 
         final InspectorsGroup inspectorsGroup = content.getInspectorsGroup();
         processInspectorsGroup(inspectorsGroup);
@@ -65,6 +68,8 @@ public class FileContentInitializer extends ContentInitializer {
         processCentralGroups(content.getUnicoreCentralGroups(), inspectorsGroup.getGroup());
         processSiteGroups(content.getUnicoreSiteGroups(), inspectorsGroup.getGroup());
         processPortalGroups(content.getUnicorePortalGroups());
+
+        log.info("Content initialized from locations: " + Arrays.toString(contentLocations));
     }
 
     private void processInspectorsGroup(InspectorsGroup inspectorsContent) throws EngineException {
