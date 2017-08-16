@@ -29,10 +29,25 @@ Plugin version depends on Unity IDM version which show compatibility table below
 
 ## Configuration
 
+TODO
+
+```properties
+unityServer.core.script.5.file=/etc/unity-idm/scripts/gridContentInitializer.groovy
+unityServer.core.script.5.trigger=pre-init
+```
+
+TODO
+
+[gridContentInitializer.groovy](scripts/gridContentInitializer.groovy)
+
+TODO
+
+## Configuration (old style)
+
 The library provides generic initializer named **configurationFileInitializer** which prepares content based on
 UNICORE specific configuration file. In order to execute this initializer file `unityServer.conf` should contain:
 
-```
+```properties
 unityServer.core.initializers.0=configurationFileInitializer
 ```
 
