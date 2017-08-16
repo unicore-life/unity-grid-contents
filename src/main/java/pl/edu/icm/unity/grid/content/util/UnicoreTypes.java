@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static pl.edu.icm.unity.engine.authz.RoleAttributeTypeProvider.AUTHORIZATION_ROLE;
-import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
+import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENT;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ADD_DEFAULT_GROUPS;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_GROUP;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_PROJECT;
@@ -103,5 +103,5 @@ public class UnicoreTypes {
         }
     }
 
-    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnicoreTypes.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENT, UnicoreTypes.class);
 }

@@ -13,7 +13,6 @@ import pl.edu.icm.unity.engine.api.EntityManagement;
 import pl.edu.icm.unity.engine.api.GroupsManagement;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.exceptions.IllegalGroupValueException;
-import pl.edu.icm.unity.exceptions.IllegalIdentityValueException;
 import pl.edu.icm.unity.stdext.identity.X500Identity;
 import pl.edu.icm.unity.types.basic.Attribute;
 import pl.edu.icm.unity.types.basic.AttributeStatement;
@@ -29,7 +28,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static java.lang.String.format;
-import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
+import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENT;
 import static pl.edu.icm.unity.types.basic.EntityState.valid;
 
 /**
@@ -92,7 +91,7 @@ class UnityManagements {
                     new EntityParam(
                             new IdentityTaV(X500Identity.ID, identity)));
             return true;
-        } catch (IllegalIdentityValueException e) {
+        } catch (IllegalArgumentException e) {
             return false;
         } catch (EngineException engineException) {
             log.warn(String.format("Could not check if identity '%s' exists!", identity));
@@ -114,7 +113,7 @@ class UnityManagements {
         try {
             groupsManagement.getContents(groupPath, GroupContents.METADATA);
             return true;
-        } catch (IllegalGroupValueException e) {
+        } catch (IllegalArgumentException e) {
             return false;
         } catch (EngineException engineException) {
             log.warn(String.format("Could not check if group '%s' exists (get metadata contents)!", groupPath));
@@ -216,7 +215,7 @@ class UnityManagements {
         return true;
     }
 
-    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnityManagements.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENT, UnityManagements.class);
 
     private static final String EMPTY_REQUIREMENT = "Empty requirement";
     private static final String ALREADY_GROUP_MEMBER_MESSAGE = "The entity is already a member of this group";

@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static pl.edu.icm.unity.engine.authz.RoleAttributeTypeProvider.AUTHORIZATION_ROLE;
-import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
+import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENT;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
 import static pl.edu.icm.unity.grid.content.util.UnityAttributeHelper.createStringAttributeIfNotExists;
@@ -170,5 +170,5 @@ public class UnicoreGroups {
         );
     }
 
-    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnicoreGroups.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENT, UnicoreGroups.class);
 }

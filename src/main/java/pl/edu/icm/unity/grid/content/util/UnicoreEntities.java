@@ -15,7 +15,7 @@ import pl.edu.icm.unity.types.basic.IdentityTaV;
 
 import java.util.List;
 
-import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
+import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENT;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.DEFAULT_ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 
@@ -76,5 +76,5 @@ public class UnicoreEntities {
         }
     }
 
-    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnicoreEntities.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENT, UnicoreEntities.class);
 }

@@ -13,7 +13,7 @@ import pl.edu.icm.unity.grid.content.model.UnicoreContent;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
+import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENT;
 
 /**
  * Helper method for working with resources.
@@ -49,5 +49,5 @@ public class ResourceManagement implements ResourceLoaderAware {
                 "There was no valid initial content at locations: %s", Arrays.toString(initialContentLocations)));
     }
 
-    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, ResourceManagement.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENT, ResourceManagement.class);
 }

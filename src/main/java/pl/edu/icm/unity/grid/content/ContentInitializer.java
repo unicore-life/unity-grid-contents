@@ -8,7 +8,7 @@ import pl.edu.icm.unity.grid.content.util.UnicoreTypes;
 
 import java.io.IOException;
 
-import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
+import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENT;
 
 /**
  * @author R.Kluszczynski
@@ -35,5 +35,5 @@ abstract class ContentInitializer implements ServerInitializer {
 
     protected abstract void initializeSpecificContent() throws EngineException, IOException;
 
-    protected static Logger log = Log.getLogger(LOG_GRID_CONTENTS, ContentInitializer.class);
+    protected static Logger log = Log.getLogger(LOG_GRID_CONTENT, ContentInitializer.class);
 }

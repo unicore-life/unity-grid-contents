@@ -1,6 +1,6 @@
 {
   "inspectorsGroup": {
-    "group": "/unicore-inspectors",
+    "group": "/content-inspectors",
     "identities": [
       "CN=unicore.studmat.umk.pl,OU=ICM,O=UW,C=PL",
       "CN=unicore-portal.grid.icm.edu.pl,OU=Domain Control Validated",

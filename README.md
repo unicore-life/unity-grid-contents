@@ -23,9 +23,9 @@ Plugin version depends on Unity IDM version which show compatibility table below
 
 | Unity IDM version | Plugin version | Documentation Link |
 | --- | --- | --- |
-| 1.8.0 | 0.1.x | https://github.com/unicore-life/unity-grid-contents/blob/unicore-grid-contents-0.1.8/README.md |
-| 1.9.x | 0.2.x | https://github.com/unicore-life/unity-grid-contents/blob/unity-grid-contents-0.2.4/README.md |
-| 2.1.x | 1.0.x | https://github.com/unicore-life/unity-grid-contents/blob/master/README.md |
+| 1.8.0 | 0.1.x | [unicore-grid-contents-0.1.8](https://github.com/unicore-life/unity-grid-contents/blob/unicore-grid-contents-0.1.8/README.md) |
+| 1.9.x | 0.2.x | [unity-grid-contents-0.2.4](https://github.com/unicore-life/unity-grid-contents/blob/unity-grid-contents-0.2.4/README.md) |
+| 2.1.x | 1.0.x | [unity-grid-contents-1.0.0](https://github.com/unicore-life/unity-grid-contents/blob/unity-grid-contents-1.0.0/README.md) |
 
 ## Configuration
 
@@ -47,7 +47,7 @@ Remember, initializers are executed only once, when Unity IDM database has not b
 All identities are added with requirements **Empty requirement**, so be sure to has such in Unity IDM.
 One way of accomplish that is to add lines:
 
-```
+```properties
 unityServer.core.credentialRequirements.1.credentialReqName=Empty requirement
 unityServer.core.credentialRequirements.1.credentialReqDescription=Empty credential requirement
 ```
@@ -56,12 +56,14 @@ in configuration file *unityServer.conf*.
 
 ## Logging
 
-To enable more exhaustive logs simply configure appropriate logger in file `log4j.properties` located in Unity IDM
+To enable more exhaustive logs simply configure appropriate logger in file `log4j2.xml` located in Unity IDM 
 configuration directory. Setting full logging needs adding a line:
 
+```xml
+<Logger name="grid.content" level="TRACE"/>
 ```
-logger.log4j.grid.contents = TRACE
-```
+
+in *Loggers* section.
 
 ## Development
 
