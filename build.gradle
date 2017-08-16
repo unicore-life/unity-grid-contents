@@ -11,24 +11,24 @@ buildscript {
 plugins {
     id 'java'
     id 'groovy'
-    id 'pl.allegro.tech.build.axion-release' version '1.4.1'
+    id 'pl.allegro.tech.build.axion-release' version '1.7.1'
 }
 
 scmVersion.tag.prefix = rootProject.name
 
 group 'pl.edu.icm.unity'
-project.version = scmVersion.version
+project.version = '1.0.0' //scmVersion.version
 
 apply plugin: 'com.novoda.bintray-release'
 
 
 dependencies {
-    def unityVersion = '1.9.4'
+    def unityVersion = '2.1.0'
 
     compile "pl.edu.icm.unity:unity-server-engine:${unityVersion}",
             "pl.edu.icm.unity:unity-server-unicore:${unityVersion}"
 
-    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+    testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
 }
 
 repositories {
@@ -54,5 +54,5 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 test.testLogging.showStandardStreams = true
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.1'
+    gradleVersion = '4.1'
 }

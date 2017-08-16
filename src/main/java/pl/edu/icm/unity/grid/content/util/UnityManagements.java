@@ -1,22 +1,21 @@
 package pl.edu.icm.unity.grid.content.util;
 
 import com.google.common.collect.Lists;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import pl.edu.icm.unity.base.utils.Log;
+import pl.edu.icm.unity.engine.api.AttributeTypeManagement;
+import pl.edu.icm.unity.engine.api.AttributesManagement;
+import pl.edu.icm.unity.engine.api.EntityManagement;
+import pl.edu.icm.unity.engine.api.GroupsManagement;
 import pl.edu.icm.unity.exceptions.EngineException;
 import pl.edu.icm.unity.exceptions.IllegalGroupValueException;
-import pl.edu.icm.unity.exceptions.IllegalIdentityValueException;
-import pl.edu.icm.unity.server.api.AttributesManagement;
-import pl.edu.icm.unity.server.api.GroupsManagement;
-import pl.edu.icm.unity.server.api.IdentitiesManagement;
-import pl.edu.icm.unity.server.utils.Log;
 import pl.edu.icm.unity.stdext.identity.X500Identity;
-import pl.edu.icm.unity.types.EntityState;
 import pl.edu.icm.unity.types.basic.Attribute;
-import pl.edu.icm.unity.types.basic.AttributeStatement2;
+import pl.edu.icm.unity.types.basic.AttributeStatement;
 import pl.edu.icm.unity.types.basic.AttributeType;
 import pl.edu.icm.unity.types.basic.EntityParam;
 import pl.edu.icm.unity.types.basic.Group;
@@ -29,7 +28,8 @@ import java.util.Collection;
 import java.util.List;
 
 import static java.lang.String.format;
-import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
+import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENT;
+import static pl.edu.icm.unity.types.basic.EntityState.valid;
 
 /**
  * Single point of entry to Unity IDM management system.
@@ -40,21 +40,24 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENTS;
 @Component
 class UnityManagements {
     private final AttributesManagement attributesManagement;
+    private final AttributeTypeManagement attributeTypeManagement;
     private final GroupsManagement groupsManagement;
-    private final IdentitiesManagement identitiesManagement;
+    private final EntityManagement entityManagement;
 
     @Autowired
     UnityManagements(@Qualifier("insecure") AttributesManagement attributesManagement,
+                     @Qualifier("insecure") AttributeTypeManagement attributeTypeManagement,
                      @Qualifier("insecure") GroupsManagement groupsManagement,
-                     @Qualifier("insecure") IdentitiesManagement identitiesManagement) throws EngineException {
+                     @Qualifier("insecure") EntityManagement entityManagement) throws EngineException {
         this.attributesManagement = attributesManagement;
+        this.attributeTypeManagement = attributeTypeManagement;
         this.groupsManagement = groupsManagement;
-        this.identitiesManagement = identitiesManagement;
+        this.entityManagement = entityManagement;
     }
 
     boolean existsAttribute(String attributeName) throws EngineException {
         try {
-            return attributesManagement
+            return attributeTypeManagement
                     .getAttributeTypesAsMap()
                     .containsKey(attributeName);
         } catch (EngineException engineException) {
@@ -64,18 +67,18 @@ class UnityManagements {
     }
 
     AttributeType getAttribute(String attributeName) throws EngineException {
-        return attributesManagement
+        return attributeTypeManagement
                 .getAttributeTypesAsMap()
                 .get(attributeName);
     }
 
     void addAttribute(AttributeType attributeType) throws EngineException {
-        attributesManagement
+        attributeTypeManagement
                 .addAttributeType(attributeType);
         log.info(String.format("Added new attribute type: %s", attributeType));
     }
 
-    <T> void setAttribute(String identity, Attribute<T> attribute) throws EngineException {
+    void setAttribute(String identity, Attribute attribute) throws EngineException {
         attributesManagement.setAttribute(
                 new EntityParam(
                         new IdentityTaV(X500Identity.ID, identity)), attribute, true);
@@ -84,11 +87,11 @@ class UnityManagements {
 
     boolean existsIdentity(String identity) throws EngineException {
         try {
-            identitiesManagement.getEntity(
+            entityManagement.getEntity(
                     new EntityParam(
                             new IdentityTaV(X500Identity.ID, identity)));
             return true;
-        } catch (IllegalIdentityValueException e) {
+        } catch (IllegalArgumentException e) {
             return false;
         } catch (EngineException engineException) {
             log.warn(String.format("Could not check if identity '%s' exists!", identity));
@@ -97,10 +100,10 @@ class UnityManagements {
     }
 
     void addEntity(String identity) throws EngineException {
-        identitiesManagement.addEntity(
+        entityManagement.addEntity(
                 new IdentityParam(X500Identity.ID, identity),
                 EMPTY_REQUIREMENT,
-                EntityState.valid,
+                valid,
                 false
         );
         log.info(String.format("Added entity with identity: '%s'", identity));
@@ -110,7 +113,7 @@ class UnityManagements {
         try {
             groupsManagement.getContents(groupPath, GroupContents.METADATA);
             return true;
-        } catch (IllegalGroupValueException e) {
+        } catch (IllegalArgumentException e) {
             return false;
         } catch (EngineException engineException) {
             log.warn(String.format("Could not check if group '%s' exists (get metadata contents)!", groupPath));
@@ -147,13 +150,13 @@ class UnityManagements {
         }
     }
 
-    void updateRootGroupWithStatements(AttributeStatement2[] statements) throws EngineException {
+    void updateRootGroupWithStatements(AttributeStatement[] statements) throws EngineException {
         final Group rootGroup = groupsManagement.getContents("/", GroupContents.EVERYTHING).getGroup();
-        AttributeStatement2[] currentStatements = rootGroup.getAttributeStatements();
+        AttributeStatement[] currentStatements = rootGroup.getAttributeStatements();
         log.debug("Updating root group with current statements: " + Arrays.toString(currentStatements));
 
-        List<AttributeStatement2> updatedRootStatements = Lists.newArrayList(currentStatements);
-        for (AttributeStatement2 statement : statements) {
+        List<AttributeStatement> updatedRootStatements = Lists.newArrayList(currentStatements);
+        for (AttributeStatement statement : statements) {
             if (!existsStatementInList(statement, currentStatements)) {
                 updatedRootStatements.add(statement);
             }
@@ -161,11 +164,11 @@ class UnityManagements {
         updateGroupWithStatements("/", updatedRootStatements);
     }
 
-    void updateGroupWithStatements(String groupPath, Collection<AttributeStatement2> statements) throws EngineException {
-        updateGroupWithStatements(groupPath, statements.toArray(new AttributeStatement2[statements.size()]));
+    void updateGroupWithStatements(String groupPath, Collection<AttributeStatement> statements) throws EngineException {
+        updateGroupWithStatements(groupPath, statements.toArray(new AttributeStatement[statements.size()]));
     }
 
-    private void updateGroupWithStatements(String groupPath, AttributeStatement2[] statements) throws EngineException {
+    private void updateGroupWithStatements(String groupPath, AttributeStatement[] statements) throws EngineException {
         Group group = "/".equals(groupPath) ?
                 groupsManagement.getContents("/", GroupContents.METADATA).getGroup() : new Group(groupPath);
         group.setAttributeStatements(statements);
@@ -184,8 +187,8 @@ class UnityManagements {
         }
     }
 
-    private boolean existsStatementInList(AttributeStatement2 statement, AttributeStatement2[] statements) {
-        for (AttributeStatement2 attributeStatement : statements) {
+    private boolean existsStatementInList(AttributeStatement statement, AttributeStatement[] statements) {
+        for (AttributeStatement attributeStatement : statements) {
             if (equalsAttributeStatements(statement, attributeStatement)) {
                 return true;
             }
@@ -193,7 +196,7 @@ class UnityManagements {
         return false;
     }
 
-    private boolean equalsAttributeStatements(AttributeStatement2 left, AttributeStatement2 right) {
+    private boolean equalsAttributeStatements(AttributeStatement left, AttributeStatement right) {
         if (!left.getCondition().equals(right.getCondition())) {
             return false;
         }
@@ -212,7 +215,7 @@ class UnityManagements {
         return true;
     }
 
-    private static Logger log = Log.getLogger(LOG_GRID_CONTENTS, UnityManagements.class);
+    private static Logger log = Log.getLogger(LOG_GRID_CONTENT, UnityManagements.class);
 
     private static final String EMPTY_REQUIREMENT = "Empty requirement";
     private static final String ALREADY_GROUP_MEMBER_MESSAGE = "The entity is already a member of this group";
