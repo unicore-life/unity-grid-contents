@@ -23,9 +23,9 @@ Plugin version depends on Unity IDM version which show compatibility table below
 
 | Unity IDM version | Plugin version | Documentation Link |
 | --- | --- | --- |
-| 1.8.0 | 0.1.x | [unicore-grid-contents-0.1.8](https://github.com/unicore-life/unity-grid-contents/blob/unicore-grid-contents-0.1.8/README.md) |
-| 1.9.x | 0.2.x | [unity-grid-contents-0.2.4](https://github.com/unicore-life/unity-grid-contents/blob/unity-grid-contents-0.2.4/README.md) |
-| 2.1.x | 1.0.x | [unity-grid-contents-1.0.0](https://github.com/unicore-life/unity-grid-contents/blob/unity-grid-contents-1.0.0/README.md) |
+| 1.8.0 | 0.1.x | [unicore-grid-contents-0.1.8](https://github.com/unicore-life/unity-grid-content/blob/unicore-grid-contents-0.1.8/README.md) |
+| 1.9.x | 0.2.x | [unity-grid-contents-0.2.4](https://github.com/unicore-life/unity-grid-content/blob/unity-grid-contents-0.2.4/README.md) |
+| 2.1.x | 1.0.x | [unity-grid-content-1.0.0](https://github.com/unicore-life/unity-grid-content/blob/unity-grid-content-1.0.0/README.md) |
 
 ## Configuration
 
