@@ -17,7 +17,7 @@ plugins {
 scmVersion.tag.prefix = rootProject.name
 
 group 'pl.edu.icm.unity'
-project.version = '1.0.0' //scmVersion.version
+project.version = scmVersion.version
 
 apply plugin: 'com.novoda.bintray-release'
 
