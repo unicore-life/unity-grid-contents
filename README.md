@@ -9,14 +9,14 @@ security logs are misleading especially for newbies.
 
 ## Installation
 
-Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) maven repository.
-In case of latest release version download archive using command:
+Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) maven repository. In case of latest 
+release version download archive using command:
 
 ```bash
 curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-content/1.0.0/unity-grid-content-1.0.0.jar
 ```
 
-and place it in `lib/` directory of Unity IDM installation
+and place it in `lib/` directory of Unity IDM installation 
 (in case of RPM distribution it is `/usr/share/unity-idm/lib/`).
 
 Plugin version depends on Unity IDM version which show compatibility table below.
@@ -91,11 +91,10 @@ To see current version of the sources use Gradle task
 ./gradlew currentVersion
 ```
 
-To release a new version use
+To release a new version use 
 [release](http://axion-release-plugin.readthedocs.io/en/latest/configuration/tasks.html#release) task.
-Later, for uploading artifact to [Bintray](https://dl.bintray.com/unicore-life/maven) maven repository
-use [bintrayUpload](https://github.com/novoda/bintray-release) task.
-Sample command are presented below.
+Later, for uploading artifact to [Bintray](https://dl.bintray.com/unicore-life/maven) maven repository use 
+[bintrayUpload](https://github.com/novoda/bintray-release) task. Sample commands are presented below.
 
 ```bash
 ./gradlew release
