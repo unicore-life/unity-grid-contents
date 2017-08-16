@@ -5,8 +5,8 @@ import pl.edu.icm.unity.exceptions.EngineException;
 public final class GridContentHelper {
     private static FileContentInitializer contentInitializer;
 
-    public static void initialize(String... contentLocations) throws EngineException {
-        contentInitializer.initializeContentFromLocations(contentLocations);
+    public static void initialize(String contentLocation) throws EngineException {
+        contentInitializer.initializeContentFromLocations(contentLocation);
     }
 
     static void setContentInitializer(FileContentInitializer fileContentInitializer) {
