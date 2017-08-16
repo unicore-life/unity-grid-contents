@@ -1,11 +1,11 @@
-# unity-grid-contents
+# unity-grid-content
 
 The goal of this project is to provide fast and easy initialization of Unity IDM content for the use with UNICORE
 middleware. It helps to setup all attributes, groups and server entities together with statements, because some UNICORE
 security logs are misleading especially for newbies.
 
-[![Build Status](https://travis-ci.org/unicore-life/unity-grid-contents.svg?branch=master)](https://travis-ci.org/unicore-life/unity-grid-contents)
-[![Download](https://api.bintray.com/packages/unicore-life/maven/unity-grid-contents/images/download.svg)](https://bintray.com/unicore-life/maven/unity-grid-contents/_latestVersion)
+[![Build Status](https://travis-ci.org/unicore-life/unity-grid-content.svg?branch=master)](https://travis-ci.org/unicore-life/unity-grid-content)
+[![Download](https://api.bintray.com/packages/unicore-life/maven/unity-grid-content/images/download.svg)](https://bintray.com/unicore-life/maven/unity-grid-content/_latestVersion)
 
 ## Installation
 
@@ -13,7 +13,7 @@ Plugin can be downloaded from [Bintray](https://bintray.com/unicore-life/maven) 
 In case of latest release version download archive using command:
 
 ```bash
-curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-contents/0.2.4/unity-grid-contents-0.2.4.jar
+curl -O https://dl.bintray.com/unicore-life/maven/pl/edu/icm/unity/unity-grid-content/1.0.0/unity-grid-content-1.0.0.jar
 ```
 
 and place it in `lib/` directory of Unity IDM installation
@@ -29,37 +29,7 @@ Plugin version depends on Unity IDM version which show compatibility table below
 
 ## Configuration
 
-TODO
-
-```properties
-unityServer.core.script.5.file=/etc/unity-idm/scripts/gridContentInitializer.groovy
-unityServer.core.script.5.trigger=pre-init
-```
-
-TODO
-
-[gridContentInitializer.groovy](scripts/gridContentInitializer.groovy)
-
-TODO
-
-## Configuration (old style)
-
-The library provides generic initializer named **configurationFileInitializer** which prepares content based on
-UNICORE specific configuration file. In order to execute this initializer file `unityServer.conf` should contain:
-
-```properties
-unityServer.core.initializers.0=configurationFileInitializer
-```
-
-The initializer first tries to read file `conf/content-init.json`. If it exists it will be used, otherwise plugin
-tries to read content from path `/etc/unity-idm/content-init.json`. Again, if it exists and has valid content
-initializer will use it. Otherwise, database will be initialized based on sample configuration file:
-[content-all.json](src/main/resources/content-all.json).
-
-Next, you should clean database (make a backup!) and start Unity IDM.
-Remember, initializers are executed only once, when Unity IDM database has not been set.
-
-All identities are added with requirements **Empty requirement**, so be sure to has such in Unity IDM.
+All identities are added with requirements **Empty requirement**, so first, be sure to has such in Unity IDM.
 One way of accomplish that is to add lines:
 
 ```properties
@@ -68,6 +38,27 @@ unityServer.core.credentialRequirements.1.credentialReqDescription=Empty credent
 ```
 
 in configuration file *unityServer.conf*.
+
+Next, copy script [gridContentInitializer.groovy](scripts/gridContentInitializer.groovy) into Unity IDM configuration 
+directory, change grid content JSON configuration file, and add properties in file *unityServer.conf*:
+
+```properties
+unityServer.core.script.5.file=/etc/unity-idm/scripts/gridContentInitializer.groovy
+unityServer.core.script.5.trigger=pre-init
+```
+
+to be executed when Unity IDM starts. Examples of grid content JSON files:
+
+* [content-production.json](scripts/content-production.json)
+* [content-testbed.json](scripts/content-testbed.json)
+
+Note, that *defaultContentInitializer.groovy* initialization script shipped with Unity IDM distribution have to enabled.
+It is enough to uncomment lines below in *unityServer.confg* file.
+
+```properties
+unityServer.core.script.0.file=/etc/unity-idm/scripts/defaultContentInitializer.groovy
+unityServer.core.script.0.trigger=pre-init
+```
 
 ## Logging
 
@@ -106,7 +97,7 @@ Later, for uploading artifact to [Bintray](https://dl.bintray.com/unicore-life/m
 use [bintrayUpload](https://github.com/novoda/bintray-release) task.
 Sample command are presented below.
 
-```
+```bash
 ./gradlew release
 ./gradlew bintrayUpload -PdryRun=false
 ```
