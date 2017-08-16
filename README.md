@@ -52,13 +52,9 @@ to be executed when Unity IDM starts. Examples of grid content JSON files:
 * [content-production.json](scripts/content-production.json)
 * [content-testbed.json](scripts/content-testbed.json)
 
-Note, that *defaultContentInitializer.groovy* initialization script shipped with Unity IDM distribution have to enabled.
-It is enough to uncomment lines below in *unityServer.confg* file.
-
-```properties
-unityServer.core.script.0.file=/etc/unity-idm/scripts/defaultContentInitializer.groovy
-unityServer.core.script.0.trigger=pre-init
-```
+Note, that *defaultContentInitializer.groovy*  and *unicoreContentInitializer.groovy* initialization scripts shipped 
+with Unity IDM distribution have to enabled. THey should be run before *gridContentInitializer.groovy* script. 
+Check Unity IDM documentation how to do that in *unityServer.conf* file.
 
 ## Logging
 
