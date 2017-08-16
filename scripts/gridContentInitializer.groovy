@@ -7,16 +7,16 @@
 import groovy.transform.Field
 import pl.edu.icm.unity.grid.content.GridContentHelper
 
-@Field final String CONTENT_FILE = "/etc/unity-idm/scripts/content-testbed.json"
+@Field final String GRID_CONTENT_FILE = "/etc/unity-idm/scripts/content-testbed.json"
 
 //if (!isColdStart) {
 //    log.info("Grid content already initialized, skipping it...")
 //    return
 //}
 
-log.info("Initialization of grid content based on file {}...", CONTENT_FILE)
+log.info("Initialization of grid content based on file {}...", GRID_CONTENT_FILE)
 try {
-    GridContentHelper.initialize(CONTENT_FILE)
+    GridContentHelper.initialize(GRID_CONTENT_FILE)
 }
 catch (Exception e) {
     log.warn("Error loading grid content", e)
