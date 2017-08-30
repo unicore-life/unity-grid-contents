@@ -66,31 +66,37 @@ public class UnicoreGroups {
         unityManagements.createPathGroups(unicoreGroupPath + "/servers");
 
         List<AttributeStatement> unicoreGroupStatements = Lists.newArrayList();
-        for (String site : sites) {
-
-            workaroundForUnityVersion_2_1_0(unicoreGroupStatements, unicoreGroupPath, site);
-
-            unicoreGroupStatements.add(
-                    new AttributeStatement(
-                            "true",
-                            unicoreGroupPath + "/" + site,
-                            ConflictResolution.merge,
-                            ROLE.getAttributeName(),
-                            String.format("eattrs['%s']", ROLE.getAttributeName())
-                    )
-            );
-        }
+        workaroundForUnityVersion_2_1_0(unicoreGroupStatements, unicoreGroupPath, sites);
+//        for (String site : sites) {
+//            unicoreGroupStatements.add(
+//                    new AttributeStatement(
+//                            "true",
+//                            unicoreGroupPath + "/" + site,
+//                            ConflictResolution.merge,
+//                            ROLE.getAttributeName(),
+//                            String.format("eattrs['%s']", ROLE.getAttributeName())
+//                    )
+//            );
+//        }
         unicoreGroupStatements.add(createRoleAttributeStatement(unicoreGroupPath, "servers", "server"));
         unityManagements.updateGroupWithStatements(unicoreGroupPath, unicoreGroupStatements);
     }
 
-    private void workaroundForUnityVersion_2_1_0(List<AttributeStatement> unicoreGroupStatements, String unicoreGroupPath, String site) {
+    private void workaroundForUnityVersion_2_1_0(List<AttributeStatement> unicoreGroupStatements,
+                                                 String unicoreGroupPath,
+                                                 List<String> sites) {
         unicoreGroupStatements.addAll(
                 groupsToRoleMap.entrySet().stream()
-                        .map(groupRoleEntry -> createRoleAttributeStatement(
-                                unicoreGroupPath + "/" + site,
-                                groupRoleEntry.getKey(),
-                                groupRoleEntry.getValue())
+                        .flatMap(groupRoleEntry ->
+                                sites.stream()
+                                        .map(site ->
+                                                new AttributeStatement(
+                                                        "groups contains '" + (unicoreGroupPath + "/" + site + "/" + groupRoleEntry.getKey()) + "'",
+                                                        null,
+                                                        ConflictResolution.overwrite,
+                                                        EnumAttribute.of(ROLE.getAttributeName(), unicoreGroupPath, groupRoleEntry.getValue())
+                                                )
+                                        )
                         )
                         .collect(Collectors.toList())
         );
