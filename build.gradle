@@ -11,7 +11,7 @@ buildscript {
 plugins {
     id 'java'
     id 'groovy'
-    id 'pl.allegro.tech.build.axion-release' version '1.7.1'
+    id 'pl.allegro.tech.build.axion-release' version '1.8.1'
 }
 
 scmVersion.tag.prefix = rootProject.name
@@ -23,10 +23,9 @@ apply plugin: 'com.novoda.bintray-release'
 
 
 dependencies {
-    def unityVersion = '2.1.0'
+    def unityVersion = '2.4.1'
 
-    compile "pl.edu.icm.unity:unity-server-engine:${unityVersion}",
-            "pl.edu.icm.unity:unity-server-unicore:${unityVersion}"
+    compile "pl.edu.icm.unity:unity-server-engine:${unityVersion}"
 
     testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
 }
@@ -54,5 +53,5 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 test.testLogging.showStandardStreams = true
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.1'
+    gradleVersion = '4.5.1'
 }

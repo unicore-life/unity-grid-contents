@@ -1,7 +1,10 @@
 package pl.edu.icm.unity.grid.content.util;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 /**
  * Helper class with used collections methods.
@@ -12,11 +15,11 @@ public final class CollectionsHelper {
     private CollectionsHelper() {
     }
 
-    public static <T> List<T> unmodifiableOrEmptyOnNull(List<T> objectList) {
-        return objectList == null ? Collections.emptyList() : Collections.unmodifiableList(objectList);
+    public static <E> List<E> unmodifiableOrEmptyOnNull(List<E> objectList) {
+        return isNull(objectList) ? Collections.emptyList() : Collections.unmodifiableList(objectList);
     }
 
-    public static <T> boolean isListNullOrEmpty(List<T> anyList) {
-        return anyList == null || anyList.isEmpty();
+    public static <E> boolean isNullOrEmpty(Collection<E> collection) {
+        return isNull(collection) || collection.isEmpty();
     }
 }

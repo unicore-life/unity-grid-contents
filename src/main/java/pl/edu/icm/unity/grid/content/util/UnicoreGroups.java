@@ -1,8 +1,8 @@
 package pl.edu.icm.unity.grid.content.util;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.edu.icm.unity.base.utils.Log;
@@ -12,6 +12,7 @@ import pl.edu.icm.unity.stdext.attr.EnumAttribute;
 import pl.edu.icm.unity.stdext.attr.StringAttribute;
 import pl.edu.icm.unity.types.basic.Attribute;
 import pl.edu.icm.unity.types.basic.AttributeStatement;
+import pl.edu.icm.unity.types.basic.AttributeStatement.ConflictResolution;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -25,8 +26,6 @@ import static pl.edu.icm.unity.grid.content.ContentConstants.LOG_GRID_CONTENT;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.ROLE;
 import static pl.edu.icm.unity.grid.content.model.UnicoreAttributes.XLOGIN;
 import static pl.edu.icm.unity.grid.content.util.UnityAttributeHelper.createStringAttributeIfNotExists;
-import static pl.edu.icm.unity.types.basic.AttributeStatement.ConflictResolution.overwrite;
-import static pl.edu.icm.unity.types.basic.AttributeStatement.ConflictResolution.skip;
 
 /**
  * Component with methods operating on Unity IDM groups.
@@ -54,7 +53,7 @@ public class UnicoreGroups {
                 new AttributeStatement(
                         "true",
                         null,
-                        overwrite,
+                        ConflictResolution.overwrite,
                         EnumAttribute.of(AUTHORIZATION_ROLE, inspectorsGroupPath, "Inspector")
                 )
         };
@@ -67,19 +66,40 @@ public class UnicoreGroups {
         unityManagements.createPathGroups(unicoreGroupPath + "/servers");
 
         List<AttributeStatement> unicoreGroupStatements = Lists.newArrayList();
-        for (String site : sites) {
-            unicoreGroupStatements.add(
-                    new AttributeStatement(
-                            "true",
-                            unicoreGroupPath + "/" + site,
-                            AttributeStatement.ConflictResolution.merge,
-                            ROLE.getAttributeName(),
-                            String.format("eattrs['%s']", ROLE.getAttributeName())
-                    )
-            );
-        }
+        workaroundForUnityVersion_2_1_0(unicoreGroupStatements, unicoreGroupPath, sites);
+//        for (String site : sites) {
+//            unicoreGroupStatements.add(
+//                    new AttributeStatement(
+//                            "true",
+//                            unicoreGroupPath + "/" + site,
+//                            ConflictResolution.merge,
+//                            ROLE.getAttributeName(),
+//                            String.format("eattrs['%s']", ROLE.getAttributeName())
+//                    )
+//            );
+//        }
         unicoreGroupStatements.add(createRoleAttributeStatement(unicoreGroupPath, "servers", "server"));
         unityManagements.updateGroupWithStatements(unicoreGroupPath, unicoreGroupStatements);
+    }
+
+    private void workaroundForUnityVersion_2_1_0(List<AttributeStatement> unicoreGroupStatements,
+                                                 String unicoreGroupPath,
+                                                 List<String> sites) {
+        unicoreGroupStatements.addAll(
+                groupsToRoleMap.entrySet().stream()
+                        .flatMap(groupRoleEntry ->
+                                sites.stream()
+                                        .map(site ->
+                                                new AttributeStatement(
+                                                        "groups contains '" + (unicoreGroupPath + "/" + site + "/" + groupRoleEntry.getKey()) + "'",
+                                                        null,
+                                                        ConflictResolution.overwrite,
+                                                        EnumAttribute.of(ROLE.getAttributeName(), unicoreGroupPath, groupRoleEntry.getValue())
+                                                )
+                                        )
+                        )
+                        .collect(Collectors.toList())
+        );
     }
 
     public void createUnicoreSiteGroupStructure(final String unicoreSiteGroupPath,
@@ -87,26 +107,20 @@ public class UnicoreGroups {
             throws EngineException {
         unityManagements.createPathGroups(unicoreSiteGroupPath);
 
-        final Map<String, String> groupsToRole = Maps.newLinkedHashMap();
-        groupsToRole.put("servers", "server");
-        groupsToRole.put("agents", "user");
-        groupsToRole.put("users", "user");
-        groupsToRole.put("banned", "banned");
-
-        for (String subGroup : groupsToRole.keySet()) {
+        for (String subGroup : groupsToRoleMap.keySet()) {
             final String subGroupPath = String.format("%s/%s", unicoreSiteGroupPath, subGroup);
             unityManagements.createPathGroups(subGroupPath);
         }
 
         List<AttributeStatement> unicoreSiteGroupStatements = Lists.newArrayList();
         unicoreSiteGroupStatements.addAll(
-                groupsToRole.entrySet().stream()
+                groupsToRoleMap.entrySet().stream()
                         .map(groupToRoleEntry -> createRoleAttributeStatement(
                                 unicoreSiteGroupPath, groupToRoleEntry.getKey(), groupToRoleEntry.getValue()))
                         .collect(Collectors.toList())
         );
         unicoreSiteGroupStatements.addAll(
-                groupsToRole.entrySet().stream()
+                groupsToRoleMap.entrySet().stream()
                         .filter(stringStringEntry -> stringStringEntry.getValue().equals("user"))
                         .map(groupToRoleEntry ->
                                 createXloginAttributeStatement(unicoreSiteGroupPath + "/" + groupToRoleEntry.getKey()))
@@ -125,7 +139,8 @@ public class UnicoreGroups {
 
                 final Attribute stringAttribute = StringAttribute.of(attributeKey, unicoreSiteGroupPath, attributeValue);
 
-                unicoreSiteGroupStatements.add(new AttributeStatement("true", null, overwrite, stringAttribute));
+                unicoreSiteGroupStatements.add(
+                        new AttributeStatement("true", null, ConflictResolution.overwrite, stringAttribute));
             }
         }
 
@@ -142,7 +157,7 @@ public class UnicoreGroups {
                     new AttributeStatement(
                             "true",
                             "/",
-                            skip,
+                            ConflictResolution.skip,
                             attributeName,
                             String.format("eattrs['%s']", attributeName)
                     )
@@ -155,7 +170,7 @@ public class UnicoreGroups {
         return new AttributeStatement(
                 "true",
                 extraAttributesGroup,
-                overwrite,
+                ConflictResolution.overwrite,
                 XLOGIN.getAttributeName(),
                 String.format("eattrs['%s']", XLOGIN.getAttributeName())
         );
@@ -165,10 +180,17 @@ public class UnicoreGroups {
         return new AttributeStatement(
                 "groups contains '" + (unicorePath + "/" + subGroup) + "'",
                 null,
-                overwrite,
+                ConflictResolution.overwrite,
                 EnumAttribute.of(ROLE.getAttributeName(), unicorePath, subGroupRole)
         );
     }
+
+    private final static Map<String, String> groupsToRoleMap = ImmutableMap.of(
+            "servers", "server",
+            "agents", "user",
+            "users", "user",
+            "banned", "banned"
+    );
 
     private static Logger log = Log.getLogger(LOG_GRID_CONTENT, UnicoreGroups.class);
 }

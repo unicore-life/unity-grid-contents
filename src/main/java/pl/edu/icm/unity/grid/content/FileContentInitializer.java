@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import static pl.edu.icm.unity.grid.content.util.CollectionsHelper.isListNullOrEmpty;
+import static pl.edu.icm.unity.grid.content.util.CollectionsHelper.isNullOrEmpty;
 
 /**
  * Populates DB with UNICORE related contents defined in configuration file.
@@ -83,7 +83,7 @@ public class FileContentInitializer extends ContentInitializer {
 
     private void processCentralGroups(List<UnicoreCentralGroup> centralGroups,
                                       String inspectorsGroupPath) throws EngineException {
-        if (isListNullOrEmpty(centralGroups)) {
+        if (isNullOrEmpty(centralGroups)) {
             log.debug("No central groups in configuration.");
             return;
         }
@@ -110,7 +110,7 @@ public class FileContentInitializer extends ContentInitializer {
 
     private void processSiteGroups(List<UnicoreSiteGroup> siteGroups,
                                    String inspectorsGroupPath) throws EngineException {
-        if (isListNullOrEmpty(siteGroups)) {
+        if (isNullOrEmpty(siteGroups)) {
             log.debug("No site groups in configuration.");
             return;
         }
@@ -162,7 +162,7 @@ public class FileContentInitializer extends ContentInitializer {
     }
 
     private void processPortalGroups(List<String> portalGroups) throws EngineException {
-        if (isListNullOrEmpty(portalGroups)) {
+        if (isNullOrEmpty(portalGroups)) {
             log.debug("No portal groups in configuration.");
             return;
         }
